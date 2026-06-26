@@ -5,23 +5,165 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DocumentSystem - Smart Login</title>
   <style>
-    body { font-family: sans-serif; background-color: #f4f4f9; display: flex; justify-content: center; padding: 20px; margin: 0; user-select: none; -webkit-user-select: none; }
-    .container { width: 100%; max-width: 600px; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center; margin-top: 30px; }
-    input { width: 90%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; text-align: center; }
-    button { width: 100%; padding: 12px; background: #28a745; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; font-weight: bold; margin-bottom: 10px;}
+    /* 🍏 สไตล์แบบ Apple Design Language */
+    :root {
+      --apple-blue: #0071e3;
+      --apple-blue-hover: #0077ed;
+      --apple-green: #34c759;
+      --apple-red: #ff3b30;
+      --apple-bg: #f5f5f7;
+      --apple-card-bg: #ffffff;
+      --apple-text-main: #1d1d1f;
+      --apple-text-muted: #86868b;
+      --apple-border: #d2d2d7;
+    }
+
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--apple-bg); 
+      color: var(--apple-text-main);
+      display: flex; 
+      justify-content: center; 
+      padding: 40px 20px; 
+      margin: 0; 
+      user-select: none; 
+      -webkit-user-select: none; 
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .container { 
+      width: 100%; 
+      max-width: 580px; 
+      background: var(--apple-card-bg); 
+      padding: 45px 40px; 
+      border-radius: 20px; 
+      box-shadow: 0 10px 40px rgba(0,0,0,0.06); 
+      text-align: center; 
+      margin-top: 20px; 
+      box-sizing: border-box;
+    }
+
+    h2 { 
+      font-size: 28px; 
+      font-weight: 600; 
+      letter-spacing: -0.02em; 
+      margin-top: 0; 
+      margin-bottom: 8px;
+    }
+
+    h3 {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-top: 0;
+    }
+
+    p { 
+      color: var(--apple-text-muted); 
+      font-size: 15px; 
+      margin-bottom: 24px;
+    }
     
-    .job-btn { background: #007bff; text-align: left; padding: 15px; margin-bottom: 15px; font-size: 18px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
-    .job-btn:hover { background: #0056b3; }
+    input { 
+      width: 100%; 
+      padding: 16px; 
+      margin-bottom: 20px; 
+      background-color: #f5f5f7;
+      border: 1px solid transparent; 
+      border-radius: 14px; 
+      font-size: 17px; 
+      font-family: inherit;
+      text-align: center; 
+      color: var(--apple-text-main);
+      box-sizing: border-box;
+      transition: all 0.2s ease;
+    }
+
+    input:focus { 
+      background-color: #fff;
+      border-color: var(--apple-blue); 
+      box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15); 
+      outline: none; 
+    }
+    input::placeholder { color: #a1a1a6; }
     
-    .protected-view { position: relative; margin-top: 20px; width: 100%; height: 650px; background: #f0f0f0; border-radius: 5px; overflow: hidden; }
-    .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-30deg); font-size: 40px; color: rgba(0,0,0,0.15); pointer-events: none; width: 100%; z-index: 10; font-weight: bold; text-transform: uppercase; text-shadow: 2px 2px 4px rgba(255,255,255,0.5); }
+    button { 
+      width: 100%; 
+      padding: 16px; 
+      background: var(--apple-blue); 
+      color: white; 
+      border: none; 
+      border-radius: 14px; 
+      font-size: 17px; 
+      font-family: inherit;
+      cursor: pointer; 
+      font-weight: 600; 
+      margin-bottom: 12px;
+      transition: transform 0.1s, background 0.2s, opacity 0.2s;
+    }
+    button:active { transform: scale(0.97); }
+    button:hover { background: var(--apple-blue-hover); }
+    
+    .job-btn { 
+      background: #ffffff; 
+      color: var(--apple-text-main);
+      border: 1px solid var(--apple-border);
+      text-align: left; 
+      padding: 20px; 
+      margin-bottom: 12px; 
+      font-size: 17px; 
+      font-weight: 500;
+      border-radius: 16px; 
+      box-shadow: 0 2px 5px rgba(0,0,0,0.01); 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+    }
+    .job-btn:hover { 
+      border-color: #a1a1a6; 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      transform: translateY(-1px);
+    }
+    
+    .protected-view { 
+      position: relative; 
+      margin-top: 25px; 
+      width: 100%; 
+      height: 650px; 
+      background: #fbfbfd; 
+      border-radius: 16px; 
+      border: 1px solid var(--apple-border);
+      overflow: hidden; 
+    }
+    .watermark { 
+      position: absolute; 
+      top: 50%; 
+      left: 50%; 
+      transform: translate(-50%, -50%) rotate(-30deg); 
+      font-size: 40px; 
+      color: rgba(0,0,0,0.08); 
+      pointer-events: none; 
+      width: 100%; 
+      z-index: 10; 
+      font-weight: 700; 
+      text-transform: uppercase; 
+      text-shadow: 1px 1px 2px rgba(255,255,255,0.8); 
+    }
     
     iframe, img { width: 100%; height: 100%; border: none; }
     .block-interaction { pointer-events: none; }
     .pdf-viewer { pointer-events: auto !important; }
     
-    /* 🛡️ เกราะล่องหน: บล็อกปุ่ม Pop-out มุมขวาบนของ Google Drive */
     .drive-blocker { position: absolute; top: 0; right: 0; width: 80px; height: 60px; background: transparent; z-index: 99; cursor: not-allowed; }
+
+    #downloadSection {
+      margin-bottom: 25px; 
+      padding: 24px; 
+      background: #f5f5f7; 
+      border-radius: 16px; 
+      border: none;
+    }
   </style>
 </head>
 <body oncontextmenu="return false;">
@@ -31,23 +173,23 @@
     <p>ระบุตัวตนเพื่อเข้าดูข้อมูล (Smart Login)</p>
     <input type="text" id="studentId" placeholder="กรอกชื่อ หรือรหัสที่นี่..." required>
     <button onclick="checkData()">เข้าสู่ระบบ</button>
-    <p id="errorMsg" style="color: red; display: none; margin-top: 15px;">❌ ไม่พบสิทธิ์การเข้าถึงงานใดๆ</p>
+    <p id="errorMsg" style="color: var(--apple-red); display: none; margin-top: 15px; font-weight: 500;">❌ ไม่พบสิทธิ์การเข้าถึงงานใดๆ</p>
   </div>
 
   <div class="container" id="menuBox" style="display: none;">
     <h3 id="menuTitle"></h3>
-    <p style="color:gray; margin-bottom: 20px;">กรุณาเลือกงานที่คุณต้องการเข้าชม</p>
+    <p style="margin-bottom: 30px;">กรุณาเลือกงานที่คุณต้องการเข้าชม</p>
     <div id="jobList"></div>
     <br>
-    <button style="background: #dc3545;" onclick="location.reload()">ออกจากระบบ</button>
+    <button style="background: var(--apple-red); margin-top: 10px;" onclick="location.reload()">ออกจากระบบ</button>
   </div>
 
-  <div class="container" id="contentBox" style="display: none;">
+  <div class="container" id="contentBox" style="display: none; max-width: 700px;">
     <h3 id="displayName"></h3>
     
-    <button style="background: #ffc107; color: #000; margin-bottom: 15px;" onclick="backToMenu()">🔙 กลับไปหน้าเลือกงาน</button>
+    <button style="background: #e8e8ed; color: var(--apple-blue); margin-bottom: 25px; box-shadow: none;" onclick="backToMenu()"><span style="font-size: 14px; margin-right: 5px;">􀯶</span> กลับไปหน้าเลือกงาน</button>
     
-    <div id="downloadSection" style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; border: 1px solid #ddd;"></div>
+    <div id="downloadSection"></div>
     
     <div class="protected-view">
       <div class="watermark" id="watermarkText"></div>
@@ -59,7 +201,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getFirestore, collection, query, where, getDocs, addDoc, updateDoc, doc, serverTimestamp, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
+    
     const firebaseConfig = {
       apiKey: "AIzaSyBLyMpowfyQK_1UnredPFmXdBdtQZKpY-c",
       authDomain: "datapdf-d14d0.firebaseapp.com",
@@ -69,7 +211,7 @@
       messagingSenderId: "1034739093928",
       appId: "1:1034739093928:web:cd56cc0e208d7d00f24d9d"
     };
-
+    
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     
@@ -91,10 +233,9 @@
         querySnapshot.forEach((docSnap) => {
           userFiles.push({ id: docSnap.id, ...docSnap.data() });
         });
-
+        
         if (userFiles.length > 0) {
           currentId = id;
-          
           const logsCol = collection(db, "access_logs");
           const newLog = await addDoc(logsCol, { studentId: id, loginTime: serverTimestamp(), logoutTime: null });
           currentLogId = newLog.id;
@@ -107,8 +248,8 @@
           userFiles.forEach((file, index) => {
             let icon = file.type === "youtube" ? "▶️" : (file.type === "image" ? "🖼️" : "📄");
             html += `<button class="job-btn" onclick="openFile(${index})">
-                       <span>${icon} ${file.title}</span> 
-                       <span>👉</span>
+                       <span>${icon} &nbsp;${file.title}</span> 
+                       <span style="color: #c7c7cc; font-size: 20px;">􀆊</span>
                      </button>`;
           });
           document.getElementById("jobList").innerHTML = html;
@@ -140,7 +281,7 @@
         blocker.style.display = "none";
         viewer.innerHTML = `<img class="block-interaction" src="${file.url}" style="object-fit: contain;">`;
       } else if (file.type === "pdf") {
-        blocker.style.display = "block"; 
+        blocker.style.display = "block";
         viewer.innerHTML = `<iframe class="pdf-viewer" src="${file.url}#toolbar=0&navpanes=0&scrollbar=0" allowfullscreen></iframe>`;
       }
 
@@ -149,7 +290,7 @@
 
     async function checkDownloadStatus(jobId) {
       const downloadSection = document.getElementById("downloadSection");
-      downloadSection.innerHTML = "<p style='color:gray; margin:0;'>⏳ กำลังตรวจสอบสิทธิ์ดาวน์โหลด...</p>";
+      downloadSection.innerHTML = "<p style='color:var(--apple-text-muted); margin:0; font-weight:500;'>⏳ กำลังตรวจสอบสิทธิ์ดาวน์โหลด...</p>";
       
       try {
         const reqRef = doc(db, "download_requests", `${jobId}_${currentId}`);
@@ -157,54 +298,53 @@
         
         if (!reqSnap.exists()) {
           downloadSection.innerHTML = `
-            <button style="background: #007bff; margin-bottom: 0;" onclick="requestDownload('${jobId}')">📥 ยื่นดาวน์โหลด</button>
+            <button style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">📥 ยื่นดาวน์โหลด</button>
           `;
         } else {
           const data = reqSnap.data();
           if (data.status === "pending") {
             downloadSection.innerHTML = `
-              <div style="color: #856404; background-color: #fff3cd; border: 1px solid #ffeeba; padding: 12px; border-radius: 5px; font-weight: bold; font-size: 14px;">
+              <div style="color: #8c6b0a; background-color: #fcf1d4; padding: 16px; border-radius: 12px; font-weight: 500; font-size: 15px;">
                 รอตรวจสอบจากผู้ให้บริการโดยปกติแล้วจะยินยอมให้ดาวน์โหลด 3 วันทำการ
               </div>
             `;
           } else if (data.status === "approved") {
             let isExpired = false;
-            let expireMsg = `<p style="margin-top: 10px; margin-bottom: 0; font-size: 13px; color: #28a745;">✅ ดาวน์โหลดได้ไม่จำกัดเวลา</p>`;
+            let expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">✅ ดาวน์โหลดได้ไม่จำกัดเวลา</p>`;
             
-            // ตรวจสอบวันหมดเวลาดาวน์โหลด
             if (data.expiresAt) {
               const expDate = data.expiresAt.toDate();
               if (new Date() > expDate) {
                 isExpired = true;
               } else {
-                expireMsg = `<p style="margin-top: 10px; margin-bottom: 0; font-size: 13px; color: #d39e00;">⏰ ดาวน์โหลดได้ถึง: ${expDate.toLocaleString('th-TH')}</p>`;
+                expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">⏰ ดาวน์โหลดได้ถึง: ${expDate.toLocaleString('th-TH')}</p>`;
               }
             }
 
             if (isExpired) {
               downloadSection.innerHTML = `
-                <div style="color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 12px; border-radius: 5px; font-weight: bold; margin-bottom: 10px; font-size: 14px;">
+                <div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">
                   ⏳ สิทธิ์ดาวน์โหลดของคุณหมดอายุแล้ว
                 </div>
-                <button style="background: #007bff; margin-bottom: 0;" onclick="requestDownload('${jobId}')">🔄 ยื่นเรื่องอีกครั้ง</button>
+                <button style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">🔄 ยื่นเรื่องอีกครั้ง</button>
               `;
             } else {
               downloadSection.innerHTML = `
-                <button style="background: #28a745; margin-bottom: 0;" onclick="downloadWork()">⬇️ ดาวน์โหลด</button>
+                <button style="background: var(--apple-green); margin-bottom: 0;" onclick="downloadWork()">⬇️ ดาวน์โหลดเอกสาร</button>
                 ${expireMsg}
               `;
             }
           } else if (data.status === "rejected") {
             downloadSection.innerHTML = `
-              <div style="color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 12px; border-radius: 5px; font-weight: bold; margin-bottom: 10px; font-size: 14px;">
+              <div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">
                 คุณไม่มีสิทธิ์ในการดาวน์โหลด
               </div>
-              <button style="background: #007bff; margin-bottom: 0;" onclick="requestDownload('${jobId}')">🔄 ยื่นเรื่องอีกครั้ง</button>
+              <button style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">🔄 ยื่นเรื่องอีกครั้ง</button>
             `;
           }
         }
       } catch(e) {
-        downloadSection.innerHTML = "<p style='color:red; margin:0;'>❌ ไม่สามารถตรวจสอบสถานะได้</p>";
+        downloadSection.innerHTML = "<p style='color:var(--apple-red); margin:0; font-weight: 500;'>❌ ไม่สามารถตรวจสอบสถานะได้</p>";
       }
     }
 
@@ -213,7 +353,7 @@
       if (!file) return;
       
       const downloadSection = document.getElementById("downloadSection");
-      downloadSection.innerHTML = "<p style='color:blue; margin:0;'>กำลังส่งคำขอ...</p>";
+      downloadSection.innerHTML = "<p style='color:var(--apple-blue); margin:0; font-weight: 500;'>กำลังส่งคำขอ...</p>";
       
       try {
         const reqRef = doc(db, "download_requests", `${jobId}_${currentId}`);
@@ -224,7 +364,6 @@
           status: "pending",
           updatedAt: serverTimestamp()
         });
-        
         checkDownloadStatus(jobId);
       } catch(e) {
         alert("เกิดข้อผิดพลาดในการส่งคำขอ");
@@ -235,60 +374,13 @@
     window.downloadWork = function() {
       const file = userFiles.find(f => f.id === currentJobId);
       if (!file) return;
-
-      const win = window.open("", "_blank");
-      let watermarksHtml = "";
-      for(let i = 0; i < 35; i++) {
-        watermarksHtml += `<div class="wm-item">${currentId}</div>`;
-      }
-
-      win.document.write(`
-        <!DOCTYPE html>
-        <html lang="th">
-        <head>
-          <meta charset="UTF-8">
-          <title>ดาวน์โหลด - ${file.title}</title>
-          <style>
-            body { margin: 0; padding: 0; width: 100vw; height: 100vh; overflow: hidden; position: relative; font-family: sans-serif; background: #fff; }
-            .wm-grid {
-              position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-              display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(7, 1fr);
-              pointer-events: none; z-index: 999999;
-            }
-            .wm-item {
-              display: flex; align-items: center; justify-content: center;
-              transform: rotate(-30deg); color: rgba(0, 0, 0, 0.18);
-              font-size: 24px; font-weight: bold;
-              user-select: none;
-            }
-            iframe, img { width: 100%; height: 100%; border: none; }
-            @media print {
-              body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-              .wm-grid { position: fixed; }
-            }
-          </style>
-        </head>
-        <body>
-          <div class="wm-grid">${watermarksHtml}</div>
-          \${file.type === 'youtube' 
-            ? \`<iframe src="\${file.url}" allowfullscreen></iframe>\` 
-            : (file.type === 'image' 
-              ? \`<img src="\${file.url}" style="object-fit: contain;">\` 
-              : \`<iframe src="\${file.url}"></iframe>\`)}
-          <script>
-            setTimeout(() => {
-              window.print();
-            }, 1200);
-          <\/script>
-        </body>
-        </html>
-      `);
-      win.document.close();
+      
+      window.open(file.url, "_blank");
     }
 
     window.backToMenu = function() {
       document.getElementById("fileViewer").innerHTML = ""; 
-      document.getElementById("downloadSection").innerHTML = ""; 
+      document.getElementById("downloadSection").innerHTML = "";
       document.getElementById("contentBox").style.display = "none";
       document.getElementById("menuBox").style.display = "block";
     }
@@ -298,7 +390,7 @@
         e.preventDefault(); return false;
       }
     });
-
+    
     window.addEventListener("beforeunload", (e) => {
       if (currentLogId) { updateDoc(doc(db, "access_logs", currentLogId), { logoutTime: serverTimestamp() }); }
     });
