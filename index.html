@@ -2,70 +2,63 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>ระบบแอดมิน - จัดการสิทธิ์แบบรวมศูนย์</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DocumentSystem - Smart Login</title>
   <style>
-    body { font-family: sans-serif; background: #e9ecef; padding: 20px; display: flex; flex-direction: column; align-items: center; margin: 0; }
-    .admin-box { background: white; padding: 25px; border-radius: 10px; width: 100%; max-width: 800px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 25px; box-sizing: border-box; }
-    h2 { margin-top: 0; display: flex; justify-content: space-between; align-items: center; }
-    label { font-weight: bold; margin-top: 15px; display: block; font-size: 14px; color: #333; }
-    input, select, textarea, button { width: 100%; padding: 12px; margin-top: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 5px; font-family: inherit; font-size: 14px; }
-    textarea { height: 120px; resize: vertical; }
-    button { color: white; border: none; cursor: pointer; font-weight: bold; margin-top: 15px; transition: 0.2s; }
-    button:hover { opacity: 0.85; }
+    body { font-family: sans-serif; background-color: #f4f4f9; display: flex; justify-content: center; padding: 20px; margin: 0; user-select: none; -webkit-user-select: none; }
+    .container { width: 100%; max-width: 600px; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center; margin-top: 30px; }
+    input { width: 90%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; text-align: center; }
+    button { width: 100%; padding: 12px; background: #28a745; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; font-weight: bold; margin-bottom: 10px;}
     
-    .btn-blue { background: #007bff; }
-    .btn-green { background: #28a745; }
-    .btn-yellow { background: #ffc107; color: #000; }
-    .btn-red { background: #dc3545; }
-    .btn-gray { background: #6c757d; display: none; }
+    .job-btn { background: #007bff; text-align: left; padding: 15px; margin-bottom: 15px; font-size: 18px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
+    .job-btn:hover { background: #0056b3; }
     
-    table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 15px; }
-    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle; }
-    th { background-color: #f8f9fa; text-align: center; }
-    .action-btns { display: flex; gap: 5px; justify-content: center; }
-    .action-btns button { width: auto; padding: 6px 10px; margin: 0; font-size: 12px; }
+    .protected-view { position: relative; margin-top: 20px; width: 100%; height: 650px; background: #f0f0f0; border-radius: 5px; overflow: hidden; }
+    .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-30deg); font-size: 40px; color: rgba(0,0,0,0.15); pointer-events: none; width: 100%; z-index: 10; font-weight: bold; text-transform: uppercase; text-shadow: 2px 2px 4px rgba(255,255,255,0.5); }
+    
+    iframe, img { width: 100%; height: 100%; border: none; }
+    .block-interaction { pointer-events: none; }
+    .pdf-viewer { pointer-events: auto !important; }
+    
+    /* 🛡️ เกราะล่องหน: บล็อกปุ่ม Pop-out มุมขวาบนของ Google Drive */
+    .drive-blocker { position: absolute; top: 0; right: 0; width: 80px; height: 60px; background: transparent; z-index: 99; cursor: not-allowed; }
   </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
-  <div class="admin-box">
-    <h2 id="formTitle">⚙️ เพิ่มงานใหม่เข้าสู่ระบบ</h2>
-    <input type="hidden" id="editJobId"> <label>1. ชื่องาน / ชื่อบทเรียน:</label>
-    <input type="text" id="jobTitle" placeholder="เช่น: เอกสารประกอบการเรียน บทที่ 1" required>
+  <div class="container" id="loginBox">
+    <h2>Document System</h2>
+    <p>ระบุตัวตนเพื่อเข้าดูข้อมูล (Smart Login)</p>
+    <input type="text" id="studentId" placeholder="กรอกชื่อ หรือรหัสที่นี่..." required>
+    <button onclick="checkData()">เข้าสู่ระบบ</button>
+    <p id="errorMsg" style="color: red; display: none; margin-top: 15px;">❌ ไม่พบสิทธิ์การเข้าถึงงานใดๆ</p>
+  </div>
+
+  <div class="container" id="menuBox" style="display: none;">
+    <h3 id="menuTitle"></h3>
+    <p style="color:gray; margin-bottom: 20px;">กรุณาเลือกงานที่คุณต้องการเข้าชม</p>
+    <div id="jobList"></div>
+    <br>
+    <button style="background: #dc3545;" onclick="location.reload()">ออกจากระบบ</button>
+  </div>
+
+  <div class="container" id="contentBox" style="display: none;">
+    <h3 id="displayName"></h3>
     
-    <label>2. ประเภทของไฟล์:</label>
-    <select id="fileType">
-      <option value="youtube">วิดีโอ (ลิงก์ YouTube)</option>
-      <option value="image">รูปภาพ (ลิงก์ภาพ)</option>
-      <option value="pdf">ไฟล์ PDF / Google Drive (ลิงก์เอกสาร)</option>
-    </select>
-
-    <label>3. วางลิงก์ไฟล์ (URL):</label>
-    <input type="text" id="fileUrl" placeholder="วางลิงก์ไฟล์ที่นี่..." required>
-
-    <label>4. รายชื่อผู้มีสิทธิ์เข้าชม (1 งานใส่ได้ไม่จำกัด):</label>
-    <textarea id="allowedUsers" placeholder="ใส่รหัสหรือชื่อ คั่นด้วยลูกน้ำ (,) หรือขึ้นบรรทัดใหม่&#10;เช่น: 6810210178, 6810210220&#10;(ก๊อปปี้จาก Excel มาวางได้เลย)"></textarea>
-
-    <div style="display: flex; gap: 10px;">
-      <button class="btn-blue" id="btnSave" onclick="saveJob()">➕ บันทึกงาน</button>
-      <button class="btn-gray" id="btnCancel" onclick="cancelEdit()">❌ ยกเลิกการแก้ไข</button>
+    <button style="background: #ffc107; color: #000; margin-bottom: 15px;" onclick="backToMenu()">🔙 กลับไปหน้าเลือกงาน</button>
+    
+    <div id="downloadSection" style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; border: 1px solid #ddd;"></div>
+    
+    <div class="protected-view">
+      <div class="watermark" id="watermarkText"></div>
+      <div id="driveBlocker" class="drive-blocker" style="display: none;" title="ไม่อนุญาตให้เปิดภายนอก"></div>
+      <div id="fileViewer" style="width: 100%; height: 100%;"></div>
     </div>
-    <p id="status" style="text-align: center; font-weight: bold; margin-bottom: 0;"></p>
-  </div>
-
-  <div class="admin-box">
-    <h2>📋 จัดการงานทั้งหมด</h2>
-    <div id="jobsTable"></div>
-  </div>
-
-  <div class="admin-box">
-    <h2>📥 จัดการคำขอดาวน์โหลดงาน</h2>
-    <div id="requestsTable"></div>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, doc, setDoc, addDoc, getDoc, deleteDoc, collection, getDocs, serverTimestamp, updateDoc, query } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, collection, query, where, getDocs, addDoc, updateDoc, doc, serverTimestamp, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBLyMpowfyQK_1UnredPFmXdBdtQZKpY-c",
@@ -79,239 +72,236 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    
+    let currentLogId = null;
+    let userFiles = []; 
+    let currentId = "";
+    let currentJobId = "";
 
-    function cleanUrl(type, url) {
-      if (type === "youtube" && url.includes("watch?v=")) return `https://www.youtube.com/embed/${url.split("v=")[1].split("&")[0]}`;
-      if (type === "youtube" && url.includes("youtu.be/")) return `https://www.youtube.com/embed/${url.split("youtu.be/")[1].split("?")[0]}`;
-      if (type === "pdf" && url.includes("drive.google.com") && url.includes("/view")) return url.split("/view")[0] + "/preview";
-      return url;
-    }
-
-    window.saveJob = async function() {
-      const editId = document.getElementById("editJobId").value;
-      const title = document.getElementById("jobTitle").value.trim();
-      const type = document.getElementById("fileType").value;
-      let url = document.getElementById("fileUrl").value.trim();
-      const rawUsers = document.getElementById("allowedUsers").value;
-      const statusText = document.getElementById("status");
-
-      if (!title || !url) {
-        statusText.innerText = "❌ กรุณากรอกชื่องานและลิงก์ให้ครบ";
-        statusText.style.color = "red";
-        return;
-      }
-
-      const userList = rawUsers.split(/[\n,]+/).map(id => id.trim()).filter(id => id !== "");
-      url = cleanUrl(type, url);
-
-      statusText.innerText = "กำลังบันทึกข้อมูล...";
-      statusText.style.color = "blue";
-
+    window.checkData = async function() {
+      const id = document.getElementById("studentId").value.trim();
+      if (!id) return;
+      document.getElementById("errorMsg").style.display = "none";
+      
       try {
-        const jobData = {
-          title: title,
-          type: type,
-          url: url,
-          allowedUsers: userList,
-          updatedAt: serverTimestamp()
-        };
+        const q = query(collection(db, "jobs"), where("allowedUsers", "array-contains", id));
+        const querySnapshot = await getDocs(q);
 
-        if (editId) {
-          await setDoc(doc(db, "jobs", editId), jobData, { merge: true });
-          statusText.innerText = "✅ อัปเดตงานเรียบร้อย!";
-        } else {
-          jobData.createdAt = serverTimestamp();
-          await addDoc(collection(db, "jobs"), jobData);
-          statusText.innerText = "✅ สร้างงานใหม่เรียบร้อย!";
-        }
-        
-        statusText.style.color = "green";
-        cancelEdit(); 
-        loadJobs();   
-      } catch (error) {
-        statusText.innerText = "❌ เกิดข้อผิดพลาด (อย่าลืมตั้งค่า Rules เป็น true นะครับ)";
-        statusText.style.color = "red";
-      }
-    }
-
-    window.loadJobs = async function() {
-      const tableDiv = document.getElementById("jobsTable");
-      tableDiv.innerHTML = "<p style='text-align:center;'>กำลังโหลด...</p>";
-
-      try {
-        const querySnapshot = await getDocs(collection(db, "jobs"));
-        if (querySnapshot.empty) {
-          tableDiv.innerHTML = "<p style='text-align:center; color:gray;'>ยังไม่มีงานในระบบ</p>";
-          return;
-        }
-
-        let html = `<table>
-                      <tr>
-                        <th width="30%">ชื่องาน</th>
-                        <th width="15%">ประเภท</th>
-                        <th width="30%">จำนวนผู้มีสิทธิ์ดู</th>
-                        <th width="25%">จัดการ</th>
-                      </tr>`;
-        
+        userFiles = [];
         querySnapshot.forEach((docSnap) => {
-          const id = docSnap.id;
-          const data = docSnap.data();
-          const userCount = data.allowedUsers ? data.allowedUsers.length : 0;
-          
-          const safeData = encodeURIComponent(JSON.stringify({id: id, ...data}));
-
-          html += `<tr>
-                    <td><b>${data.title}</b></td>
-                    <td style="text-align:center;">${data.type}</td>
-                    <td style="text-align:center; color:green; font-weight:bold;">${userCount} คน</td>
-                    <td>
-                      <div class="action-btns">
-                        <button class="btn-yellow" onclick="editJob('${safeData}')">✏️ แก้ไข</button>
-                        <button class="btn-red" onclick="deleteJob('${id}')">🗑️ ลบ</button>
-                      </div>
-                    </td>
-                   </tr>`;
+          userFiles.push({ id: docSnap.id, ...docSnap.data() });
         });
-        html += "</table>";
-        tableDiv.innerHTML = html;
+
+        if (userFiles.length > 0) {
+          currentId = id;
+          
+          const logsCol = collection(db, "access_logs");
+          const newLog = await addDoc(logsCol, { studentId: id, loginTime: serverTimestamp(), logoutTime: null });
+          currentLogId = newLog.id;
+
+          document.getElementById("loginBox").style.display = "none";
+          document.getElementById("menuBox").style.display = "block";
+          document.getElementById("menuTitle").innerText = `รหัสของคุณ: ${id}`;
+          
+          let html = "";
+          userFiles.forEach((file, index) => {
+            let icon = file.type === "youtube" ? "▶️" : (file.type === "image" ? "🖼️" : "📄");
+            html += `<button class="job-btn" onclick="openFile(${index})">
+                       <span>${icon} ${file.title}</span> 
+                       <span>👉</span>
+                     </button>`;
+          });
+          document.getElementById("jobList").innerHTML = html;
+
+        } else {
+          document.getElementById("errorMsg").style.display = "block";
+        }
       } catch (error) {
-        tableDiv.innerHTML = "<p style='color:red; text-align:center;'>โหลดข้อมูลไม่สำเร็จ</p>";
+        alert("เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล");
       }
     }
 
-    window.editJob = function(encodedData) {
-      const data = JSON.parse(decodeURIComponent(encodedData));
+    window.openFile = function(index) {
+      const file = userFiles[index];
+      currentJobId = file.id;
       
-      document.getElementById("formTitle").innerText = "✏️ แก้ไขข้อมูลงาน / จัดการสิทธิ์";
-      document.getElementById("editJobId").value = data.id;
-      document.getElementById("jobTitle").value = data.title;
-      document.getElementById("fileType").value = data.type;
-      document.getElementById("fileUrl").value = data.url;
-      document.getElementById("allowedUsers").value = (data.allowedUsers || []).join(",\n");
+      document.getElementById("menuBox").style.display = "none";
+      document.getElementById("contentBox").style.display = "block";
+      document.getElementById("displayName").innerText = file.title;
+      document.getElementById("watermarkText").innerText = `${currentId}\nไม่อนุญาตให้เผยแพร่`;
 
-      document.getElementById("btnSave").innerText = "💾 บันทึกการแก้ไข";
-      document.getElementById("btnSave").classList.replace("btn-blue", "btn-yellow");
-      document.getElementById("btnCancel").style.display = "block";
-      document.getElementById("status").innerText = "";
+      const viewer = document.getElementById("fileViewer");
+      const blocker = document.getElementById("driveBlocker");
       
-      window.scrollTo(0, 0);
+      if (file.type === "youtube") {
+        blocker.style.display = "none";
+        viewer.innerHTML = `<iframe class="block-interaction" src="${file.url}?modestbranding=1&controls=0&rel=0&disablekb=1&fs=0" allow="autoplay" allowfullscreen></iframe>`;
+      } else if (file.type === "image") {
+        blocker.style.display = "none";
+        viewer.innerHTML = `<img class="block-interaction" src="${file.url}" style="object-fit: contain;">`;
+      } else if (file.type === "pdf") {
+        blocker.style.display = "block"; 
+        viewer.innerHTML = `<iframe class="pdf-viewer" src="${file.url}#toolbar=0&navpanes=0&scrollbar=0" allowfullscreen></iframe>`;
+      }
+
+      checkDownloadStatus(file.id);
     }
 
-    window.cancelEdit = function() {
-      document.getElementById("formTitle").innerText = "⚙️ เพิ่มงานใหม่เข้าสู่ระบบ";
-      document.getElementById("editJobId").value = "";
-      document.getElementById("jobTitle").value = "";
-      document.getElementById("fileUrl").value = "";
-      document.getElementById("allowedUsers").value = "";
+    async function checkDownloadStatus(jobId) {
+      const downloadSection = document.getElementById("downloadSection");
+      downloadSection.innerHTML = "<p style='color:gray; margin:0;'>⏳ กำลังตรวจสอบสิทธิ์ดาวน์โหลด...</p>";
       
-      document.getElementById("btnSave").innerText = "➕ บันทึกงาน";
-      document.getElementById("btnSave").classList.replace("btn-yellow", "btn-blue");
-      document.getElementById("btnCancel").style.display = "none";
-    }
-
-    window.deleteJob = async function(id) {
-      if (!confirm("⚠️ ยืนยันการลบงานนี้? (นักศึกษาทุกคนจะถูกตัดสิทธิ์จากงานนี้ทันที)")) return;
       try {
-        await deleteDoc(doc(db, "jobs", id));
-        loadJobs();
-      } catch (e) { alert("ลบไม่สำเร็จ"); }
-    }
-
-    window.loadRequests = async function() {
-      const tableDiv = document.getElementById("requestsTable");
-      tableDiv.innerHTML = "<p style='text-align:center;'>กำลังโหลดคำขอ...</p>";
-
-      try {
-        const querySnapshot = await getDocs(collection(db, "download_requests"));
-        if (querySnapshot.empty) {
-          tableDiv.innerHTML = "<p style='text-align:center; color:gray;'>ไม่มีคำขอดาวน์โหลดในระบบ</p>";
-          return;
-        }
-
-        let html = `<table>
-                      <tr>
-                        <th width="20%">รหัสผู้ชม</th>
-                        <th width="40%">ชื่องาน</th>
-                        <th width="20%">สถานะ</th>
-                        <th width="20%">จัดการ</th>
-                      </tr>`;
+        const reqRef = doc(db, "download_requests", `${jobId}_${currentId}`);
+        const reqSnap = await getDoc(reqRef);
         
-        querySnapshot.forEach((docSnap) => {
-          const id = docSnap.id;
-          const data = docSnap.data();
-          
-          let badge = "";
+        if (!reqSnap.exists()) {
+          downloadSection.innerHTML = `
+            <button style="background: #007bff; margin-bottom: 0;" onclick="requestDownload('${jobId}')">📥 ยื่นดาวน์โหลด</button>
+          `;
+        } else {
+          const data = reqSnap.data();
           if (data.status === "pending") {
-            badge = `<span style="color:#856404; font-weight:bold;">⏳ รอตรวจสอบ</span>`;
+            downloadSection.innerHTML = `
+              <div style="color: #856404; background-color: #fff3cd; border: 1px solid #ffeeba; padding: 12px; border-radius: 5px; font-weight: bold; font-size: 14px;">
+                รอตรวจสอบจากผู้ให้บริการโดยปกติแล้วจะยินยอมให้ดาวน์โหลด 3 วันทำการ
+              </div>
+            `;
           } else if (data.status === "approved") {
-            badge = `<span style="color:#28a745; font-weight:bold;">✅ ยินยอมแล้ว</span>`;
+            let isExpired = false;
+            let expireMsg = `<p style="margin-top: 10px; margin-bottom: 0; font-size: 13px; color: #28a745;">✅ ดาวน์โหลดได้ไม่จำกัดเวลา</p>`;
+            
+            // ตรวจสอบวันหมดเวลาดาวน์โหลด
             if (data.expiresAt) {
-              const exp = data.expiresAt.toDate();
-              badge += `<br><small style="color:gray;">หมดอายุ: ${exp.toLocaleString('th-TH')}</small>`;
+              const expDate = data.expiresAt.toDate();
+              if (new Date() > expDate) {
+                isExpired = true;
+              } else {
+                expireMsg = `<p style="margin-top: 10px; margin-bottom: 0; font-size: 13px; color: #d39e00;">⏰ ดาวน์โหลดได้ถึง: ${expDate.toLocaleString('th-TH')}</p>`;
+              }
+            }
+
+            if (isExpired) {
+              downloadSection.innerHTML = `
+                <div style="color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 12px; border-radius: 5px; font-weight: bold; margin-bottom: 10px; font-size: 14px;">
+                  ⏳ สิทธิ์ดาวน์โหลดของคุณหมดอายุแล้ว
+                </div>
+                <button style="background: #007bff; margin-bottom: 0;" onclick="requestDownload('${jobId}')">🔄 ยื่นเรื่องอีกครั้ง</button>
+              `;
             } else {
-              badge += `<br><small style="color:gray;">ไม่จำกัดเวลา</small>`;
+              downloadSection.innerHTML = `
+                <button style="background: #28a745; margin-bottom: 0;" onclick="downloadWork()">⬇️ ดาวน์โหลด</button>
+                ${expireMsg}
+              `;
             }
           } else if (data.status === "rejected") {
-            badge = `<span style="color:#dc3545; font-weight:bold;">❌ ไม่ยินยอม</span>`;
-          }
-
-          html += `<tr>
-                    <td style="text-align:center;"><b>${data.studentId}</b></td>
-                    <td>${data.jobTitle || '-'}</td>
-                    <td style="text-align:center;">${badge}</td>
-                    <td>
-                      <div class="action-btns">
-                        ${data.status !== 'approved' ? `<button class="btn-green" onclick="updateRequestStatus('${id}', 'approved')">ยินยอม</button>` : ''}
-                        ${data.status !== 'rejected' ? `<button class="btn-red" onclick="updateRequestStatus('${id}', 'rejected')">ไม่ยินยอม</button>` : ''}
-                      </div>
-                    </td>
-                   </tr>`;
-        });
-        html += "</table>";
-        tableDiv.innerHTML = html;
-      } catch (error) {
-        tableDiv.innerHTML = "<p style='color:red; text-align:center;'>โหลดคำขอไม่สำเร็จ</p>";
-      }
-    }
-
-    // ฟังก์ชันอัปเดตสถานะและตั้งเวลาหมดอายุ
-    window.updateRequestStatus = async function(reqId, newStatus) {
-      try {
-        let updateData = {
-          status: newStatus,
-          updatedAt: serverTimestamp()
-        };
-
-        if (newStatus === 'approved') {
-          // ถามแอดมินว่าให้ดาวน์โหลดได้กี่ชั่วโมง
-          const hours = prompt("กำหนดเวลาให้ดาวน์โหลดได้กี่ชั่วโมง?\\n(ระบุตัวเลข เช่น 24 = 1 วัน, 72 = 3 วัน, 0 = ไม่จำกัดเวลา)", "72");
-          
-          if (hours === null) return; // กรณีกดยกเลิก
-          
-          const duration = parseInt(hours);
-          if (isNaN(duration) || duration < 0) {
-            alert("กรุณากรอกตัวเลขที่ถูกต้อง");
-            return;
-          }
-          
-          if (duration > 0) {
-            const expireDate = new Date();
-            expireDate.setHours(expireDate.getHours() + duration);
-            updateData.expiresAt = expireDate;
-          } else {
-            updateData.expiresAt = null; // กรณีอนุญาตถาวร (ไม่จำกัดเวลา)
+            downloadSection.innerHTML = `
+              <div style="color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 12px; border-radius: 5px; font-weight: bold; margin-bottom: 10px; font-size: 14px;">
+                คุณไม่มีสิทธิ์ในการดาวน์โหลด
+              </div>
+              <button style="background: #007bff; margin-bottom: 0;" onclick="requestDownload('${jobId}')">🔄 ยื่นเรื่องอีกครั้ง</button>
+            `;
           }
         }
-
-        await updateDoc(doc(db, "download_requests", reqId), updateData);
-        loadRequests();
-      } catch (e) {
-        alert("เกิดข้อผิดพลาดในการอัปเดตสถานะ");
+      } catch(e) {
+        downloadSection.innerHTML = "<p style='color:red; margin:0;'>❌ ไม่สามารถตรวจสอบสถานะได้</p>";
       }
     }
 
-    loadJobs();
-    loadRequests();
+    window.requestDownload = async function(jobId) {
+      const file = userFiles.find(f => f.id === jobId);
+      if (!file) return;
+      
+      const downloadSection = document.getElementById("downloadSection");
+      downloadSection.innerHTML = "<p style='color:blue; margin:0;'>กำลังส่งคำขอ...</p>";
+      
+      try {
+        const reqRef = doc(db, "download_requests", `${jobId}_${currentId}`);
+        await setDoc(reqRef, {
+          jobId: jobId,
+          jobTitle: file.title,
+          studentId: currentId,
+          status: "pending",
+          updatedAt: serverTimestamp()
+        });
+        
+        checkDownloadStatus(jobId);
+      } catch(e) {
+        alert("เกิดข้อผิดพลาดในการส่งคำขอ");
+        checkDownloadStatus(jobId);
+      }
+    }
+
+    window.downloadWork = function() {
+      const file = userFiles.find(f => f.id === currentJobId);
+      if (!file) return;
+
+      const win = window.open("", "_blank");
+      let watermarksHtml = "";
+      for(let i = 0; i < 35; i++) {
+        watermarksHtml += `<div class="wm-item">${currentId}</div>`;
+      }
+
+      win.document.write(`
+        <!DOCTYPE html>
+        <html lang="th">
+        <head>
+          <meta charset="UTF-8">
+          <title>ดาวน์โหลด - ${file.title}</title>
+          <style>
+            body { margin: 0; padding: 0; width: 100vw; height: 100vh; overflow: hidden; position: relative; font-family: sans-serif; background: #fff; }
+            .wm-grid {
+              position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+              display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(7, 1fr);
+              pointer-events: none; z-index: 999999;
+            }
+            .wm-item {
+              display: flex; align-items: center; justify-content: center;
+              transform: rotate(-30deg); color: rgba(0, 0, 0, 0.18);
+              font-size: 24px; font-weight: bold;
+              user-select: none;
+            }
+            iframe, img { width: 100%; height: 100%; border: none; }
+            @media print {
+              body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+              .wm-grid { position: fixed; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="wm-grid">${watermarksHtml}</div>
+          \${file.type === 'youtube' 
+            ? \`<iframe src="\${file.url}" allowfullscreen></iframe>\` 
+            : (file.type === 'image' 
+              ? \`<img src="\${file.url}" style="object-fit: contain;">\` 
+              : \`<iframe src="\${file.url}"></iframe>\`)}
+          <script>
+            setTimeout(() => {
+              window.print();
+            }, 1200);
+          <\/script>
+        </body>
+        </html>
+      `);
+      win.document.close();
+    }
+
+    window.backToMenu = function() {
+      document.getElementById("fileViewer").innerHTML = ""; 
+      document.getElementById("downloadSection").innerHTML = ""; 
+      document.getElementById("contentBox").style.display = "none";
+      document.getElementById("menuBox").style.display = "block";
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'p'))) {
+        e.preventDefault(); return false;
+      }
+    });
+
+    window.addEventListener("beforeunload", (e) => {
+      if (currentLogId) { updateDoc(doc(db, "access_logs", currentLogId), { logoutTime: serverTimestamp() }); }
+    });
   </script>
 </body>
 </html>
