@@ -164,6 +164,20 @@
       border-radius: 16px; 
       border: none;
     }
+    
+    /* ปุ่มสำหรับลิงก์ URL ในหน้าต่างแสดงผล */
+    .link-btn {
+      display: inline-block;
+      background: var(--apple-blue);
+      color: white;
+      padding: 16px 32px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 17px;
+      transition: 0.2s;
+    }
+    .link-btn:hover { background: var(--apple-blue-hover); }
   </style>
 </head>
 <body oncontextmenu="return false;">
@@ -246,7 +260,7 @@
           
           let html = "";
           userFiles.forEach((file, index) => {
-            let icon = file.type === "youtube" ? "▶️" : (file.type === "image" ? "🖼️" : "📄");
+            let icon = file.type === "youtube" ? "▶️" : (file.type === "image" ? "🖼️" : (file.type === "link" ? "🔗" : "📄"));
             html += `<button class="job-btn" onclick="openFile(${index})">
                        <span>${icon} &nbsp;${file.title}</span> 
                        <span style="color: #c7c7cc; font-size: 20px;">􀆊</span>
@@ -283,6 +297,15 @@
       } else if (file.type === "pdf") {
         blocker.style.display = "block";
         viewer.innerHTML = `<iframe class="pdf-viewer" src="${file.url}#toolbar=0&navpanes=0&scrollbar=0" allowfullscreen></iframe>`;
+      } else if (file.type === "link") {
+        // สำหรับประเภทไฟล์ URL
+        blocker.style.display = "none";
+        viewer.innerHTML = `
+          <div style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; flex-direction: column;">
+            <p style="font-size: 18px; color: var(--apple-text-main); font-weight: 500; margin-bottom: 20px;">นี่คือลิงก์เว็บไซต์ภายนอก</p>
+            <a href="${file.url}" target="_blank" class="link-btn">🔗 กดเพื่อเปิดลิงก์ URL</a>
+          </div>
+        `;
       }
 
       checkDownloadStatus(file.id);
