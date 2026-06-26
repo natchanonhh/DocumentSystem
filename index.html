@@ -1,142 +1,164 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบข้อมูลส่วนบุคคล - Smart Login</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            display: flex; justify-content: center; align-items: center; 
-            min-height: 100vh; background-color: #f4f7f6; margin: 0; padding: 20px; box-sizing: border-box;
-        }
-        .app-container { 
-            width: 100%; max-width: 400px; background: white; padding: 35px 25px; 
-            border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); text-align: center; 
-        }
-        .logo-placeholder { width: 60px; height: 60px; background: #0066ff; color: white; border-radius: 16px; display: inline-flex; justify-content: center; align-items: center; font-size: 24px; font-weight: bold; margin-bottom: 15px; }
-        h2 { margin: 0 0 8px 0; color: #1a1a1a; font-size: 22px; }
-        p#prompt-text { color: #5f6368; font-size: 15px; margin-bottom: 25px; line-height: 1.5; }
-        input { 
-            width: 100%; padding: 14px; margin-bottom: 15px; 
-            border: 1.5px solid #e0e0e0; border-radius: 10px; font-size: 16px; box-sizing: border-box; text-align: center; transition: border-color 0.2s;
-        }
-        input:focus { border-color: #0066ff; outline: none; }
-        button { 
-            width: 100%; padding: 14px; background: #0066ff; color: white; border: none; 
-            border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.2s; 
-        }
-        button:hover { background: #0052cc; }
-        .error-text { color: #d93025; font-size: 14px; margin-top: 15px; display: none; font-weight: 500; }
-        
-        /* สัดส่วนวิดีโอ 9:16 สำหรับ Mobile UI */
-        .video-wrapper { 
-            width: 100%; aspect-ratio: 9 / 16; background: #000; 
-            border-radius: 16px; overflow: hidden; display: none; margin-top: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        video { width: 100%; height: 100%; object-fit: cover; }
-        img.secure-img { width: 100%; height: 100%; object-fit: contain; display: none; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DocumentSystem - Smart Login</title>
+  <style>
+    body { font-family: sans-serif; background-color: #f4f4f9; display: flex; justify-content: center; padding: 20px; margin: 0; user-select: none; -webkit-user-select: none; }
+    .container { width: 100%; max-width: 600px; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center; margin-top: 30px; }
+    input { width: 90%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; text-align: center; }
+    button { width: 100%; padding: 12px; background: #28a745; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; font-weight: bold; margin-bottom: 10px;}
+    
+    .job-btn { background: #007bff; text-align: left; padding: 15px; margin-bottom: 15px; font-size: 18px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
+    .job-btn:hover { background: #0056b3; }
+    
+    .protected-view { position: relative; margin-top: 20px; width: 100%; height: 650px; background: #f0f0f0; border-radius: 5px; overflow: hidden; }
+    .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-30deg); font-size: 40px; color: rgba(0,0,0,0.15); pointer-events: none; width: 100%; z-index: 10; font-weight: bold; text-transform: uppercase; text-shadow: 2px 2px 4px rgba(255,255,255,0.5); }
+    
+    iframe, img { width: 100%; height: 100%; border: none; }
+    .block-interaction { pointer-events: none; }
+    .pdf-viewer { pointer-events: auto !important; }
+    
+    /* 🛡️ เกราะล่องหน: บล็อกปุ่ม Pop-out มุมขวาบนของ Google Drive */
+    .drive-blocker { position: absolute; top: 0; right: 0; width: 80px; height: 60px; background: transparent; z-index: 99; cursor: not-allowed; }
+  </style>
 </head>
-<body oncontextmenu="return false;"> <div class="app-container">
-        <div id="login-section">
-            <div class="logo-placeholder">SL</div>
-            <h2 id="title-text">กำลังโหลด...</h2>
-            <p id="prompt-text">โปรดรอสักครู่</p>
-            
-            <input type="text" id="userInput" placeholder="กรอกข้อมูลที่นี่..." required>
-            <button onclick="verifyAccess()" id="verify-btn">เข้าสู่ระบบ</button>
-            <p id="error-msg" class="error-text">ข้อมูลไม่ถูกต้อง คุณไม่มีสิทธิ์เข้าถึงข้อมูลนี้</p>
-        </div>
+<body oncontextmenu="return false;">
 
-        <div id="file-section" class="video-wrapper">
-            <video id="secure-video" controls controlsList="nodownload" disablePictureInPicture></video>
-            <img id="secure-img" class="secure-img" alt="Secure Content" ondragstart="return false;"/>
-        </div>
+  <div class="container" id="loginBox">
+    <h2>SCHOOL MONEY</h2>
+    <p>ระบุตัวตนเพื่อเข้าดูข้อมูล (Smart Login)</p>
+    <input type="text" id="studentId" placeholder="กรอกชื่อ หรือรหัสที่นี่..." required>
+    <button onclick="checkData()">เข้าสู่ระบบ</button>
+    <p id="errorMsg" style="color: red; display: none; margin-top: 15px;">❌ ไม่พบสิทธิ์การเข้าถึงงานใดๆ</p>
+  </div>
+
+  <div class="container" id="menuBox" style="display: none;">
+    <h3 id="menuTitle"></h3>
+    <p style="color:gray; margin-bottom: 20px;">กรุณาเลือกงานที่คุณต้องการเข้าชม</p>
+    <div id="jobList"></div>
+    <br>
+    <button style="background: #dc3545;" onclick="location.reload()">ออกจากระบบ</button>
+  </div>
+
+  <div class="container" id="contentBox" style="display: none;">
+    <h3 id="displayName"></h3>
+    
+    <div class="protected-view">
+      <div class="watermark" id="watermarkText"></div>
+      <div id="driveBlocker" class="drive-blocker" style="display: none;" title="ไม่อนุญาตให้เปิดภายนอก"></div>
+      <div id="fileViewer" style="width: 100%; height: 100%;"></div>
     </div>
+    
+    <br>
+    <button style="background: #ffc107; color: #000;" onclick="backToMenu()">🔙 กลับไปหน้าเลือกงาน</button>
+  </div>
 
-    <script>
-        const SUPABASE_URL = 'https://qspfyaqsnbtyzqcvfzsd.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcGZ5YXFzbmJ0eXpxY3ZmenNkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxMTgzOTMsImV4cCI6MjA5NzY5NDM5M30.je7dDqR3XnHP3SwNgUCM4Ae2DnajhLGAUh0wnSKCh2c';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, query, where, getDocs, addDoc, updateDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const currentFileId = urlParams.get('id'); 
+    const firebaseConfig = {
+      apiKey: "AIzaSyBLyMpowfyQK_1UnredPFmXdBdtQZKpY-c",
+      authDomain: "datapdf-d14d0.firebaseapp.com",
+      databaseURL: "https://datapdf-d14d0-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "datapdf-d14d0",
+      storageBucket: "datapdf-d14d0.firebasestorage.app",
+      messagingSenderId: "1034739093928",
+      appId: "1:1034739093928:web:cd56cc0e208d7d00f24d9d"
+    };
 
-        let fileDataPath = '';
-        let allowedUsers = [];
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    
+    let currentLogId = null;
+    let userFiles = []; 
+    let currentId = "";
 
-        async function loadSystemConfig() {
-            if (!currentFileId) {
-                document.getElementById('title-text').innerText = "ข้อผิดพลาดของระบบ";
-                document.getElementById('prompt-text').innerText = "ไม่พบ ID ของไฟล์ โปรดตรวจสอบลิงก์อีกครั้ง";
-                document.getElementById('userInput').style.display = 'none';
-                document.getElementById('verify-btn').style.display = 'none';
-                return;
-            }
+    window.checkData = async function() {
+      const id = document.getElementById("studentId").value.trim();
+      if (!id) return;
+      document.getElementById("errorMsg").style.display = "none";
+      
+      try {
+        // ค้นหางานทั้งหมดที่ใน Array "allowedUsers" มีรหัสของคนนี้อยู่
+        const q = query(collection(db, "jobs"), where("allowedUsers", "array-contains", id));
+        const querySnapshot = await getDocs(q);
 
-            const { data, error } = await supabase
-                .from('system_files')
-                .select('file_title, login_prompt, storage_path, allowed_credentials')
-                .eq('id', currentFileId)
-                .single();
+        userFiles = [];
+        querySnapshot.forEach((docSnap) => {
+          userFiles.push(docSnap.data());
+        });
 
-            if (data) {
-                document.getElementById('title-text').innerText = data.file_title;
-                document.getElementById('prompt-text').innerText = data.login_prompt;
-                fileDataPath = data.storage_path;
-                allowedUsers = data.allowed_credentials;
-            } else {
-                document.getElementById('title-text').innerText = "ไม่พบข้อมูล";
-                document.getElementById('prompt-text').innerText = "ข้อมูลนี้อาจถูกลบหรือไม่มีอยู่ในระบบ";
-                document.getElementById('userInput').style.display = 'none';
-                document.getElementById('verify-btn').style.display = 'none';
-            }
+        if (userFiles.length > 0) {
+          currentId = id;
+          
+          // บันทึกประวัติ
+          const logsCol = collection(db, "access_logs");
+          const newLog = await addDoc(logsCol, { studentId: id, loginTime: serverTimestamp(), logoutTime: null });
+          currentLogId = newLog.id;
+
+          document.getElementById("loginBox").style.display = "none";
+          document.getElementById("menuBox").style.display = "block";
+          document.getElementById("menuTitle").innerText = `รหัสของคุณ: ${id}`;
+          
+          let html = "";
+          userFiles.forEach((file, index) => {
+            let icon = file.type === "youtube" ? "▶️" : (file.type === "image" ? "🖼️" : "📄");
+            html += `<button class="job-btn" onclick="openFile(${index})">
+                       <span>${icon} ${file.title}</span> 
+                       <span>👉</span>
+                     </button>`;
+          });
+          document.getElementById("jobList").innerHTML = html;
+
+        } else {
+          document.getElementById("errorMsg").style.display = "block";
         }
+      } catch (error) {
+        alert("เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล");
+      }
+    }
 
-        async function verifyAccess() {
-            const input = document.getElementById('userInput').value.trim();
-            const errorMsg = document.getElementById('error-msg');
-            const verifyBtn = document.getElementById('verify-btn');
-            
-            verifyBtn.innerText = 'กำลังตรวจสอบ...';
-            verifyBtn.disabled = true;
+    window.openFile = function(index) {
+      const file = userFiles[index];
+      
+      document.getElementById("menuBox").style.display = "none";
+      document.getElementById("contentBox").style.display = "block";
+      document.getElementById("displayName").innerText = file.title;
+      document.getElementById("watermarkText").innerText = `${currentId}\nไม่อนุญาตให้เผยแพร่`;
 
-            if (allowedUsers.includes(input)) {
-                errorMsg.style.display = 'none';
-                
-                // สร้าง Signed URL อายุ 60 วินาที
-                const { data, error } = await supabase.storage
-                    .from('secure_vault')
-                    .createSignedUrl(fileDataPath, 60);
+      const viewer = document.getElementById("fileViewer");
+      const blocker = document.getElementById("driveBlocker");
+      
+      if (file.type === "youtube") {
+        blocker.style.display = "none";
+        viewer.innerHTML = `<iframe class="block-interaction" src="${file.url}?modestbranding=1&controls=0&rel=0&disablekb=1&fs=0" allow="autoplay" allowfullscreen></iframe>`;
+      } else if (file.type === "image") {
+        blocker.style.display = "none";
+        viewer.innerHTML = `<img class="block-interaction" src="${file.url}" style="object-fit: contain;">`;
+      } else if (file.type === "pdf") {
+        blocker.style.display = "block"; // เปิดใช้งานเกราะป้องกันมุมขวาบน
+        viewer.innerHTML = `<iframe class="pdf-viewer" src="${file.url}#toolbar=0&navpanes=0&scrollbar=0" allowfullscreen></iframe>`;
+      }
+    }
 
-                if (data) {
-                    document.getElementById('login-section').style.display = 'none';
-                    document.getElementById('file-section').style.display = 'block';
-                    
-                    // เช็คว่าเป็นรูปภาพหรือวิดีโอ (อย่างง่าย)
-                    if (fileDataPath.match(/\.(jpeg|jpg|gif|png)$/i)) {
-                        const imgEl = document.getElementById('secure-img');
-                        imgEl.src = data.signedUrl;
-                        imgEl.style.display = 'block';
-                        document.getElementById('secure-video').style.display = 'none';
-                    } else {
-                        document.getElementById('secure-video').src = data.signedUrl;
-                    }
-                } else {
-                    alert("เกิดข้อผิดพลาดในการดึงไฟล์ความปลอดภัย");
-                    verifyBtn.innerText = 'เข้าสู่ระบบ';
-                    verifyBtn.disabled = false;
-                }
-            } else {
-                errorMsg.style.display = 'block';
-                verifyBtn.innerText = 'เข้าสู่ระบบ';
-                verifyBtn.disabled = false;
-            }
-        }
+    window.backToMenu = function() {
+      document.getElementById("fileViewer").innerHTML = ""; 
+      document.getElementById("contentBox").style.display = "none";
+      document.getElementById("menuBox").style.display = "block";
+    }
 
-        window.onload = loadSystemConfig;
-    </script>
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'p'))) {
+        e.preventDefault(); return false;
+      }
+    });
+
+    window.addEventListener("beforeunload", (e) => {
+      if (currentLogId) { updateDoc(doc(db, "access_logs", currentLogId), { logoutTime: serverTimestamp() }); }
+    });
+  </script>
 </body>
 </html>
