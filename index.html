@@ -182,7 +182,7 @@
 <body oncontextmenu="return false;">
 
   <div class="container" id="loginBox">
-    <h2>Document System</h2>
+    <h2>ระบบจัดการเอกสาร</h2>
     <p>กรุณาระบุตัวตนเพื่อตรวจสอบสิทธิ์การเข้าถึง (Smart Login)</p>
     <input type="text" id="studentId" placeholder="ระบุชื่อ หรือรหัสประจำตัว..." required>
     <button onclick="checkData()">เข้าสู่ระบบ</button>
@@ -397,23 +397,23 @@
       }
     }
 
-    window.downloadWork = async function() {
+    // แก้ไข: นำการเปิดลิงก์ขึ้นมาก่อน เพื่อป้องกัน Pop-up blocker
+    window.downloadWork = function() {
       const file = userFiles.find(f => f.id === currentJobId);
       if (!file) return;
       
-      // บันทึกประวัติเมื่อมีการดาวน์โหลดหรือเข้าสู่ลิงก์
-      try {
-        await addDoc(collection(db, "download_history"), {
-          jobId: file.id,
-          jobTitle: file.title,
-          studentId: currentId,
-          downloadedAt: serverTimestamp()
-        });
-      } catch(e) {
-        console.error("ไม่สามารถบันทึกประวัติได้", e);
-      }
-
+      // 1. เปิดแท็บใหม่ทันที (สำคัญ: ต้องทำงานโดยตรงจากการคลิก ไม่มีการรอโหลดข้อมูล)
       window.open(file.url, "_blank");
+
+      // 2. บันทึกประวัติเบื้องหลังแบบอิสระ ไม่รอการทำงานให้เสร็จ
+      addDoc(collection(db, "download_history"), {
+        jobId: file.id,
+        jobTitle: file.title,
+        studentId: currentId,
+        downloadedAt: serverTimestamp()
+      }).catch(e => {
+        console.error("ไม่สามารถบันทึกประวัติได้", e);
+      });
     }
 
     window.backToMenu = function() {
