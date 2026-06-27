@@ -155,7 +155,7 @@
     .block-interaction { pointer-events: none; }
     .pdf-viewer { pointer-events: auto !important; }
     
-    .drive-blocker { position: absolute; top: 0; right: 0; width: 80px; height: 60px; background: transparent; z-index: 99; cursor: not-allowed; }
+    .drive-blocker { position: absolute; top: 0; left: 0; width: 100%; height: 60px; background: transparent; z-index: 99; cursor: not-allowed; }
 
     #downloadSection {
       margin-bottom: 25px; 
@@ -231,7 +231,6 @@
     let currentLogId = null;
     let userFiles = []; 
     let currentId = "";
-    let currentJobId = "";
 
     window.checkData = async function() {
       const id = document.getElementById("studentId").value.trim();
@@ -277,12 +276,14 @@
 
     window.openFile = function(index) {
       const file = userFiles[index];
-      currentJobId = file.id;
       
       document.getElementById("menuBox").style.display = "none";
       document.getElementById("contentBox").style.display = "block";
       document.getElementById("displayName").innerText = file.title;
       document.getElementById("watermarkText").innerText = `${currentId}\nข้อมูลภายใต้การควบคุมสิทธิ์`;
+
+      // ฝังรหัสงานที่กำลังดูอยู่ลงไปใน DOM เพื่อป้องกันปัญหาการคลิกเปลี่ยนหน้าไวเกินไป (Race Condition)
+      document.getElementById("contentBox").setAttribute("data-active-job", file.id);
 
       const viewer = document.getElementById("fileViewer");
       const blocker = document.getElementById("driveBlocker");
@@ -318,6 +319,10 @@
         const reqRef = doc(db, "download_requests", `${jobId}_${currentId}`);
         const reqSnap = await getDoc(reqRef);
         
+        // 🛡️ ป้องกันปัญหา Race Condition: ตรวจสอบว่าระหว่างที่รอดึงข้อมูล ผู้ใช้เปลี่ยนไปดูงานอื่นแล้วหรือไม่
+        const activeJobId = document.getElementById("contentBox").getAttribute("data-active-job");
+        if (activeJobId !== jobId) return; 
+        
         const isApproved = reqSnap.exists() && reqSnap.data().status === "approved" && 
                            (!reqSnap.data().expiresAt || new Date() < reqSnap.data().expiresAt.toDate());
 
@@ -327,12 +332,13 @@
                 expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">สิทธิ์ใช้งานถึง: ${reqSnap.data().expiresAt.toDate().toLocaleString('th-TH')}</p>`;
             }
 
+            // ล็อกรหัสงานไว้ในปุ่มโดยตรง เพื่อป้องกันการส่งรหัสผิดงาน
             downloadSection.innerHTML = `
-              <button style="background: var(--apple-green); margin-bottom: 0;" onclick="downloadWork()">เข้าถึง / ดาวน์โหลดเนื้อหา</button>
+              <button style="background: var(--apple-green); margin-bottom: 0;" onclick="downloadWork('${jobId}')">เข้าถึง / ดาวน์โหลดเนื้อหา</button>
               ${expireMsg}
             `;
             if (linkStatusText) {
-               linkStatusText.innerHTML = `<button onclick="downloadWork()" class="link-btn" style="border:none; cursor:pointer;">กดเพื่อเข้าสู่ลิงก์ (ได้รับสิทธิ์แล้ว)</button>`;
+               linkStatusText.innerHTML = `<button onclick="downloadWork('${jobId}')" class="link-btn" style="border:none; cursor:pointer;">กดเพื่อเข้าสู่ลิงก์ (ได้รับสิทธิ์แล้ว)</button>`;
             }
         } else {
             let statusBlock = "";
@@ -397,15 +403,14 @@
       }
     }
 
-    // แก้ไข: นำการเปิดลิงก์ขึ้นมาก่อน เพื่อป้องกัน Pop-up blocker
-    window.downloadWork = function() {
-      const file = userFiles.find(f => f.id === currentJobId);
+    window.downloadWork = function(jobId) {
+      // ดึงงานจากรหัสที่ส่งมาจากปุ่มโดยตรง (แก้ไขปัญหาการดาวน์โหลดผิดไฟล์)
+      const file = userFiles.find(f => f.id === jobId);
       if (!file) return;
       
-      // 1. เปิดแท็บใหม่ทันที (สำคัญ: ต้องทำงานโดยตรงจากการคลิก ไม่มีการรอโหลดข้อมูล)
       window.open(file.url, "_blank");
 
-      // 2. บันทึกประวัติเบื้องหลังแบบอิสระ ไม่รอการทำงานให้เสร็จ
+      // บันทึกประวัติเบื้องหลังแบบอิสระ ไม่รอการทำงานให้เสร็จเพื่อป้องกัน Browser Block
       addDoc(collection(db, "download_history"), {
         jobId: file.id,
         jobTitle: file.title,
@@ -417,6 +422,8 @@
     }
 
     window.backToMenu = function() {
+      // รีเซ็ตการล็อกรหัสงาน
+      document.getElementById("contentBox").setAttribute("data-active-job", "");
       document.getElementById("fileViewer").innerHTML = ""; 
       document.getElementById("downloadSection").innerHTML = "";
       document.getElementById("contentBox").style.display = "none";
