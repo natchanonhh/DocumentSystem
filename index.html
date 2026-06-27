@@ -182,7 +182,7 @@
 <body oncontextmenu="return false;">
 
   <div class="container" id="loginBox">
-    <h2>Document System</h2>
+    <h2>ระบบจัดการเอกสาร</h2>
     <p>กรุณาระบุตัวตนเพื่อตรวจสอบสิทธิ์การเข้าถึง (Smart Login)</p>
     <input type="text" id="studentId" placeholder="ระบุชื่อ หรือรหัสประจำตัว..." required>
     <button onclick="checkData()">เข้าสู่ระบบ</button>
@@ -232,29 +232,56 @@
     let userFiles = []; 
     let currentId = "";
 
+    // เปิดให้กดปุ่ม Enter ในคีย์บอร์ดเพื่อเข้าสู่ระบบได้
+    const studentInput = document.getElementById("studentId");
+    if(studentInput) {
+      studentInput.addEventListener("keypress", function(e) {
+        if (e.key === "Enter") checkData();
+      });
+    }
+
     window.checkData = async function() {
-      const id = document.getElementById("studentId").value.trim();
-      if (!id) return;
+      const rawId = document.getElementById("studentId").value.trim();
+      if (!rawId) return;
       document.getElementById("errorMsg").style.display = "none";
       
       try {
-        const q = query(collection(db, "jobs"), where("allowedUsers", "array-contains", id));
-        const querySnapshot = await getDocs(q);
+        // ทำความสะอาดคำค้นหา (ลบช่องว่างทิ้งทั้งหมดและปรับตัวอักษร)
+        const searchId = rawId.replace(/[\s"']/g, '').toLowerCase();
 
-        userFiles = [];
-        querySnapshot.forEach((docSnap) => {
-          userFiles.push({ id: docSnap.id, ...docSnap.data() });
-        });
+        // ค้นหาทั้งแบบออริจินัล (เผื่อระบบงานเก่า) และแบบซ่อนช่องว่าง
+        const q1 = query(collection(db, "jobs"), where("allowedUsers", "array-contains", rawId));
+        const q2 = query(collection(db, "jobs"), where("searchableUsers", "array-contains", searchId));
+
+        const [snap1, snap2] = await Promise.all([getDocs(q1), getDocs(q2)]);
+
+        const fileMap = new Map();
+        snap1.forEach(docSnap => { fileMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() }); });
+        snap2.forEach(docSnap => { fileMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() }); });
+
+        userFiles = Array.from(fileMap.values());
         
         if (userFiles.length > 0) {
-          currentId = id;
+          // ดึงรหัส/ชื่อที่ถูกต้องเป๊ะๆ ตามที่แอดมินตั้งไว้มาใช้ เพื่อไม่ให้ระบบคำขอดาวน์โหลดสับสน
+          let matchedId = rawId;
+          for (const file of userFiles) {
+             if (file.allowedUsers) {
+                const exactMatch = file.allowedUsers.find(id => id.replace(/[\s"']/g, '').toLowerCase() === searchId);
+                if (exactMatch) {
+                   matchedId = exactMatch;
+                   break;
+                }
+             }
+          }
+          currentId = matchedId;
+
           const logsCol = collection(db, "access_logs");
-          const newLog = await addDoc(logsCol, { studentId: id, loginTime: serverTimestamp(), logoutTime: null });
+          const newLog = await addDoc(logsCol, { studentId: currentId, loginTime: serverTimestamp(), logoutTime: null });
           currentLogId = newLog.id;
 
           document.getElementById("loginBox").style.display = "none";
           document.getElementById("menuBox").style.display = "block";
-          document.getElementById("menuTitle").innerText = `รหัสผู้ใช้งาน: ${id}`;
+          document.getElementById("menuTitle").innerText = `รหัสผู้ใช้งาน: ${currentId}`;
           
           let html = "";
           userFiles.forEach((file, index) => {
@@ -282,7 +309,6 @@
       document.getElementById("displayName").innerText = file.title;
       document.getElementById("watermarkText").innerText = `${currentId}\nข้อมูลภายใต้การควบคุมสิทธิ์`;
 
-      // ฝังรหัสงานที่กำลังดูอยู่ลงไปใน DOM เพื่อป้องกันปัญหาการคลิกเปลี่ยนหน้าไวเกินไป (Race Condition)
       document.getElementById("contentBox").setAttribute("data-active-job", file.id);
 
       const viewer = document.getElementById("fileViewer");
@@ -319,7 +345,6 @@
         const reqRef = doc(db, "download_requests", `${jobId}_${currentId}`);
         const reqSnap = await getDoc(reqRef);
         
-        // 🛡️ ป้องกันปัญหา Race Condition: ตรวจสอบว่าระหว่างที่รอดึงข้อมูล ผู้ใช้เปลี่ยนไปดูงานอื่นแล้วหรือไม่
         const activeJobId = document.getElementById("contentBox").getAttribute("data-active-job");
         if (activeJobId !== jobId) return; 
         
@@ -332,7 +357,6 @@
                 expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">สิทธิ์ใช้งานถึง: ${reqSnap.data().expiresAt.toDate().toLocaleString('th-TH')}</p>`;
             }
 
-            // ล็อกรหัสงานไว้ในปุ่มโดยตรง เพื่อป้องกันการส่งรหัสผิดงาน
             downloadSection.innerHTML = `
               <button style="background: var(--apple-green); margin-bottom: 0;" onclick="downloadWork('${jobId}')">เข้าถึง / ดาวน์โหลดเนื้อหา</button>
               ${expireMsg}
@@ -404,13 +428,11 @@
     }
 
     window.downloadWork = function(jobId) {
-      // ดึงงานจากรหัสที่ส่งมาจากปุ่มโดยตรง (แก้ไขปัญหาการดาวน์โหลดผิดไฟล์)
       const file = userFiles.find(f => f.id === jobId);
       if (!file) return;
       
       window.open(file.url, "_blank");
 
-      // บันทึกประวัติเบื้องหลังแบบอิสระ ไม่รอการทำงานให้เสร็จเพื่อป้องกัน Browser Block
       addDoc(collection(db, "download_history"), {
         jobId: file.id,
         jobTitle: file.title,
@@ -422,7 +444,6 @@
     }
 
     window.backToMenu = function() {
-      // รีเซ็ตการล็อกรหัสงาน
       document.getElementById("contentBox").setAttribute("data-active-job", "");
       document.getElementById("fileViewer").innerHTML = ""; 
       document.getElementById("downloadSection").innerHTML = "";
