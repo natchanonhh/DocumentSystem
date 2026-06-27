@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DocumentSystem - Smart Login</title>
   <style>
-    /* 🍏 สไตล์แบบ Apple Design Language */
+    /* สไตล์แบบ Apple Design Language (ทางการและทันสมัย) */
     :root {
       --apple-blue: #0071e3;
       --apple-blue-hover: #0077ed;
@@ -165,7 +165,6 @@
       border: none;
     }
     
-    /* ปุ่มสำหรับลิงก์ URL ในหน้าต่างแสดงผล */
     .link-btn {
       display: inline-block;
       background: var(--apple-blue);
@@ -184,15 +183,15 @@
 
   <div class="container" id="loginBox">
     <h2>Document System</h2>
-    <p>ระบุตัวตนเพื่อเข้าดูข้อมูล (Smart Login)</p>
-    <input type="text" id="studentId" placeholder="กรอกชื่อ หรือรหัสที่นี่..." required>
+    <p>กรุณาระบุตัวตนเพื่อตรวจสอบสิทธิ์การเข้าถึง (Smart Login)</p>
+    <input type="text" id="studentId" placeholder="ระบุชื่อ หรือรหัสประจำตัว..." required>
     <button onclick="checkData()">เข้าสู่ระบบ</button>
-    <p id="errorMsg" style="color: var(--apple-red); display: none; margin-top: 15px; font-weight: 500;">❌ ไม่พบสิทธิ์การเข้าถึงงานใดๆ</p>
+    <p id="errorMsg" style="color: var(--apple-red); display: none; margin-top: 15px; font-weight: 500;">ไม่พบสิทธิ์การเข้าถึงข้อมูลใดๆ ในระบบ</p>
   </div>
 
   <div class="container" id="menuBox" style="display: none;">
     <h3 id="menuTitle"></h3>
-    <p style="margin-bottom: 30px;">กรุณาเลือกงานที่คุณต้องการเข้าชม</p>
+    <p style="margin-bottom: 30px;">กรุณาเลือกรายการที่คุณต้องการเข้าชม</p>
     <div id="jobList"></div>
     <br>
     <button style="background: var(--apple-red); margin-top: 10px;" onclick="location.reload()">ออกจากระบบ</button>
@@ -201,7 +200,7 @@
   <div class="container" id="contentBox" style="display: none; max-width: 700px;">
     <h3 id="displayName"></h3>
     
-    <button style="background: #e8e8ed; color: var(--apple-blue); margin-bottom: 25px; box-shadow: none;" onclick="backToMenu()"><span style="font-size: 14px; margin-right: 5px;">􀯶</span> กลับไปหน้าเลือกงาน</button>
+    <button style="background: #e8e8ed; color: var(--apple-blue); margin-bottom: 25px; box-shadow: none;" onclick="backToMenu()"><span style="font-size: 14px; margin-right: 5px;"><</span> กลับไปหน้าเลือกรายการ</button>
     
     <div id="downloadSection"></div>
     
@@ -256,14 +255,14 @@
 
           document.getElementById("loginBox").style.display = "none";
           document.getElementById("menuBox").style.display = "block";
-          document.getElementById("menuTitle").innerText = `รหัสของคุณ: ${id}`;
+          document.getElementById("menuTitle").innerText = `รหัสผู้ใช้งาน: ${id}`;
           
           let html = "";
           userFiles.forEach((file, index) => {
-            let icon = file.type === "youtube" ? "▶️" : (file.type === "image" ? "🖼️" : (file.type === "link" ? "🔗" : "📄"));
+            let iconText = file.type === "youtube" ? "[วิดีโอ]" : (file.type === "image" ? "[รูปภาพ]" : (file.type === "link" ? "[ลิงก์]" : "[เอกสาร]"));
             html += `<button class="job-btn" onclick="openFile(${index})">
-                       <span>${icon} &nbsp;${file.title}</span> 
-                       <span style="color: #c7c7cc; font-size: 20px;">􀆊</span>
+                       <span><small style="color:var(--apple-text-muted);">${iconText}</small> &nbsp;${file.title}</span> 
+                       <span style="color: #c7c7cc; font-size: 16px;">></span>
                      </button>`;
           });
           document.getElementById("jobList").innerHTML = html;
@@ -283,12 +282,19 @@
       document.getElementById("menuBox").style.display = "none";
       document.getElementById("contentBox").style.display = "block";
       document.getElementById("displayName").innerText = file.title;
-      document.getElementById("watermarkText").innerText = `${currentId}\nไม่อนุญาตให้เผยแพร่`;
+      document.getElementById("watermarkText").innerText = `${currentId}\nข้อมูลภายใต้การควบคุมสิทธิ์`;
 
       const viewer = document.getElementById("fileViewer");
       const blocker = document.getElementById("driveBlocker");
       
-      if (file.type === "youtube") {
+      if (file.type === "link") {
+        blocker.style.display = "none";
+        viewer.innerHTML = `
+          <div id="linkContainer" style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; flex-direction: column;">
+            <p id="linkStatusText" style="font-size: 18px; color: var(--apple-text-muted);">กำลังตรวจสอบการอนุญาตเข้าถึงลิงก์...</p>
+          </div>
+        `;
+      } else if (file.type === "youtube") {
         blocker.style.display = "none";
         viewer.innerHTML = `<iframe class="block-interaction" src="${file.url}?modestbranding=1&controls=0&rel=0&disablekb=1&fs=0" allow="autoplay" allowfullscreen></iframe>`;
       } else if (file.type === "image") {
@@ -297,15 +303,6 @@
       } else if (file.type === "pdf") {
         blocker.style.display = "block";
         viewer.innerHTML = `<iframe class="pdf-viewer" src="${file.url}#toolbar=0&navpanes=0&scrollbar=0" allowfullscreen></iframe>`;
-      } else if (file.type === "link") {
-        // สำหรับประเภทไฟล์ URL
-        blocker.style.display = "none";
-        viewer.innerHTML = `
-          <div style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; flex-direction: column;">
-            <p style="font-size: 18px; color: var(--apple-text-main); font-weight: 500; margin-bottom: 20px;">นี่คือลิงก์เว็บไซต์ภายนอก</p>
-            <a href="${file.url}" target="_blank" class="link-btn">🔗 กดเพื่อเปิดลิงก์ URL</a>
-          </div>
-        `;
       }
 
       checkDownloadStatus(file.id);
@@ -313,61 +310,67 @@
 
     async function checkDownloadStatus(jobId) {
       const downloadSection = document.getElementById("downloadSection");
-      downloadSection.innerHTML = "<p style='color:var(--apple-text-muted); margin:0; font-weight:500;'>⏳ กำลังตรวจสอบสิทธิ์ดาวน์โหลด...</p>";
+      const linkStatusText = document.getElementById("linkStatusText");
+      
+      downloadSection.innerHTML = "<p style='color:var(--apple-text-muted); margin:0; font-weight:500;'>กำลังตรวจสอบสิทธิ์...</p>";
       
       try {
         const reqRef = doc(db, "download_requests", `${jobId}_${currentId}`);
         const reqSnap = await getDoc(reqRef);
         
-        if (!reqSnap.exists()) {
-          downloadSection.innerHTML = `
-            <button style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">📥 ยื่นดาวน์โหลด</button>
-          `;
-        } else {
-          const data = reqSnap.data();
-          if (data.status === "pending") {
-            downloadSection.innerHTML = `
-              <div style="color: #8c6b0a; background-color: #fcf1d4; padding: 16px; border-radius: 12px; font-weight: 500; font-size: 15px;">
-                รอตรวจสอบจากผู้ให้บริการโดยปกติแล้วจะยินยอมให้ดาวน์โหลด 3 วันทำการ
-              </div>
-            `;
-          } else if (data.status === "approved") {
-            let isExpired = false;
-            let expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">✅ ดาวน์โหลดได้ไม่จำกัดเวลา</p>`;
-            
-            if (data.expiresAt) {
-              const expDate = data.expiresAt.toDate();
-              if (new Date() > expDate) {
-                isExpired = true;
-              } else {
-                expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">⏰ ดาวน์โหลดได้ถึง: ${expDate.toLocaleString('th-TH')}</p>`;
-              }
+        const isApproved = reqSnap.exists() && reqSnap.data().status === "approved" && 
+                           (!reqSnap.data().expiresAt || new Date() < reqSnap.data().expiresAt.toDate());
+
+        if (isApproved) {
+            let expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">สิทธิ์เข้าถึงถาวร (ไม่มีวันหมดอายุ)</p>`;
+            if (reqSnap.data().expiresAt) {
+                expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">สิทธิ์ใช้งานถึง: ${reqSnap.data().expiresAt.toDate().toLocaleString('th-TH')}</p>`;
             }
 
-            if (isExpired) {
-              downloadSection.innerHTML = `
-                <div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">
-                  ⏳ สิทธิ์ดาวน์โหลดของคุณหมดอายุแล้ว
-                </div>
-                <button style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">🔄 ยื่นเรื่องอีกครั้ง</button>
-              `;
-            } else {
-              downloadSection.innerHTML = `
-                <button style="background: var(--apple-green); margin-bottom: 0;" onclick="downloadWork()">⬇️ ดาวน์โหลดเอกสาร</button>
-                ${expireMsg}
-              `;
-            }
-          } else if (data.status === "rejected") {
             downloadSection.innerHTML = `
-              <div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">
-                คุณไม่มีสิทธิ์ในการดาวน์โหลด
-              </div>
-              <button style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">🔄 ยื่นเรื่องอีกครั้ง</button>
+              <button style="background: var(--apple-green); margin-bottom: 0;" onclick="downloadWork()">เข้าถึง / ดาวน์โหลดเนื้อหา</button>
+              ${expireMsg}
             `;
-          }
+            if (linkStatusText) {
+               linkStatusText.innerHTML = `<button onclick="downloadWork()" class="link-btn" style="border:none; cursor:pointer;">กดเพื่อเข้าสู่ลิงก์ (ได้รับสิทธิ์แล้ว)</button>`;
+            }
+        } else {
+            let statusBlock = "";
+            const fileData = userFiles.find(f => f.id === jobId);
+            
+            if (!reqSnap.exists()) {
+                downloadSection.innerHTML = `<button style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">ยื่นขอสิทธิ์การดาวน์โหลด / เข้าถึง</button>`;
+            } else {
+                const data = reqSnap.data();
+                if (data.status === "pending") {
+                    downloadSection.innerHTML = `
+                      <div style="color: #8c6b0a; background-color: #fcf1d4; padding: 16px; border-radius: 12px; font-weight: 500; font-size: 15px;">
+                        สถานะ: อยู่ระหว่างการตรวจสอบ (โดยปกติจะใช้เวลา 3 วันทำการ)
+                      </div>
+                    `;
+                } else if (data.status === "rejected") {
+                    downloadSection.innerHTML = `
+                      <div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">
+                        สถานะ: คำขอถูกปฏิเสธ (ไม่อนุญาตให้เข้าถึง)
+                      </div>
+                      <button style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">ยื่นคำขอสิทธิ์ใหม่อีกครั้ง</button>
+                    `;
+                } else if (data.status === "approved" && data.expiresAt && new Date() >= data.expiresAt.toDate()) {
+                    downloadSection.innerHTML = `
+                      <div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">
+                        สถานะ: สิทธิ์การเข้าถึงของคุณหมดอายุแล้ว
+                      </div>
+                      <button style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">ยื่นคำขอต่ออายุสิทธิ์</button>
+                    `;
+                }
+            }
+
+            if (linkStatusText) {
+               linkStatusText.innerText = "คุณยังไม่ได้รับอนุญาตให้เข้าถึงลิงก์นี้ กรุณาตรวจสอบสถานะด้านบน";
+            }
         }
       } catch(e) {
-        downloadSection.innerHTML = "<p style='color:var(--apple-red); margin:0; font-weight: 500;'>❌ ไม่สามารถตรวจสอบสถานะได้</p>";
+        downloadSection.innerHTML = "<p style='color:var(--apple-red); margin:0; font-weight: 500;'>เกิดข้อผิดพลาดในการดึงข้อมูล</p>";
       }
     }
 
@@ -376,7 +379,7 @@
       if (!file) return;
       
       const downloadSection = document.getElementById("downloadSection");
-      downloadSection.innerHTML = "<p style='color:var(--apple-blue); margin:0; font-weight: 500;'>กำลังส่งคำขอ...</p>";
+      downloadSection.innerHTML = "<p style='color:var(--apple-blue); margin:0; font-weight: 500;'>ระบบกำลังส่งคำขอ...</p>";
       
       try {
         const reqRef = doc(db, "download_requests", `${jobId}_${currentId}`);
@@ -394,10 +397,22 @@
       }
     }
 
-    window.downloadWork = function() {
+    window.downloadWork = async function() {
       const file = userFiles.find(f => f.id === currentJobId);
       if (!file) return;
       
+      // บันทึกประวัติเมื่อมีการดาวน์โหลดหรือเข้าสู่ลิงก์
+      try {
+        await addDoc(collection(db, "download_history"), {
+          jobId: file.id,
+          jobTitle: file.title,
+          studentId: currentId,
+          downloadedAt: serverTimestamp()
+        });
+      } catch(e) {
+        console.error("ไม่สามารถบันทึกประวัติได้", e);
+      }
+
       window.open(file.url, "_blank");
     }
 
