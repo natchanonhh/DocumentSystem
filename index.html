@@ -112,6 +112,7 @@
       gap: 25px 15px;
       margin-top: 25px;
       margin-bottom: 25px;
+      align-items: start;
     }
     .grid-item {
       display: flex;
@@ -122,7 +123,8 @@
       padding: 10px;
       border-radius: 12px;
       justify-content: flex-start;
-      height: 140px; 
+      height: auto; 
+      min-height: 140px;
     }
     .grid-item:hover {
       background-color: rgba(0,0,0,0.03);
@@ -148,13 +150,24 @@
       font-weight: 500;
       color: var(--apple-text-main);
       text-align: center;
-      line-height: 1.3;
+      line-height: 1.4;
       word-break: break-word;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
       width: 100%;
+    }
+
+    .grid-lock {
+      font-size: 12px;
+      margin-top: 6px;
+      color: var(--apple-text-main);
+      text-align: center;
+    }
+
+    .grid-time {
+      font-size: 11px;
+      color: var(--apple-text-muted);
+      margin-top: 6px;
+      text-align: center;
+      line-height: 1.3;
     }
     
     .nav-header {
@@ -344,6 +357,17 @@
         return svg;
     }
 
+    function formatTime(timestamp) {
+        if (!timestamp) return "";
+        try {
+            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+            return date.toLocaleDateString('th-TH', { 
+                year: 'numeric', month: 'short', day: 'numeric', 
+                hour: '2-digit', minute: '2-digit' 
+            }) + " น.";
+        } catch(e) { return ""; }
+    }
+
     window.checkData = async function() {
       const rawId = document.getElementById("studentId").value.trim();
       if (!rawId) return;
@@ -353,8 +377,6 @@
         const searchId = rawId.replace(/[\s"']/g, '').toLowerCase();
         const q1 = query(collection(db, "jobs"), where("allowedUsers", "array-contains", rawId));
         const q2 = query(collection(db, "jobs"), where("searchableUsers", "array-contains", searchId));
-        
-        // ดึงการตั้งค่าโฟลเดอร์ (สี/อีโมจิ) มาด้วย เพื่อให้ผู้ชมมองเห็น
         const q3 = query(collection(db, "jobs"), where("type", "==", "system_folder"));
 
         const [snap1, snap2, snap3] = await Promise.all([getDocs(q1), getDocs(q2), getDocs(q3)]);
@@ -378,11 +400,15 @@
           }
           currentId = matchedId;
           
-          // โหลดค่า Meta (สีและอีโมจิ) ของโฟลเดอร์ต่างๆ
           snap3.forEach(docSnap => {
               const data = docSnap.data();
               let path = (data.folder || "").trim().replace(/^\/+|\/+$/g, '');
-              folderMeta[path] = { color: data.color || 'blue', emoji: data.emoji || '' };
+              folderMeta[path] = { 
+                  color: data.color || 'blue', 
+                  emoji: data.emoji || '', 
+                  password: data.password || '',
+                  updatedAt: data.updatedAt || data.createdAt || null
+              };
           });
           
           allFiles.forEach(file => {
@@ -434,13 +460,16 @@
           const safeFolderName = encodeURIComponent(folderName);
           let targetPath = currentPath ? `${currentPath}/${folderName}` : folderName;
           
-          // ดึงค่า Meta ของโฟลเดอร์นั้นๆ มาแสดงผล ถ้าไม่มีให้เป็นสีฟ้า
-          let meta = folderMeta[targetPath] || { color: 'blue', emoji: '' };
+          let meta = folderMeta[targetPath] || { color: 'blue', emoji: '', password: '', updatedAt: null };
+          let lockHtml = meta.password ? `<div class="grid-lock">🔒</div>` : "";
+          let timeStr = formatTime(meta.updatedAt);
           
           html += `
             <div class="grid-item" onclick="openFolder('${safeFolderName}')">
               <div class="grid-icon">${getFolderIcon(meta.color, meta.emoji)}</div>
               <div class="grid-name">${folderName}</div>
+              <div class="grid-time">${timeStr}</div>
+              ${lockHtml}
             </div>
           `;
       });
@@ -451,11 +480,16 @@
           if (file.type === "youtube") iconSvg = icons.youtube;
           else if (file.type === "image") iconSvg = icons.image;
           else if (file.type === "link") iconSvg = icons.link;
+          
+          let lockHtml = file.password ? `<div class="grid-lock">🔒</div>` : "";
+          let fileTimeStr = file.updatedAt ? formatTime(file.updatedAt) : (file.createdAt ? formatTime(file.createdAt) : "");
 
           html += `
             <div class="grid-item" onclick="openFile(${index})">
               <div class="grid-icon">${iconSvg}</div>
               <div class="grid-name">${file.title}</div>
+              <div class="grid-time">${fileTimeStr}</div>
+              ${lockHtml}
             </div>
           `;
       });
@@ -483,8 +517,18 @@
 
     window.openFolder = function(encodedFolderName) {
       const folderName = decodeURIComponent(encodedFolderName);
-      if (currentPath === "") currentPath = folderName;
-      else currentPath = currentPath + "/" + folderName;
+      let targetPath = currentPath === "" ? folderName : currentPath + "/" + folderName;
+      let meta = folderMeta[targetPath];
+      
+      if (meta && meta.password) {
+          let pwd = prompt("โฟลเดอร์นี้ถูกล็อก กรุณาใส่รหัสผ่าน:");
+          if (pwd !== meta.password) {
+              alert("รหัสผ่านไม่ถูกต้อง");
+              return;
+          }
+      }
+      
+      currentPath = targetPath;
       renderExplorer();
     }
 
@@ -498,10 +542,27 @@
 
     window.openFile = function(index) {
       const file = userFiles[index];
+      
+      if (file.password) {
+          let pwd = prompt("เอกสารนี้ถูกล็อก กรุณาใส่รหัสผ่าน:");
+          if (pwd !== file.password) {
+              alert("รหัสผ่านไม่ถูกต้อง");
+              return;
+          }
+      }
+      
       document.getElementById("menuBox").style.display = "none";
       document.getElementById("contentBox").style.display = "block";
       document.getElementById("displayName").innerText = file.title;
-      document.getElementById("watermarkText").innerText = `${currentId}\nข้อมูลภายใต้การควบคุมสิทธิ์`;
+      
+      const watermarkEl = document.getElementById("watermarkText");
+      if (file.showWatermark === false) {
+          watermarkEl.style.display = "none";
+      } else {
+          watermarkEl.style.display = "block";
+          watermarkEl.innerText = `${currentId}\nข้อมูลภายใต้การควบคุมสิทธิ์`;
+      }
+      
       document.getElementById("contentBox").setAttribute("data-active-job", file.id);
 
       const viewer = document.getElementById("fileViewer");
