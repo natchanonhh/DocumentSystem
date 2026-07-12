@@ -42,6 +42,7 @@
       text-align: center; 
       margin-top: 20px; 
       box-sizing: border-box;
+      position: relative;
     }
 
     h2 { 
@@ -103,13 +104,14 @@
       margin-bottom: 12px;
       transition: transform 0.1s, background 0.2s, opacity 0.2s;
     }
-    button:active { transform: scale(0.97); }
+    button:active { transform: scale(0.97);
+    }
     button:hover { background: var(--apple-blue-hover); }
     
     /* ระบบป้ายโฆษณา (Banner Slider) */
     .banner-wrapper {
       width: 100%;
-      aspect-ratio: 2 / 1; /* อัตราส่วน 1200x600 px */
+      aspect-ratio: 2 / 1;
       overflow-x: auto;
       overflow-y: hidden;
       scroll-snap-type: x mandatory;
@@ -117,11 +119,11 @@
       scroll-behavior: smooth;
       border-radius: 14px;
       margin-bottom: 20px;
-      -ms-overflow-style: none; /* ซ่อน Scrollbar IE/Edge */
-      scrollbar-width: none; /* ซ่อน Scrollbar Firefox */
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
     .banner-wrapper::-webkit-scrollbar {
-      display: none; /* ซ่อน Scrollbar Chrome/Safari */
+      display: none;
     }
     .banner-slide {
       flex: 0 0 100%;
@@ -145,7 +147,7 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 25px 15px;
-      margin-top: 25px;
+      margin-top: 10px;
       margin-bottom: 25px;
       align-items: start;
     }
@@ -160,6 +162,8 @@
       justify-content: flex-start;
       height: auto; 
       min-height: 140px;
+      width: 100%;
+      box-sizing: border-box;
     }
     .grid-item:hover {
       background-color: rgba(0,0,0,0.03);
@@ -180,14 +184,17 @@
     .grid-icon svg.icon-file { width: 48px; height: auto; }
     .grid-icon svg.icon-wide { width: 62px; height: auto; }
 
+    /* ปรับแต่งส่วนแสดงชื่อสำหรับมุมมอง Grid ไม่ให้ตัดคำ แต่ให้ขึ้นบรรทัดใหม่ */
     .grid-name {
       font-size: 13px;
       font-weight: 500;
       color: var(--apple-text-main);
       text-align: center;
       line-height: 1.4;
-      word-break: break-word;
       width: 100%;
+      word-break: break-word; /* ตัดคำเพื่อไม่ให้ล้นขอบ */
+      overflow-wrap: break-word; /* ปัดตกบรรทัดใหม่เมื่อยาวเกิน */
+      white-space: normal;
     }
 
     .grid-lock {
@@ -204,43 +211,153 @@
       text-align: center;
       line-height: 1.3;
     }
+
+    /* --- Apple View Menu Styles --- */
+    .options-btn-wrap-relative {
+      position: relative;
+      flex-shrink: 0;
+    }
+    
+    .options-btn {
+      background: transparent;
+      border: none;
+      color: var(--apple-blue);
+      cursor: pointer;
+      padding: 8px;
+      width: auto;
+      margin-bottom: 0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .options-btn:hover { background: rgba(0, 113, 227, 0.1); transform: none; }
+    .options-btn:active { transform: scale(0.92); }
+    
+    .apple-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 8px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(0,0,0,0.1);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      border-radius: 14px;
+      width: 230px;
+      z-index: 100;
+      text-align: left;
+      padding: 8px;
+      font-size: 15px;
+      color: var(--apple-text-main);
+    }
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.1s;
+      position: relative;
+    }
+    .dropdown-item:hover { background: var(--apple-blue); color: white; }
+    .dropdown-item:hover .check-icon, .dropdown-item:hover small, .dropdown-item:hover .dropdown-icon { color: white !important; }
+    .dropdown-divider { height: 1px; background: rgba(0,0,0,0.1); margin: 6px 0; }
+    .check-icon { width: 24px; font-weight: bold; font-size: 14px; display: inline-block; }
+    .dropdown-icon { margin-right: 12px; display:flex; align-items:center; }
+    .dropdown-text { flex-grow: 1; display: flex; flex-direction: column; font-weight: 500; }
+
+    /* --- List View Styles --- */
+    .item-grid.list-view { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 0; 
+      background: #fbfbfd; 
+      border-radius: 16px; 
+      padding: 5px 0; 
+      border: 1px solid var(--apple-border);
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .item-grid.list-view .grid-item { 
+      flex-direction: row; 
+      align-items: center; 
+      justify-content: flex-start; 
+      height: auto; 
+      min-height: 60px; 
+      padding: 12px 15px; 
+      border-radius: 0; 
+      border-bottom: 1px solid rgba(0,0,0,0.05); 
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .item-grid.list-view .grid-item:last-child { border-bottom: none; }
+    .item-grid.list-view .grid-item:hover { background-color: rgba(0,0,0,0.04); transform: none; }
+    .item-grid.list-view .grid-icon { 
+      width: 40px; 
+      height: 40px; 
+      margin-bottom: 0; 
+      margin-right: 15px; 
+      flex-shrink: 0; 
+      display:flex; 
+      justify-content:center; 
+      align-items:center; 
+    }
+    .item-grid.list-view .grid-icon svg { width: 100% !important; height: auto !important; max-height: 100%; }
+    
+    /* ปรับแต่งส่วนแสดงชื่อสำหรับมุมมอง List ให้แสดงเต็มและขึ้นบรรทัดใหม่ */
+    .item-grid.list-view .grid-name { 
+      text-align: left; 
+      font-size: 15px; 
+      white-space: normal; /* อนุญาตให้ขึ้นบรรทัดใหม่ได้ */
+      flex: 1 1 auto; 
+      min-width: 0; 
+      margin-right: 10px; 
+      display: block; 
+      word-break: break-word; /* ตัดคำเพื่อไม่ให้ล้นขอบ */
+      overflow-wrap: break-word;
+    }
+    
+    .item-grid.list-view .grid-time { 
+      text-align: right; 
+      margin-top: 0; 
+      flex-shrink: 0; 
+      font-size: 12px; 
+      white-space: nowrap; /* ให้เวลาอยู่บรรทัดเดียวกันเสมอ */
+    }
+    .item-grid.list-view .grid-lock { 
+      margin-top: 0; 
+      margin-left: 8px; 
+      flex-shrink: 0; 
+    }
     
     .nav-header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      padding-bottom: 15px;
-      border-bottom: 1px solid var(--apple-border);
+      justify-content: flex-start;
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
     }
     
     .back-btn {
       background: transparent;
       color: var(--apple-blue);
-      padding: 8px 12px;
+      padding: 8px 0;
       width: auto;
       margin: 0;
+      margin-bottom: 10px;
       font-size: 15px;
     }
-    .back-btn:hover { background: rgba(0, 113, 227, 0.1); }
-    
-    .path-title {
-      font-size: 17px;
-      font-weight: 600;
-      flex-grow: 1;
-      text-align: center;
-      color: var(--apple-text-main);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin: 0 10px;
-    }
+    .back-btn:hover { background: rgba(0, 113, 227, 0.1); padding: 8px 10px; border-radius: 8px; margin-right: -10px;}
 
     .protected-view { 
       position: relative;
       margin-top: 25px; 
       width: 100%; 
-      height: 650px; 
+      height: 650px;
       background: #fbfbfd; 
       border-radius: 16px; 
       border: 1px solid var(--apple-border);
@@ -289,8 +406,13 @@
     }
     .link-btn:hover { background: var(--apple-blue-hover); }
 
-    @media (max-width: 580px) { .item-grid { grid-template-columns: repeat(3, 1fr); gap: 20px 10px; } }
-    @media (max-width: 400px) { .item-grid { grid-template-columns: repeat(2, 1fr); gap: 15px 10px; } }
+    @media (max-width: 580px) { 
+      .item-grid { grid-template-columns: repeat(3, 1fr); gap: 20px 10px; } 
+      .container { padding: 35px 20px; }
+    }
+    @media (max-width: 400px) { 
+      .item-grid { grid-template-columns: repeat(2, 1fr); gap: 15px 10px; } 
+    }
   </style>
 </head>
 <body oncontextmenu="return false;">
@@ -307,16 +429,64 @@
   </div>
 
   <div class="container" id="menuBox" style="display: none;">
+    
     <div class="nav-header" id="navHeader" style="display: none;">
        <button class="back-btn" onclick="navigateUp()">< ย้อนกลับ</button>
-       <div class="path-title" id="currentPathTitle">หน้าหลัก</div>
-       <div style="width: 70px;"></div>
     </div>
     
     <h3 id="menuTitle" style="margin-bottom: 5px;"></h3>
-    <p style="margin-bottom: 10px;" id="menuSubtitle">กรุณาเลือกรายการที่คุณต้องการเข้าชม</p>
+    <p style="margin-bottom: 15px;" id="menuSubtitle">กรุณาเลือกรายการที่คุณต้องการเข้าชม</p>
     
     <div id="menuBanner" class="banner-wrapper" style="display:none;"></div>
+
+    <!-- แถบเครื่องมือใต้แบนเนอร์ -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; position: relative; width: 100%; box-sizing: border-box; padding: 0 5px;">
+        <div class="path-title" id="currentPathTitle" style="text-align: left; margin: 0; flex: 1 1 auto; min-width: 0; font-size: 19px; word-break: break-word;">หน้าหลัก</div>
+        
+        <div class="options-btn-wrap-relative">
+          <button class="options-btn" onclick="toggleOptionsMenu(event)">
+            <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+              <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+              <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+              <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+            </svg>
+          </button>
+          <div id="optionsMenu" class="apple-dropdown" style="display: none;">
+            <div class="dropdown-item" onclick="setViewMode('grid')">
+                <span class="check-icon" id="checkGrid">✓</span>
+                <span class="dropdown-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect></svg>
+                </span>
+                <span class="dropdown-text">ไอคอน</span>
+            </div>
+            <div class="dropdown-item" onclick="setViewMode('list')">
+                <span class="check-icon" id="checkList" style="opacity:0">✓</span>
+                <span class="dropdown-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                </span>
+                <span class="dropdown-text">รายการ</span>
+            </div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item" onclick="setSortMode('name')">
+                <span class="check-icon" id="checkSortName" style="opacity:0">✓</span>
+                <span class="dropdown-text">ชื่อ<br><small id="sortNameLabel" style="font-size: 11px; color: var(--apple-text-muted); display:none;">ก ถึง ฮ</small></span>
+            </div>
+            <div class="dropdown-item" onclick="setSortMode('type')">
+                <span class="check-icon" id="checkSortType" style="opacity:0">✓</span>
+                <span class="dropdown-text">ประเภท</span>
+            </div>
+            <div class="dropdown-item" onclick="setSortMode('date')">
+                <span class="check-icon" id="checkSortDate">✓</span>
+                <span class="dropdown-text" style="line-height: 1.2;">วันที่<br><small id="sortDateLabel" style="font-size: 11px; color: var(--apple-text-muted);">ใหม่ที่สุดถึงเก่าที่สุด</small></span>
+            </div>
+            <div class="dropdown-item" onclick="setSortMode('size')">
+                <span class="check-icon" id="checkSortSize" style="opacity:0">✓</span>
+                <span class="dropdown-text" style="line-height: 1.2;">ขนาด<br><small id="sortSizeLabel" style="font-size: 11px; color: var(--apple-text-muted); display:none;">ใหญ่ที่สุดถึงเล็กที่สุด</small></span>
+            </div>
+          </div>
+        </div>
+    </div>
 
     <div id="fileExplorer">
       <div id="itemList" class="item-grid"></div>
@@ -327,8 +497,9 @@
   </div>
 
   <div class="container" id="contentBox" style="display: none; max-width: 700px;">
-    <h3 id="displayName"></h3>
-    <button style="background: #e8e8ed; color: var(--apple-blue); margin-bottom: 25px; box-shadow: none;" onclick="closeFile()"><span style="font-size: 14px; margin-right: 5px;"><</span> กลับไปหน้ารายการ</button>
+    <h3 id="displayName" style="word-break: break-word;"></h3>
+    <button style="background: #e8e8ed; color: var(--apple-blue); margin-bottom: 25px; box-shadow: none;"
+      onclick="closeFile()"><span style="font-size: 14px; margin-right: 5px;"><</span> กลับไปหน้ารายการ</button>
     <div id="downloadSection"></div>
     
     <div class="protected-view">
@@ -341,7 +512,6 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getFirestore, collection, query, where, getDocs, addDoc, updateDoc, doc, serverTimestamp, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-    
     const firebaseConfig = {
       apiKey: "AIzaSyBLyMpowfyQK_1UnredPFmXdBdtQZKpY-c",
       authDomain: "datapdf-d14d0.firebaseapp.com",
@@ -351,7 +521,6 @@
       messagingSenderId: "1034739093928",
       appId: "1:1034739093928:web:cd56cc0e208d7d00f24d9d"
     };
-    
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     
@@ -360,6 +529,10 @@
     let folderMeta = {};
     let currentId = "";
     let currentPath = "";
+    
+    let appViewMode = 'grid'; 
+    let appSortMode = 'date'; 
+    let sortDesc = true; 
 
     const studentInput = document.getElementById("studentId");
     if(studentInput) {
@@ -377,14 +550,12 @@
         purple: ['#d1a3ff', '#b870ff'],
         gray: ['#c2c2c2', '#a8a8a8']
     };
-
     const icons = {
       pdf: `<svg class="icon-file" viewBox="0 0 64 80" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="56" height="72" rx="6" fill="#F9F9FB" stroke="#D2D2D7" stroke-width="2"/><path d="M40 4L60 24V10C60 6.68629 57.3137 4 54 4H40Z" fill="#E5E5EA"/><path d="M40 4V18C40 21.3137 42.6863 24 46 24H60" stroke="#D2D2D7" stroke-width="2" stroke-linejoin="round"/><rect x="16" y="32" width="32" height="4" rx="2" fill="#FF3B30"/><rect x="16" y="44" width="24" height="4" rx="2" fill="#D2D2D7"/><rect x="16" y="56" width="28" height="4" rx="2" fill="#D2D2D7"/></svg>`,
       image: `<svg class="icon-wide" viewBox="0 0 80 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="72" height="56" rx="8" fill="#F9F9FB" stroke="#D2D2D7" stroke-width="2"/><circle cx="24" cy="24" r="6" fill="#FFCC00"/><path d="M4 48L28 28L52 48L64 38L76 48V52C76 56.4183 72.4183 60 68 60H12C7.58172 60 4 56.4183 4 52V48Z" fill="#34C759"/></svg>`,
       youtube: `<svg class="icon-wide" viewBox="0 0 80 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="72" height="48" rx="12" fill="#FF3B30"/><path d="M34 18L52 28L34 38V18Z" fill="white"/></svg>`,
       link: `<svg class="icon-file" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="40" r="36" fill="#F9F9FB" stroke="#D2D2D7" stroke-width="2"/><path d="M40 10C28 10 20 25 20 40C20 55 28 70 40 70C52 70 60 55 60 40C60 25 52 10 40 10Z" stroke="#0071E3" stroke-width="2"/><path d="M10 40H70" stroke="#0071E3" stroke-width="2"/><path d="M20 25H60" stroke="#0071E3" stroke-width="2"/><path d="M20 55H60" stroke="#0071E3" stroke-width="2"/></svg>`
     };
-
     function getFolderIcon(color, emoji) {
         let c = appleColors[color] || appleColors.blue;
         let svg = `<svg class="icon-folder" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -408,7 +579,68 @@
         } catch(e) { return ""; }
     }
 
-    // ฟังก์ชันโหลดและจัดการป้ายโฆษณา
+    window.toggleOptionsMenu = function(e) {
+      e.stopPropagation();
+      const menu = document.getElementById("optionsMenu");
+      menu.style.display = menu.style.display === "none" ? "block" : "none";
+    }
+    
+    window.addEventListener('click', function(e) {
+      const menu = document.getElementById("optionsMenu");
+      if (menu && menu.style.display === "block" && !e.target.closest('.options-btn-wrap-relative')) {
+          menu.style.display = "none";
+      }
+    });
+
+    window.setViewMode = function(mode) {
+      appViewMode = mode;
+      document.getElementById("checkGrid").style.opacity = mode === 'grid' ? "1" : "0";
+      document.getElementById("checkList").style.opacity = mode === 'list' ? "1" : "0";
+      
+      const itemList = document.getElementById("itemList");
+      if (mode === 'list') {
+          itemList.classList.add("list-view");
+      } else {
+          itemList.classList.remove("list-view");
+      }
+      document.getElementById("optionsMenu").style.display = "none";
+    }
+
+    window.setSortMode = function(mode) {
+      if (appSortMode === mode) {
+          sortDesc = !sortDesc; 
+      } else {
+          appSortMode = mode;
+          sortDesc = mode === 'date' || mode === 'size'; 
+      }
+      
+      document.getElementById("checkSortName").style.opacity = mode === 'name' ? "1" : "0";
+      document.getElementById("checkSortType").style.opacity = mode === 'type' ? "1" : "0";
+      document.getElementById("checkSortDate").style.opacity = mode === 'date' ? "1" : "0";
+      document.getElementById("checkSortSize").style.opacity = mode === 'size' ? "1" : "0";
+      
+      const nameLabel = document.getElementById("sortNameLabel");
+      nameLabel.style.display = mode === 'name' ? "block" : "none";
+      nameLabel.innerText = sortDesc ? "ฮ ถึง ก" : "ก ถึง ฮ";
+
+      const dateLabel = document.getElementById("sortDateLabel");
+      dateLabel.style.display = mode === 'date' ? "block" : "none";
+      dateLabel.innerText = sortDesc ? "ใหม่ที่สุดถึงเก่าที่สุด" : "เก่าที่สุดถึงใหม่ที่สุด";
+      
+      const sizeLabel = document.getElementById("sortSizeLabel");
+      sizeLabel.style.display = mode === 'size' ? "block" : "none";
+      sizeLabel.innerText = sortDesc ? "ใหญ่ที่สุดถึงเล็กที่สุด" : "เล็กที่สุดถึงใหญ่ที่สุด";
+
+      renderExplorer(); 
+      document.getElementById("optionsMenu").style.display = "none";
+    }
+
+    function getSortDate(obj, isFolder) {
+        let ts = isFolder ? obj.meta.updatedAt : (obj.updatedAt || obj.createdAt);
+        if (!ts) return 0;
+        return ts.toDate ? ts.toDate().getTime() : new Date(ts).getTime();
+    }
+
     window.initBanners = async function() {
         try {
             const snap = await getDocs(collection(db, "banners"));
@@ -432,34 +664,30 @@
             if(loginBanner) { loginBanner.innerHTML = html; loginBanner.style.display = "flex"; }
             if(menuBanner) { menuBanner.innerHTML = html; menuBanner.style.display = "flex"; }
 
-            // ให้ปัดเลื่อนอัตโนมัติทุกๆ 60 วินาที (1 นาที)
             if(window.bannerInterval) clearInterval(window.bannerInterval);
             window.bannerInterval = setInterval(() => {
                 [loginBanner, menuBanner].forEach(container => {
                     if(container && container.style.display !== "none") {
                         const scrollWidth = container.clientWidth;
                         if (container.scrollLeft + scrollWidth >= container.scrollWidth - 10) {
-                            container.scrollTo({ left: 0, behavior: 'smooth' }); // กลับไปรูปแรก
+                            container.scrollTo({ left: 0, behavior: 'smooth' });
                         } else {
-                            container.scrollBy({ left: scrollWidth, behavior: 'smooth' }); // เลื่อนไปรูปถัดไป
+                            container.scrollBy({ left: scrollWidth, behavior: 'smooth' }); 
                         }
                     }
                 });
             }, 60000);
-            
         } catch(e) {
             console.error("โหลดแบนเนอร์ล้มเหลว", e);
         }
     }
     
-    // โหลดป้ายโฆษณาทันทีที่เปิดหน้าเว็บ
     initBanners();
 
     window.checkData = async function() {
       const rawId = document.getElementById("studentId").value.trim();
       if (!rawId) return;
       document.getElementById("errorMsg").style.display = "none";
-      
       try {
         const searchId = rawId.replace(/[\s"']/g, '').toLowerCase();
         const q1 = query(collection(db, "jobs"), where("allowedUsers", "array-contains", rawId));
@@ -486,7 +714,6 @@
              }
           }
           currentId = matchedId;
-          
           snap3.forEach(docSnap => {
               const data = docSnap.data();
               let path = (data.folder || "").trim().replace(/^\/+|\/+$/g, '');
@@ -497,7 +724,6 @@
                   updatedAt: data.updatedAt || data.createdAt || null
               };
           });
-          
           allFiles.forEach(file => {
               if (file.type !== "system_folder") {
                   let path = (file.folder || "").trim().replace(/^\/+|\/+$/g, '');
@@ -516,7 +742,6 @@
           
           currentPath = "";
           renderExplorer();
-
         } else {
           document.getElementById("errorMsg").style.display = "block";
         }
@@ -540,14 +765,43 @@
               if (immediateSubfolder) foldersInCurrentPath.add(immediateSubfolder);
           }
       });
+      
+      let folderList = Array.from(foldersInCurrentPath).map(folderName => {
+          let targetPath = currentPath ? `${currentPath}/${folderName}` : folderName;
+          let meta = folderMeta[targetPath] || { color: 'blue', emoji: '', password: '', updatedAt: null };
+          return { name: folderName, targetPath, meta, isFolder: true };
+      });
+
+      const sortData = (a, b, isFolder) => {
+          let valA, valB;
+          if (appSortMode === 'name') {
+              valA = (isFolder ? a.name : a.title).toLowerCase();
+              valB = (isFolder ? b.name : b.title).toLowerCase();
+          } else if (appSortMode === 'type') {
+              valA = isFolder ? 'folder' : (a.type || '');
+              valB = isFolder ? 'folder' : (b.type || '');
+          } else if (appSortMode === 'date') {
+              valA = getSortDate(a, isFolder);
+              valB = getSortDate(b, isFolder);
+          } else if (appSortMode === 'size') {
+              valA = isFolder ? 0 : (a.url ? a.url.length : 0);
+              valB = isFolder ? 0 : (b.url ? b.url.length : 0);
+          }
+          
+          if (valA < valB) return sortDesc ? 1 : -1;
+          if (valA > valB) return sortDesc ? -1 : 1;
+          return 0;
+      };
+
+      folderList.sort((a, b) => sortData(a, b, true));
+      filesInCurrentPath.sort((a, b) => sortData(a, b, false));
 
       let html = "";
       
-      Array.from(foldersInCurrentPath).sort().forEach(folderName => {
+      folderList.forEach(folder => {
+          const folderName = folder.name;
           const safeFolderName = encodeURIComponent(folderName);
-          let targetPath = currentPath ? `${currentPath}/${folderName}` : folderName;
-          
-          let meta = folderMeta[targetPath] || { color: 'blue', emoji: '', password: '', updatedAt: null };
+          let meta = folder.meta;
           let lockHtml = meta.password ? `<div class="grid-lock">🔒</div>` : "";
           let timeStr = formatTime(meta.updatedAt);
           
@@ -560,7 +814,7 @@
             </div>
           `;
       });
-
+      
       filesInCurrentPath.forEach((file) => {
           const index = userFiles.findIndex(f => f.id === file.id);
           let iconSvg = icons.pdf; 
@@ -585,18 +839,13 @@
       document.getElementById("itemList").innerHTML = html;
       
       const navHeader = document.getElementById("navHeader");
-      const titleEl = document.getElementById("menuTitle");
-      const subtitleEl = document.getElementById("menuSubtitle");
       const pathTitleEl = document.getElementById("currentPathTitle");
-
+      
       if (currentPath === "") {
          navHeader.style.display = "none";
-         titleEl.style.display = "block";
-         subtitleEl.style.display = "block";
+         pathTitleEl.innerText = "หน้าหลัก";
       } else {
          navHeader.style.display = "flex";
-         titleEl.style.display = "none";
-         subtitleEl.style.display = "none";
          let parts = currentPath.split('/');
          pathTitleEl.innerText = parts[parts.length - 1];
       }
@@ -606,7 +855,6 @@
       const folderName = decodeURIComponent(encodedFolderName);
       let targetPath = currentPath === "" ? folderName : currentPath + "/" + folderName;
       let meta = folderMeta[targetPath];
-      
       if (meta && meta.password) {
           let pwd = prompt("โฟลเดอร์นี้ถูกล็อก กรุณาใส่รหัสผ่าน:");
           if (pwd !== meta.password) {
@@ -614,7 +862,6 @@
               return;
           }
       }
-      
       currentPath = targetPath;
       renderExplorer();
     }
@@ -629,7 +876,6 @@
 
     window.openFile = function(index) {
       const file = userFiles[index];
-      
       if (file.password) {
           let pwd = prompt("เอกสารนี้ถูกล็อก กรุณาใส่รหัสผ่าน:");
           if (pwd !== file.password) {
