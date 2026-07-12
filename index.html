@@ -106,6 +106,41 @@
     button:active { transform: scale(0.97); }
     button:hover { background: var(--apple-blue-hover); }
     
+    /* ระบบป้ายโฆษณา (Banner Slider) */
+    .banner-wrapper {
+      width: 100%;
+      aspect-ratio: 2 / 1; /* อัตราส่วน 1200x600 px */
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      display: flex;
+      scroll-behavior: smooth;
+      border-radius: 14px;
+      margin-bottom: 20px;
+      -ms-overflow-style: none; /* ซ่อน Scrollbar IE/Edge */
+      scrollbar-width: none; /* ซ่อน Scrollbar Firefox */
+    }
+    .banner-wrapper::-webkit-scrollbar {
+      display: none; /* ซ่อน Scrollbar Chrome/Safari */
+    }
+    .banner-slide {
+      flex: 0 0 100%;
+      scroll-snap-align: start;
+      position: relative;
+    }
+    .banner-slide a {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .banner-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 14px;
+      pointer-events: auto;
+    }
+
     .item-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -263,6 +298,9 @@
   <div class="container" id="loginBox">
     <h2>Document System</h2>
     <p>กรุณาระบุตัวตนเพื่อตรวจสอบสิทธิ์การเข้าถึง (Smart Login)</p>
+    
+    <div id="loginBanner" class="banner-wrapper" style="display:none;"></div>
+
     <input type="text" id="studentId" placeholder="ระบุชื่อ หรือรหัสประจำตัว..." required>
     <button onclick="checkData()">เข้าสู่ระบบ</button>
     <p id="errorMsg" style="color: var(--apple-red); display: none; margin-top: 15px; font-weight: 500;">ไม่พบสิทธิ์การเข้าถึงข้อมูลใดๆ ในระบบ</p>
@@ -278,6 +316,8 @@
     <h3 id="menuTitle" style="margin-bottom: 5px;"></h3>
     <p style="margin-bottom: 10px;" id="menuSubtitle">กรุณาเลือกรายการที่คุณต้องการเข้าชม</p>
     
+    <div id="menuBanner" class="banner-wrapper" style="display:none;"></div>
+
     <div id="fileExplorer">
       <div id="itemList" class="item-grid"></div>
     </div>
@@ -367,6 +407,53 @@
             }) + " น.";
         } catch(e) { return ""; }
     }
+
+    // ฟังก์ชันโหลดและจัดการป้ายโฆษณา
+    window.initBanners = async function() {
+        try {
+            const snap = await getDocs(collection(db, "banners"));
+            let banners = [];
+            snap.forEach(doc => banners.push({id: doc.id, ...doc.data()}));
+            
+            if (banners.length === 0) return;
+            
+            let html = '';
+            banners.forEach(b => {
+                if(b.link) {
+                    html += `<div class="banner-slide"><a href="${b.link}" target="_blank"><img src="${b.imageUrl}"></a></div>`;
+                } else {
+                    html += `<div class="banner-slide"><img src="${b.imageUrl}"></div>`;
+                }
+            });
+
+            const loginBanner = document.getElementById('loginBanner');
+            const menuBanner = document.getElementById('menuBanner');
+            
+            if(loginBanner) { loginBanner.innerHTML = html; loginBanner.style.display = "flex"; }
+            if(menuBanner) { menuBanner.innerHTML = html; menuBanner.style.display = "flex"; }
+
+            // ให้ปัดเลื่อนอัตโนมัติทุกๆ 60 วินาที (1 นาที)
+            if(window.bannerInterval) clearInterval(window.bannerInterval);
+            window.bannerInterval = setInterval(() => {
+                [loginBanner, menuBanner].forEach(container => {
+                    if(container && container.style.display !== "none") {
+                        const scrollWidth = container.clientWidth;
+                        if (container.scrollLeft + scrollWidth >= container.scrollWidth - 10) {
+                            container.scrollTo({ left: 0, behavior: 'smooth' }); // กลับไปรูปแรก
+                        } else {
+                            container.scrollBy({ left: scrollWidth, behavior: 'smooth' }); // เลื่อนไปรูปถัดไป
+                        }
+                    }
+                });
+            }, 60000);
+            
+        } catch(e) {
+            console.error("โหลดแบนเนอร์ล้มเหลว", e);
+        }
+    }
+    
+    // โหลดป้ายโฆษณาทันทีที่เปิดหน้าเว็บ
+    initBanners();
 
     window.checkData = async function() {
       const rawId = document.getElementById("studentId").value.trim();
