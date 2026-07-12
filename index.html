@@ -192,8 +192,8 @@
       text-align: center;
       line-height: 1.4;
       width: 100%;
-      word-break: break-word; /* ตัดคำเพื่อไม่ให้ล้นขอบ */
-      overflow-wrap: break-word; /* ปัดตกบรรทัดใหม่เมื่อยาวเกิน */
+      word-break: break-word; 
+      overflow-wrap: break-word; 
       white-space: normal;
     }
 
@@ -311,12 +311,12 @@
     .item-grid.list-view .grid-name { 
       text-align: left; 
       font-size: 15px; 
-      white-space: normal; /* อนุญาตให้ขึ้นบรรทัดใหม่ได้ */
+      white-space: normal; 
       flex: 1 1 auto; 
       min-width: 0; 
       margin-right: 10px; 
       display: block; 
-      word-break: break-word; /* ตัดคำเพื่อไม่ให้ล้นขอบ */
+      word-break: break-word; 
       overflow-wrap: break-word;
     }
     
@@ -325,7 +325,7 @@
       margin-top: 0; 
       flex-shrink: 0; 
       font-size: 12px; 
-      white-space: nowrap; /* ให้เวลาอยู่บรรทัดเดียวกันเสมอ */
+      white-space: nowrap; 
     }
     .item-grid.list-view .grid-lock { 
       margin-top: 0; 
@@ -423,7 +423,7 @@
     
     <div id="loginBanner" class="banner-wrapper" style="display:none;"></div>
 
-    <input type="text" id="studentId" placeholder="ระบุชื่อ หรือรหัสประจำตัว..." required>
+    <input type="text" id="studentId" placeholder="ระบุชื่อ หรือรหัสประจำตัว..." required autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other">
     <button onclick="checkData()">เข้าสู่ระบบ</button>
     <p id="errorMsg" style="color: var(--apple-red); display: none; margin-top: 15px; font-weight: 500;">ไม่พบสิทธิ์การเข้าถึงข้อมูลใดๆ ในระบบ</p>
   </div>
@@ -439,7 +439,6 @@
     
     <div id="menuBanner" class="banner-wrapper" style="display:none;"></div>
 
-    <!-- แถบเครื่องมือใต้แบนเนอร์ -->
     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; position: relative; width: 100%; box-sizing: border-box; padding: 0 5px;">
         <div class="path-title" id="currentPathTitle" style="text-align: left; margin: 0; flex: 1 1 auto; min-width: 0; font-size: 19px; word-break: break-word;">หน้าหลัก</div>
         
