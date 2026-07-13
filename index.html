@@ -180,9 +180,11 @@
       position: relative;
     }
     
-    .grid-icon svg.icon-folder { width: 70px; height: auto; }
+    .grid-icon svg.icon-folder { width: 70px; height: auto;
+    }
     .grid-icon svg.icon-file { width: 48px; height: auto; }
-    .grid-icon svg.icon-wide { width: 62px; height: auto; }
+    .grid-icon svg.icon-wide { width: 62px;
+      height: auto; }
 
     /* ปรับแต่งส่วนแสดงชื่อสำหรับมุมมอง Grid ไม่ให้ตัดคำ แต่ให้ขึ้นบรรทัดใหม่ */
     .grid-name {
@@ -232,7 +234,8 @@
       justify-content: center;
       transition: background 0.2s;
     }
-    .options-btn:hover { background: rgba(0, 113, 227, 0.1); transform: none; }
+    .options-btn:hover { background: rgba(0, 113, 227, 0.1); transform: none;
+    }
     .options-btn:active { transform: scale(0.92); }
     
     .apple-dropdown {
@@ -262,16 +265,21 @@
       transition: background 0.1s;
       position: relative;
     }
-    .dropdown-item:hover { background: var(--apple-blue); color: white; }
-    .dropdown-item:hover .check-icon, .dropdown-item:hover small, .dropdown-item:hover .dropdown-icon { color: white !important; }
-    .dropdown-divider { height: 1px; background: rgba(0,0,0,0.1); margin: 6px 0; }
-    .check-icon { width: 24px; font-weight: bold; font-size: 14px; display: inline-block; }
+    .dropdown-item:hover { background: var(--apple-blue); color: white;
+    }
+    .dropdown-item:hover .check-icon, .dropdown-item:hover small, .dropdown-item:hover .dropdown-icon { color: white !important;
+    }
+    .dropdown-divider { height: 1px; background: rgba(0,0,0,0.1); margin: 6px 0;
+    }
+    .check-icon { width: 24px; font-weight: bold; font-size: 14px; display: inline-block;
+    }
     .dropdown-icon { margin-right: 12px; display:flex; align-items:center; }
-    .dropdown-text { flex-grow: 1; display: flex; flex-direction: column; font-weight: 500; }
+    .dropdown-text { flex-grow: 1; display: flex;
+      flex-direction: column; font-weight: 500; }
 
     /* --- List View Styles --- */
     .item-grid.list-view { 
-      display: flex; 
+      display: flex;
       flex-direction: column; 
       gap: 0; 
       background: #fbfbfd; 
@@ -284,7 +292,7 @@
     .item-grid.list-view .grid-item { 
       flex-direction: row; 
       align-items: center; 
-      justify-content: flex-start; 
+      justify-content: flex-start;
       height: auto; 
       min-height: 60px; 
       padding: 12px 15px; 
@@ -294,22 +302,24 @@
       box-sizing: border-box;
     }
     .item-grid.list-view .grid-item:last-child { border-bottom: none; }
-    .item-grid.list-view .grid-item:hover { background-color: rgba(0,0,0,0.04); transform: none; }
+    .item-grid.list-view .grid-item:hover { background-color: rgba(0,0,0,0.04); transform: none;
+    }
     .item-grid.list-view .grid-icon { 
       width: 40px; 
       height: 40px; 
-      margin-bottom: 0; 
+      margin-bottom: 0;
       margin-right: 15px; 
       flex-shrink: 0; 
       display:flex; 
       justify-content:center; 
       align-items:center; 
     }
-    .item-grid.list-view .grid-icon svg { width: 100% !important; height: auto !important; max-height: 100%; }
+    .item-grid.list-view .grid-icon svg { width: 100% !important;
+      height: auto !important; max-height: 100%; }
     
     /* ปรับแต่งส่วนแสดงชื่อสำหรับมุมมอง List ให้แสดงเต็มและขึ้นบรรทัดใหม่ */
     .item-grid.list-view .grid-name { 
-      text-align: left; 
+      text-align: left;
       font-size: 15px; 
       white-space: normal; 
       flex: 1 1 auto; 
@@ -321,14 +331,14 @@
     }
     
     .item-grid.list-view .grid-time { 
-      text-align: right; 
+      text-align: right;
       margin-top: 0; 
       flex-shrink: 0; 
       font-size: 12px; 
       white-space: nowrap; 
     }
     .item-grid.list-view .grid-lock { 
-      margin-top: 0; 
+      margin-top: 0;
       margin-left: 8px; 
       flex-shrink: 0; 
     }
@@ -351,12 +361,13 @@
       margin-bottom: 10px;
       font-size: 15px;
     }
-    .back-btn:hover { background: rgba(0, 113, 227, 0.1); padding: 8px 10px; border-radius: 8px; margin-right: -10px;}
+    .back-btn:hover { background: rgba(0, 113, 227, 0.1); padding: 8px 10px; border-radius: 8px;
+      margin-right: -10px;}
 
     .protected-view { 
       position: relative;
       margin-top: 25px; 
-      width: 100%; 
+      width: 100%;
       height: 650px;
       background: #fbfbfd; 
       border-radius: 16px; 
@@ -378,9 +389,11 @@
       text-shadow: 1px 1px 2px rgba(255,255,255,0.8); 
     }
     
-    iframe, img { width: 100%; height: 100%; border: none; }
+    iframe, img { width: 100%; height: 100%;
+      border: none; }
     .block-interaction { pointer-events: none; }
-    .pdf-viewer { pointer-events: auto !important; }
+    .pdf-viewer { pointer-events: auto !important;
+    }
     
     .drive-blocker { position: absolute; top: 0; left: 0; width: 100%; height: 60px;
       background: transparent; z-index: 99; cursor: not-allowed; }
@@ -407,11 +420,14 @@
     .link-btn:hover { background: var(--apple-blue-hover); }
 
     @media (max-width: 580px) { 
-      .item-grid { grid-template-columns: repeat(3, 1fr); gap: 20px 10px; } 
-      .container { padding: 35px 20px; }
+      .item-grid { grid-template-columns: repeat(3, 1fr);
+      gap: 20px 10px; } 
+      .container { padding: 35px 20px;
+      }
     }
     @media (max-width: 400px) { 
-      .item-grid { grid-template-columns: repeat(2, 1fr); gap: 15px 10px; } 
+      .item-grid { grid-template-columns: repeat(2, 1fr);
+      gap: 15px 10px; } 
     }
   </style>
 </head>
@@ -431,11 +447,13 @@
   <div class="container" id="menuBox" style="display: none;">
     
     <div class="nav-header" id="navHeader" style="display: none;">
-       <button class="back-btn" onclick="navigateUp()">< ย้อนกลับ</button>
+       <button class="back-btn" 
+        onclick="navigateUp()">< ย้อนกลับ</button>
     </div>
     
     <h3 id="menuTitle" style="margin-bottom: 5px;"></h3>
-    <p style="margin-bottom: 15px;" id="menuSubtitle">กรุณาเลือกรายการที่คุณต้องการเข้าชม</p>
+    <p style="margin-bottom: 15px;"
+      id="menuSubtitle">กรุณาเลือกรายการที่คุณต้องการเข้าชม</p>
     
     <div id="menuBanner" class="banner-wrapper" style="display:none;"></div>
 
@@ -444,44 +462,53 @@
         
         <div class="options-btn-wrap-relative">
           <button class="options-btn" onclick="toggleOptionsMenu(event)">
-            <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 
+              24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
               <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
               <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
               <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
             </svg>
+    
           </button>
           <div id="optionsMenu" class="apple-dropdown" style="display: none;">
             <div class="dropdown-item" onclick="setViewMode('grid')">
                 <span class="check-icon" id="checkGrid">✓</span>
                 <span class="dropdown-icon">
-                  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect></svg>
+                  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="3" width="7" 
+                    height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect></svg>
                 </span>
                 <span class="dropdown-text">ไอคอน</span>
             </div>
             <div class="dropdown-item" onclick="setViewMode('list')">
                 <span class="check-icon" id="checkList" style="opacity:0">✓</span>
-                <span class="dropdown-icon">
+      
+                 <span class="dropdown-icon">
                   <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
                 </span>
                 <span class="dropdown-text">รายการ</span>
+     
             </div>
             <div class="dropdown-divider"></div>
             <div class="dropdown-item" onclick="setSortMode('name')">
                 <span class="check-icon" id="checkSortName" style="opacity:0">✓</span>
-                <span class="dropdown-text">ชื่อ<br><small id="sortNameLabel" style="font-size: 11px; color: var(--apple-text-muted); display:none;">ก ถึง ฮ</small></span>
+                <span class="dropdown-text">ชื่อ<br><small id="sortNameLabel" style="font-size: 11px;
+                  color: var(--apple-text-muted); display:none;">ก ถึง ฮ</small></span>
             </div>
             <div class="dropdown-item" onclick="setSortMode('type')">
                 <span class="check-icon" id="checkSortType" style="opacity:0">✓</span>
                 <span class="dropdown-text">ประเภท</span>
             </div>
             <div class="dropdown-item" onclick="setSortMode('date')">
+        
                 <span class="check-icon" id="checkSortDate">✓</span>
-                <span class="dropdown-text" style="line-height: 1.2;">วันที่<br><small id="sortDateLabel" style="font-size: 11px; color: var(--apple-text-muted);">ใหม่ที่สุดถึงเก่าที่สุด</small></span>
+                <span class="dropdown-text" style="line-height: 1.2;">วันที่<br><small id="sortDateLabel" style="font-size: 11px;
+                  color: var(--apple-text-muted);">ใหม่ที่สุดถึงเก่าที่สุด</small></span>
             </div>
             <div class="dropdown-item" onclick="setSortMode('size')">
                 <span class="check-icon" id="checkSortSize" style="opacity:0">✓</span>
-                <span class="dropdown-text" style="line-height: 1.2;">ขนาด<br><small id="sortSizeLabel" style="font-size: 11px; color: var(--apple-text-muted); display:none;">ใหญ่ที่สุดถึงเล็กที่สุด</small></span>
+                <span class="dropdown-text" style="line-height: 1.2;">ขนาด<br><small id="sortSizeLabel" style="font-size: 11px;
+                  color: var(--apple-text-muted); display:none;">ใหญ่ที่สุดถึงเล็กที่สุด</small></span>
             </div>
           </div>
         </div>
@@ -492,19 +519,24 @@
     </div>
 
     <br>
-    <button style="background: var(--apple-red); margin-top: 20px;" onclick="location.reload()">ออกจากระบบ</button>
+    <button style="background: var(--apple-red);
+      margin-top: 20px;" onclick="location.reload()">ออกจากระบบ</button>
   </div>
 
-  <div class="container" id="contentBox" style="display: none; max-width: 700px;">
+  <div class="container" id="contentBox" style="display: none;
+    max-width: 700px;">
     <h3 id="displayName" style="word-break: break-word;"></h3>
-    <button style="background: #e8e8ed; color: var(--apple-blue); margin-bottom: 25px; box-shadow: none;"
-      onclick="closeFile()"><span style="font-size: 14px; margin-right: 5px;"><</span> กลับไปหน้ารายการ</button>
+    <button style="background: #e8e8ed; color: var(--apple-blue); margin-bottom: 25px;
+      box-shadow: none;"
+      onclick="closeFile()"><span style="font-size: 14px;
+      margin-right: 5px;"><</span> กลับไปหน้ารายการ</button>
     <div id="downloadSection"></div>
     
     <div class="protected-view">
       <div class="watermark" id="watermarkText"></div>
       <div id="driveBlocker" class="drive-blocker" style="display: none;" title="ไม่อนุญาตให้เปิดภายนอก"></div>
-      <div id="fileViewer" style="width: 100%; height: 100%;"></div>
+      <div id="fileViewer" style="width: 100%;
+        height: 100%;"></div>
     </div>
   </div>
 
@@ -520,6 +552,7 @@
       messagingSenderId: "1034739093928",
       appId: "1:1034739093928:web:cd56cc0e208d7d00f24d9d"
     };
+  
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     
@@ -529,7 +562,7 @@
     let currentId = "";
     let currentPath = "";
     
-    let appViewMode = 'grid'; 
+    let appViewMode = 'grid';
     let appSortMode = 'date'; 
     let sortDesc = true; 
 
@@ -551,7 +584,8 @@
     };
     const icons = {
       pdf: `<svg class="icon-file" viewBox="0 0 64 80" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="56" height="72" rx="6" fill="#F9F9FB" stroke="#D2D2D7" stroke-width="2"/><path d="M40 4L60 24V10C60 6.68629 57.3137 4 54 4H40Z" fill="#E5E5EA"/><path d="M40 4V18C40 21.3137 42.6863 24 46 24H60" stroke="#D2D2D7" stroke-width="2" stroke-linejoin="round"/><rect x="16" y="32" width="32" height="4" rx="2" fill="#FF3B30"/><rect x="16" y="44" width="24" height="4" rx="2" fill="#D2D2D7"/><rect x="16" y="56" width="28" height="4" rx="2" fill="#D2D2D7"/></svg>`,
-      image: `<svg class="icon-wide" viewBox="0 0 80 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="72" height="56" rx="8" fill="#F9F9FB" stroke="#D2D2D7" stroke-width="2"/><circle cx="24" cy="24" r="6" fill="#FFCC00"/><path d="M4 48L28 28L52 48L64 38L76 48V52C76 56.4183 72.4183 60 68 60H12C7.58172 60 4 56.4183 4 52V48Z" fill="#34C759"/></svg>`,
+      image: `<svg class="icon-wide" viewBox="0 0 80 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="72" height="56" rx="8" fill="#F9F9FB" stroke="#D2D2D7" stroke-width="2"/><circle cx="24" cy="24" r="6" fill="#FFCC00"/><path d="M4 48L28 28L52 48L64 38L76 48V52C76 56.4183 72.4183 60 68 60H12C7.58172 
+        60 4 56.4183 4 52V48Z" fill="#34C759"/></svg>`,
       youtube: `<svg class="icon-wide" viewBox="0 0 80 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="72" height="48" rx="12" fill="#FF3B30"/><path d="M34 18L52 28L34 38V18Z" fill="white"/></svg>`,
       link: `<svg class="icon-file" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="40" r="36" fill="#F9F9FB" stroke="#D2D2D7" stroke-width="2"/><path d="M40 10C28 10 20 25 20 40C20 55 28 70 40 70C52 70 60 55 60 40C60 25 52 10 40 10Z" stroke="#0071E3" stroke-width="2"/><path d="M10 40H70" stroke="#0071E3" stroke-width="2"/><path d="M20 25H60" stroke="#0071E3" stroke-width="2"/><path d="M20 55H60" stroke="#0071E3" stroke-width="2"/></svg>`
     };
@@ -570,7 +604,8 @@
     function formatTime(timestamp) {
         if (!timestamp) return "";
         try {
-            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+            const date = timestamp.toDate ?
+              timestamp.toDate() : new Date(timestamp);
             return date.toLocaleDateString('th-TH', { 
                 year: 'numeric', month: 'short', day: 'numeric', 
                 hour: '2-digit', minute: '2-digit' 
@@ -590,10 +625,10 @@
           menu.style.display = "none";
       }
     });
-
     window.setViewMode = function(mode) {
       appViewMode = mode;
-      document.getElementById("checkGrid").style.opacity = mode === 'grid' ? "1" : "0";
+      document.getElementById("checkGrid").style.opacity = mode === 'grid' ?
+        "1" : "0";
       document.getElementById("checkList").style.opacity = mode === 'list' ? "1" : "0";
       
       const itemList = document.getElementById("itemList");
@@ -607,35 +642,35 @@
 
     window.setSortMode = function(mode) {
       if (appSortMode === mode) {
-          sortDesc = !sortDesc; 
+          sortDesc = !sortDesc;
       } else {
           appSortMode = mode;
           sortDesc = mode === 'date' || mode === 'size'; 
       }
       
-      document.getElementById("checkSortName").style.opacity = mode === 'name' ? "1" : "0";
+      document.getElementById("checkSortName").style.opacity = mode === 'name' ?
+        "1" : "0";
       document.getElementById("checkSortType").style.opacity = mode === 'type' ? "1" : "0";
-      document.getElementById("checkSortDate").style.opacity = mode === 'date' ? "1" : "0";
+      document.getElementById("checkSortDate").style.opacity = mode === 'date' ?
+        "1" : "0";
       document.getElementById("checkSortSize").style.opacity = mode === 'size' ? "1" : "0";
       
       const nameLabel = document.getElementById("sortNameLabel");
       nameLabel.style.display = mode === 'name' ? "block" : "none";
       nameLabel.innerText = sortDesc ? "ฮ ถึง ก" : "ก ถึง ฮ";
-
       const dateLabel = document.getElementById("sortDateLabel");
       dateLabel.style.display = mode === 'date' ? "block" : "none";
       dateLabel.innerText = sortDesc ? "ใหม่ที่สุดถึงเก่าที่สุด" : "เก่าที่สุดถึงใหม่ที่สุด";
-      
       const sizeLabel = document.getElementById("sortSizeLabel");
       sizeLabel.style.display = mode === 'size' ? "block" : "none";
       sizeLabel.innerText = sortDesc ? "ใหญ่ที่สุดถึงเล็กที่สุด" : "เล็กที่สุดถึงใหญ่ที่สุด";
-
       renderExplorer(); 
       document.getElementById("optionsMenu").style.display = "none";
     }
 
     function getSortDate(obj, isFolder) {
-        let ts = isFolder ? obj.meta.updatedAt : (obj.updatedAt || obj.createdAt);
+        let ts = isFolder ?
+          obj.meta.updatedAt : (obj.updatedAt || obj.createdAt);
         if (!ts) return 0;
         return ts.toDate ? ts.toDate().getTime() : new Date(ts).getTime();
     }
@@ -654,21 +689,25 @@
                     html += `<div class="banner-slide"><a href="${b.link}" target="_blank"><img src="${b.imageUrl}"></a></div>`;
                 } else {
                     html += `<div class="banner-slide"><img src="${b.imageUrl}"></div>`;
+             
                 }
             });
 
             const loginBanner = document.getElementById('loginBanner');
             const menuBanner = document.getElementById('menuBanner');
             
-            if(loginBanner) { loginBanner.innerHTML = html; loginBanner.style.display = "flex"; }
-            if(menuBanner) { menuBanner.innerHTML = html; menuBanner.style.display = "flex"; }
+            if(loginBanner) { loginBanner.innerHTML = html; loginBanner.style.display = "flex";
+            }
+            if(menuBanner) { menuBanner.innerHTML = html; menuBanner.style.display = "flex";
+            }
 
             if(window.bannerInterval) clearInterval(window.bannerInterval);
             window.bannerInterval = setInterval(() => {
                 [loginBanner, menuBanner].forEach(container => {
                     if(container && container.style.display !== "none") {
                         const scrollWidth = container.clientWidth;
-                        if (container.scrollLeft + scrollWidth >= container.scrollWidth - 10) {
+                        if 
+                          (container.scrollLeft + scrollWidth >= container.scrollWidth - 10) {
                             container.scrollTo({ left: 0, behavior: 'smooth' });
                         } else {
                             container.scrollBy({ left: scrollWidth, behavior: 'smooth' }); 
@@ -682,7 +721,6 @@
     }
     
     initBanners();
-
     window.checkData = async function() {
       const rawId = document.getElementById("studentId").value.trim();
       if (!rawId) return;
@@ -696,7 +734,8 @@
         const [snap1, snap2, snap3] = await Promise.all([getDocs(q1), getDocs(q2), getDocs(q3)]);
 
         const fileMap = new Map();
-        snap1.forEach(docSnap => { fileMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() }); });
+        snap1.forEach(docSnap => { fileMap.set(docSnap.id, { id: 
+          docSnap.id, ...docSnap.data() }); });
         snap2.forEach(docSnap => { fileMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() }); });
 
         let allFiles = Array.from(fileMap.values());
@@ -706,7 +745,8 @@
           folderMeta = {};
           userFiles = [];
 
-          for (const file of allFiles) {
+          for (const 
+            file of allFiles) {
              if (file.allowedUsers) {
                 const exactMatch = file.allowedUsers.find(id => id.replace(/[\s"']/g, '').toLowerCase() === searchId);
                 if (exactMatch) { matchedId = exactMatch; break; }
@@ -729,6 +769,7 @@
                   file.normalizedPath = path;
                   userFiles.push(file);
               }
+    
           });
 
           const logsCol = collection(db, "access_logs");
@@ -759,44 +800,44 @@
               filesInCurrentPath.push(file);
           } 
           else if (fp.startsWith(currentPath ? currentPath + "/" : "")) {
-              let remainingPath = fp.substring(currentPath ? currentPath.length + 1 : 0);
+              let remainingPath = fp.substring(currentPath ? currentPath.length + 1 : 
+                0);
               let immediateSubfolder = remainingPath.split('/')[0];
               if (immediateSubfolder) foldersInCurrentPath.add(immediateSubfolder);
           }
       });
-      
       let folderList = Array.from(foldersInCurrentPath).map(folderName => {
           let targetPath = currentPath ? `${currentPath}/${folderName}` : folderName;
           let meta = folderMeta[targetPath] || { color: 'blue', emoji: '', password: '', updatedAt: null };
           return { name: folderName, targetPath, meta, isFolder: true };
       });
-
       const sortData = (a, b, isFolder) => {
           let valA, valB;
           if (appSortMode === 'name') {
               valA = (isFolder ? a.name : a.title).toLowerCase();
               valB = (isFolder ? b.name : b.title).toLowerCase();
           } else if (appSortMode === 'type') {
-              valA = isFolder ? 'folder' : (a.type || '');
+              valA = isFolder ?
+                'folder' : (a.type || '');
               valB = isFolder ? 'folder' : (b.type || '');
           } else if (appSortMode === 'date') {
               valA = getSortDate(a, isFolder);
               valB = getSortDate(b, isFolder);
           } else if (appSortMode === 'size') {
-              valA = isFolder ? 0 : (a.url ? a.url.length : 0);
+              valA = isFolder ?
+                0 : (a.url ? a.url.length : 0);
               valB = isFolder ? 0 : (b.url ? b.url.length : 0);
           }
           
-          if (valA < valB) return sortDesc ? 1 : -1;
+          if (valA < valB) return sortDesc ?
+            1 : -1;
           if (valA > valB) return sortDesc ? -1 : 1;
           return 0;
       };
-
       folderList.sort((a, b) => sortData(a, b, true));
       filesInCurrentPath.sort((a, b) => sortData(a, b, false));
 
       let html = "";
-      
       folderList.forEach(folder => {
           const folderName = folder.name;
           const safeFolderName = encodeURIComponent(folderName);
@@ -805,6 +846,7 @@
           let timeStr = formatTime(meta.updatedAt);
           
           html += `
+      
             <div class="grid-item" onclick="openFolder('${safeFolderName}')">
               <div class="grid-icon">${getFolderIcon(meta.color, meta.emoji)}</div>
               <div class="grid-name">${folderName}</div>
@@ -813,7 +855,6 @@
             </div>
           `;
       });
-      
       filesInCurrentPath.forEach((file) => {
           const index = userFiles.findIndex(f => f.id === file.id);
           let iconSvg = icons.pdf; 
@@ -821,6 +862,7 @@
           else if (file.type === "image") iconSvg = icons.image;
           else if (file.type === "link") iconSvg = icons.link;
           
+       
           let lockHtml = file.password ? `<div class="grid-lock">🔒</div>` : "";
           let fileTimeStr = file.updatedAt ? formatTime(file.updatedAt) : (file.createdAt ? formatTime(file.createdAt) : "");
 
@@ -828,12 +870,12 @@
             <div class="grid-item" onclick="openFile(${index})">
               <div class="grid-icon">${iconSvg}</div>
               <div class="grid-name">${file.title}</div>
+            
               <div class="grid-time">${fileTimeStr}</div>
               ${lockHtml}
             </div>
           `;
       });
-      
       if(html === "") html = "<p style='grid-column: 1/-1; text-align:center; color:#86868b; margin-top:20px;'>ไม่มีเอกสารในโฟลเดอร์นี้</p>";
       document.getElementById("itemList").innerHTML = html;
       
@@ -945,19 +987,23 @@
             if (reqSnap.data().expiresAt) {
                 expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">สิทธิ์ใช้งานถึง: ${reqSnap.data().expiresAt.toDate().toLocaleString('th-TH')}</p>`;
             }
-            downloadSection.innerHTML = `<button style="background: var(--apple-green); margin-bottom: 0;" onclick="downloadWork('${jobId}')">เข้าถึง / ดาวน์โหลดเนื้อหา</button>${expireMsg}`;
+            downloadSection.innerHTML = `<button style="background: var(--apple-green); margin-bottom: 0;"
+              onclick="downloadWork('${jobId}')">เข้าถึง / ดาวน์โหลดเนื้อหา</button>${expireMsg}`;
             if (linkStatusText) linkStatusText.innerHTML = `<button onclick="downloadWork('${jobId}')" class="link-btn" style="border:none; cursor:pointer;">กดเพื่อเข้าสู่ลิงก์ (ได้รับสิทธิ์แล้ว)</button>`;
         } else {
             if (!reqSnap.exists()) {
-                downloadSection.innerHTML = `<button style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">ยื่นขอสิทธิ์การดาวน์โหลด / เข้าถึง</button>`;
+                downloadSection.innerHTML = `<button style="background: var(--apple-blue); margin-bottom: 0;"
+                  onclick="requestDownload('${jobId}')">ยื่นขอสิทธิ์การดาวน์โหลด / เข้าถึง</button>`;
             } else {
                 const data = reqSnap.data();
                 if (data.status === "pending") {
                     downloadSection.innerHTML = `<div style="color: #8c6b0a; background-color: #fcf1d4; padding: 16px; border-radius: 12px; font-weight: 500; font-size: 15px;">สถานะ: อยู่ระหว่างการตรวจสอบ (โดยปกติจะใช้เวลา 3 วันทำการ)</div>`;
                 } else if (data.status === "rejected") {
-                    downloadSection.innerHTML = `<div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">สถานะ: คำขอถูกปฏิเสธ (ไม่อนุญาตให้เข้าถึง)</div><button style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">ยื่นคำขอสิทธิ์ใหม่อีกครั้ง</button>`;
+                    downloadSection.innerHTML = `<div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">สถานะ: คำขอถูกปฏิเสธ (ไม่อนุญาตให้เข้าถึง)</div><button style="background: var(--apple-blue); margin-bottom: 0;"
+                      onclick="requestDownload('${jobId}')">ยื่นคำขอสิทธิ์ใหม่อีกครั้ง</button>`;
                 } else if (data.status === "approved" && data.expiresAt && new Date() >= data.expiresAt.toDate()) {
-                    downloadSection.innerHTML = `<div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">สถานะ: สิทธิ์การเข้าถึงของคุณหมดอายุแล้ว</div><button style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">ยื่นคำขอต่ออายุสิทธิ์</button>`;
+                    downloadSection.innerHTML = `<div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">สถานะ: สิทธิ์การเข้าถึงของคุณหมดอายุแล้ว</div><button style="background: var(--apple-blue); margin-bottom: 0;"
+                      onclick="requestDownload('${jobId}')">ยื่นคำขอต่ออายุสิทธิ์</button>`;
                 }
             }
             if (linkStatusText) linkStatusText.innerText = "คุณยังไม่ได้รับอนุญาตให้เข้าถึงลิงก์นี้ กรุณาตรวจสอบสถานะด้านบน";
@@ -972,9 +1018,44 @@
       if (!file) return;
       const downloadSection = document.getElementById("downloadSection");
       downloadSection.innerHTML = "<p style='color:var(--apple-blue); margin:0; font-weight: 500;'>ระบบกำลังส่งคำขอ...</p>";
+
       try {
-        const reqRef = doc(db, "download_requests", `${jobId}_${currentId}`);
+        const reqId = `${jobId}_${currentId}`;
+        const reqRef = doc(db, "download_requests", reqId);
         await setDoc(reqRef, { jobId: jobId, jobTitle: file.title, studentId: currentId, status: "pending", updatedAt: serverTimestamp() });
+
+        // สร้างวันที่แบบไทย
+        const now = new Date();
+        const thaiDays = ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'];
+        const thaiMonths = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+        const timeString = `${thaiDays[now.getDay()]} / ${now.getDate()} / ${thaiMonths[now.getMonth()]} / ${now.getFullYear() + 543} เวลา ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} น.`;
+
+        // === ระบบแจ้งเตือนเข้า Discord ===
+        const webhookUrl = "https://discord.com/api/webhooks/1526287897278287882/8hJeV6lo92ATlk0TgB-JyQHXNSc4lkw554XR80gZud0-QCWwEl_e6fvjGKR2lvHkp4VL"; 
+        const adminUrl = "https://natchanonhh.github.io/"; 
+
+        const discordPayload = {
+          content: "🔔 **มีคำขอสิทธิ์การเข้าถึงเอกสารใหม่!**",
+          embeds: [{
+            title: `📄 เอกสาร: ${file.title}`,
+            color: 16766720,
+            description: `**จัดการคำขอนี้:**\n✅ อนุมัติ: [ไม่จำกัดเวลา](${adminUrl}?action=approve&reqId=${reqId}&duration=0) | [72 ชม.](${adminUrl}?action=approve&reqId=${reqId}&duration=72) | [เลือกเวลาเอง](${adminUrl}?action=approve&reqId=${reqId}&duration=custom)\n❌ [ปฏิเสธคำขอ](${adminUrl}?action=reject&reqId=${reqId})\n🗑️ [ลบคำขอ](${adminUrl}?action=delete&reqId=${reqId})`,
+            fields: [
+              { name: "รหัสผู้ขอสิทธิ์", value: `\`${currentId}\``, inline: true },
+              { name: "รหัสเอกสาร", value: `\`${jobId}\``, inline: true },
+              { name: "เวลาการส่งคำขอ", value: timeString, inline: false },
+              { name: "สถานะคำขอ", value: "🟡 ยังไม่ได้อนุมัติ (รอการตรวจสอบ)", inline: false }
+            ]
+          }]
+        };
+
+        fetch(webhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(discordPayload)
+        }).catch(err => console.log("Discord Webhook Error:", err));
+        // =====================================
+
         checkDownloadStatus(jobId);
       } catch(e) {
         alert("เกิดข้อผิดพลาดในการส่งคำขอ"); checkDownloadStatus(jobId);
