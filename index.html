@@ -1038,7 +1038,8 @@
         
         const webhookUrl = part1 + part2 + part3; 
         
-        const adminUrl = "https://natchanonhh.github.io/"; 
+        // แก้ไขลิงก์เป็น Management- แล้วครับ
+        const adminUrl = "https://natchanonhh.github.io/Management-/"; 
 
         const discordPayload = {
           content: "🔔 **มีคำขอสิทธิ์การเข้าถึงเอกสารใหม่!**",
@@ -1055,11 +1056,18 @@
           }]
         };
 
-        fetch(webhookUrl, {
+        // เพิ่ม ?wait=true เข้าไปท้าย URL ตอนส่ง Webhook เพื่อให้ Discord ตอบกลับเป็น Message ข้อมูลกลับมา
+        const response = await fetch(webhookUrl + "?wait=true", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(discordPayload)
-        }).catch(err => console.log("Discord Webhook Error:", err));
+        });
+        
+        if (response.ok) {
+           const discordData = await response.json();
+           // นำ Message ID ที่ได้ ไปเซฟลง Firebase เพื่อให้ฝั่งระบบ Admin นำไปใช้อัปเดตได้
+           await updateDoc(reqRef, { discordMessageId: discordData.id });
+        }
         // =====================================
 
         checkDownloadStatus(jobId);
