@@ -184,7 +184,7 @@
     }
     .grid-icon svg.icon-file { width: 48px; height: auto; }
     .grid-icon svg.icon-wide { width: 62px;
-    height: auto; }
+      height: auto; }
 
     /* ปรับแต่งส่วนแสดงชื่อสำหรับมุมมอง Grid ไม่ให้ตัดคำ แต่ให้ขึ้นบรรทัดใหม่ */
     .grid-name {
@@ -204,6 +204,10 @@
       margin-top: 6px;
       color: var(--apple-text-main);
       text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
     }
 
     .grid-time {
@@ -343,27 +347,6 @@
       flex-shrink: 0; 
     }
     
-    .nav-header {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      margin-bottom: 0;
-      padding-bottom: 0;
-      border-bottom: none;
-    }
-    
-    .back-btn {
-      background: transparent;
-      color: var(--apple-blue);
-      padding: 8px 0;
-      width: auto;
-      margin: 0;
-      margin-bottom: 10px;
-      font-size: 15px;
-    }
-    .back-btn:hover { background: rgba(0, 113, 227, 0.1); padding: 8px 10px; border-radius: 8px;
-      margin-right: -10px;}
-
     .protected-view { 
       position: relative;
       margin-top: 25px; 
@@ -446,11 +429,6 @@
   </div>
 
   <div class="container" id="menuBox" style="display: none;">
-    
-    <div class="nav-header" id="navHeader" style="display: none;">
-       <button class="back-btn" onclick="navigateUp()">< ย้อนกลับ</button>
-    </div>
-    
     <h3 id="menuTitle" style="margin-bottom: 5px;"></h3>
     <p style="margin-bottom: 15px;" id="menuSubtitle">กรุณาเลือกรายการที่คุณต้องการเข้าชม</p>
     
@@ -459,7 +437,15 @@
 
     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; position: relative; width: 100%; box-sizing: border-box; padding: 0 5px;">
         <div style="display: flex; align-items: center; flex: 1 1 auto; min-width: 0; text-align: left;">
-            <div class="path-title" id="currentPathTitle" style="margin: 0; font-size: 19px; word-break: break-word;">หน้าหลัก</div>
+            
+            <button id="navBackBtn" onclick="navigateUp()" style="display:none; background: transparent; border: none; color: var(--apple-blue); cursor: pointer; padding: 0 8px 0 0; margin: 0; align-items: center; justify-content: center; width: auto; height: auto;" title="ย้อนกลับ">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+
+            <div class="path-title" id="currentPathTitle" style="margin: 0; font-size: 19px; word-break: break-word; font-weight: 600;">หน้าหลัก</div>
+           
             <button onclick="refreshData(event)" style="background: transparent; border: none; color: var(--apple-blue); cursor: pointer; padding: 0 0 0 8px; margin: 0; display: inline-flex; align-items: center; justify-content: center; box-shadow: none; width: auto; height: auto;" title="รันข้อมูลให้เป็นปัจจุบัน">
                 <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="23 4 23 10 17 10"></polyline>
@@ -479,7 +465,7 @@
           </button>
           <div id="optionsMenu" class="apple-dropdown" style="display: none;">
             <div class="dropdown-item" onclick="setViewMode('grid')">
-                <span class="check-icon" id="checkGrid">✓</span>
+                 <span class="check-icon" id="checkGrid">✓</span>
                 <span class="dropdown-icon">
                   <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect></svg>
                 </span>
@@ -502,7 +488,7 @@
                 <span class="dropdown-text">ประเภท</span>
             </div>
             <div class="dropdown-item" onclick="setSortMode('date')">
-                <span class="check-icon" id="checkSortDate">✓</span>
+                 <span class="check-icon" id="checkSortDate">✓</span>
                 <span class="dropdown-text" style="line-height: 1.2;">วันที่<br><small id="sortDateLabel" style="font-size: 11px; color: var(--apple-text-muted);">ใหม่ที่สุดถึงเก่าที่สุด</small></span>
             </div>
             <div class="dropdown-item" onclick="setSortMode('size')">
@@ -522,9 +508,16 @@
   </div>
 
   <div class="container" id="contentBox" style="display: none; max-width: 700px;">
-    <h3 id="displayName" style="word-break: break-word;"></h3>
-    <button style="background: #e8e8ed; color: var(--apple-blue); margin-bottom: 25px; box-shadow: none;"
-      onclick="closeFile()"><span style="font-size: 14px; margin-right: 5px;"><</span> กลับไปหน้ารายการ</button>
+    
+    <div style="display: flex; align-items: center; justify-content: flex-start; margin-bottom: 25px; width: 100%; box-sizing: border-box;">
+        <button id="fileBackBtn" onclick="closeFile()" style="background: transparent; border: none; color: var(--apple-blue); cursor: pointer; padding: 0 10px 0 0; margin: 0; align-items: center; justify-content: center; width: auto; height: auto;" title="กลับไปหน้ารายการ">
+            <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </button>
+        <h3 id="displayName" style="margin: 0; word-break: break-word; text-align: left; font-size: 22px; flex: 1;"></h3>
+    </div>
+
     <div id="downloadSection"></div>
     
     <div class="protected-view">
@@ -558,6 +551,7 @@
     let appViewMode = 'grid';
     let appSortMode = 'date'; 
     let sortDesc = true; 
+    let unlockedItems = new Set(); // ระบบจำรหัสผ่านที่กรอกผ่านแล้ว จนกว่าจะรีโหลด/ออกจากระบบ
 
     const studentInput = document.getElementById("studentId");
     if(studentInput) {
@@ -579,7 +573,8 @@
       pdf: `<svg class="icon-file" viewBox="0 0 64 80" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="56" height="72" rx="6" fill="#F9F9FB" stroke="#D2D2D7" stroke-width="2"/><path d="M40 4L60 24V10C60 6.68629 57.3137 4 54 4H40Z" fill="#E5E5EA"/><path d="M40 4V18C40 21.3137 42.6863 24 46 24H60" stroke="#D2D2D7" stroke-width="2" stroke-linejoin="round"/><rect x="16" y="32" width="32" height="4" rx="2" fill="#FF3B30"/><rect x="16" y="44" width="24" height="4" rx="2" fill="#D2D2D7"/><rect x="16" y="56" width="28" height="4" rx="2" fill="#D2D2D7"/></svg>`,
       image: `<svg class="icon-wide" viewBox="0 0 80 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="72" height="56" rx="8" fill="#F9F9FB" stroke="#D2D2D7" stroke-width="2"/><circle cx="24" cy="24" r="6" fill="#FFCC00"/><path d="M4 48L28 28L52 48L64 38L76 48V52C76 56.4183 72.4183 60 68 60H12C7.58172 60 4 56.4183 4 52V48Z" fill="#34C759"/></svg>`,
       youtube: `<svg class="icon-wide" viewBox="0 0 80 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="72" height="48" rx="12" fill="#FF3B30"/><path d="M34 18L52 28L34 38V18Z" fill="white"/></svg>`,
-      link: `<svg class="icon-file" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="40" r="36" fill="#F9F9FB" stroke="#D2D2D7" stroke-width="2"/><path d="M40 10C28 10 20 25 20 40C20 55 28 70 40 70C52 70 60 55 60 40C60 25 52 10 40 10Z" stroke="#0071E3" stroke-width="2"/><path d="M10 40H70" stroke="#0071E3" stroke-width="2"/><path d="M20 25H60" stroke="#0071E3" stroke-width="2"/><path d="M20 55H60" stroke="#0071E3" stroke-width="2"/></svg>`
+      link: `<svg class="icon-file" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="40" r="36" fill="#F9F9FB" stroke="#D2D2D7" stroke-width="2"/><path d="M40 10C28 10 20 25 20 40C20 55 28 70 40 70C52 70 60 55 60 40C60 25 52 10 40 10Z" stroke="#0071E3" stroke-width="2"/><path d="M10 40H70" stroke="#0071E3" stroke-width="2"/><path d="M20 25H60" stroke="#0071E3" stroke-width="2"/><path d="M20 55H60" stroke="#0071E3" stroke-width="2"/></svg>`,
+      lock: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>`
     };
     function getFolderIcon(color, emoji) {
         let c = appleColors[color] || appleColors.blue;
@@ -616,7 +611,6 @@
           menu.style.display = "none";
       }
     });
-    
     window.setViewMode = function(mode) {
       appViewMode = mode;
       document.getElementById("checkGrid").style.opacity = mode === 'grid' ? "1" : "0";
@@ -653,7 +647,6 @@
       const sizeLabel = document.getElementById("sortSizeLabel");
       sizeLabel.style.display = mode === 'size' ? "block" : "none";
       sizeLabel.innerText = sortDesc ? "ใหญ่ที่สุดถึงเล็กที่สุด" : "เล็กที่สุดถึงใหญ่ที่สุด";
-      
       renderExplorer(); 
       document.getElementById("optionsMenu").style.display = "none";
     }
@@ -670,6 +663,9 @@
             let banners = [];
             snap.forEach(doc => banners.push({id: doc.id, ...doc.data()}));
             
+            // จัดเรียงตามลำดับที่จัดการมาจากหลังบ้าน
+            banners.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+
             if (banners.length === 0) return;
             
             let html = '';
@@ -684,13 +680,13 @@
             const loginBanner = document.getElementById('loginBanner');
             const menuBanner = document.getElementById('menuBanner');
             
-            // เพิ่มคำสั่งแสดงระบบนาฬิกาใต้โฆษณา
-            if(loginBanner) { loginBanner.innerHTML = html; loginBanner.style.display = "flex"; document.getElementById('loginClock').style.display = "block"; }
-            if(menuBanner) { menuBanner.innerHTML = html; menuBanner.style.display = "flex"; document.getElementById('menuClock').style.display = "block"; }
+            if(loginBanner) { loginBanner.innerHTML = html;
+              loginBanner.style.display = "flex"; document.getElementById('loginClock').style.display = "block"; }
+            if(menuBanner) { menuBanner.innerHTML = html;
+              menuBanner.style.display = "flex"; document.getElementById('menuClock').style.display = "block"; }
 
             if(window.bannerInterval) clearInterval(window.bannerInterval);
-            
-            // แก้ไขเวลาโฆษณาเลือนอัตโนมัติเป็น 6 วินาที (6000 ms)
+            // เวลาโฆษณาเลือนอัตโนมัติเป็น 6 วินาที (6000 ms) ตามต้นฉบับ
             window.bannerInterval = setInterval(() => {
                 [loginBanner, menuBanner].forEach(container => {
                     if(container && container.style.display !== "none") {
@@ -698,18 +694,17 @@
                         if (container.scrollLeft + scrollWidth >= container.scrollWidth - 10) {
                             container.scrollTo({ left: 0, behavior: 'smooth' });
                         } else {
-                            container.scrollBy({ left: scrollWidth, behavior: 'smooth' }); 
+                             container.scrollBy({ left: scrollWidth, behavior: 'smooth' }); 
                         }
                     }
                 });
-            }, 10000); 
+            }, 6000);
         } catch(e) {
             console.error("โหลดแบนเนอร์ล้มเหลว", e);
         }
     }
     
     initBanners();
-
     // ---------------- ระบบเวลาใต้ภาพโฆษณาแบบเรียลไทม์ ----------------
     function updateRealtimeClock() {
         const now = new Date();
@@ -725,7 +720,6 @@
         const minutes = String(now.getMinutes()).padStart(2, '0');
         
         const timeString = `ข้อมูล ณ วัน${dayName} ที่ ${date} เดือน${monthName} พ.ศ.${year} เวลา ${hours}:${minutes} น.`;
-        
         const loginClock = document.getElementById('loginClock');
         const menuClock = document.getElementById('menuClock');
         
@@ -733,7 +727,6 @@
         if (menuClock && menuClock.style.display !== "none") menuClock.innerText = timeString;
     }
     
-    // อัปเดตเวลาทุกวินาที
     setInterval(updateRealtimeClock, 1000);
     updateRealtimeClock();
     // -------------------------------------------------------------
@@ -742,6 +735,8 @@
       const rawId = document.getElementById("studentId").value.trim();
       if (!rawId) return;
       document.getElementById("errorMsg").style.display = "none";
+      unlockedItems.clear(); // ล้างรหัสผ่านเมื่อเข้าสู่ระบบใหม่
+      
       try {
         const searchId = rawId.replace(/[\s"']/g, '').toLowerCase();
         const q1 = query(collection(db, "jobs"), where("allowedUsers", "array-contains", rawId));
@@ -751,6 +746,7 @@
         const [snap1, snap2, snap3] = await Promise.all([getDocs(q1), getDocs(q2), getDocs(q3)]);
 
         const fileMap = new Map();
+        
         snap1.forEach(docSnap => { fileMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() }); });
         snap2.forEach(docSnap => { fileMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() }); });
 
@@ -768,7 +764,6 @@
              }
           }
           currentId = matchedId;
-          
           snap3.forEach(docSnap => {
               const data = docSnap.data();
               let path = (data.folder || "").trim().replace(/^\/+|\/+$/g, '');
@@ -779,7 +774,6 @@
                   updatedAt: data.updatedAt || data.createdAt || null
               };
           });
-          
           allFiles.forEach(file => {
               if (file.type !== "system_folder") {
                   let path = (file.folder || "").trim().replace(/^\/+|\/+$/g, '');
@@ -829,6 +823,7 @@
             const [snap1, snap2, snap3] = await Promise.all([getDocs(q1), getDocs(q2), getDocs(q3)]);
 
             const fileMap = new Map();
+   
             snap1.forEach(docSnap => { fileMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() }); });
             snap2.forEach(docSnap => { fileMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() }); });
 
@@ -848,7 +843,6 @@
                     updatedAt: data.updatedAt || data.createdAt || null
                 };
             });
-
             allFiles.forEach(file => {
                 if (file.type !== "system_folder") {
                     let path = (file.folder || "").trim().replace(/^\/+|\/+$/g, '');
@@ -856,10 +850,8 @@
                     userFiles.push(file);
                 }
             });
-
             // อัปเดตการแสดงผล (คงอยู่ที่โฟลเดอร์หรือหน้าปัจจุบันไว้ไม่เปลี่ยนแปลง)
             renderExplorer();
-            
         } catch (error) {
             console.error("Refresh Error:", error);
             alert("เกิดข้อผิดพลาดในการดึงข้อมูลอัปเดตใหม่");
@@ -884,13 +876,11 @@
               if (immediateSubfolder) foldersInCurrentPath.add(immediateSubfolder);
           }
       });
-      
       let folderList = Array.from(foldersInCurrentPath).map(folderName => {
           let targetPath = currentPath ? `${currentPath}/${folderName}` : folderName;
           let meta = folderMeta[targetPath] || { color: 'blue', emoji: '', password: '', updatedAt: null };
           return { name: folderName, targetPath, meta, isFolder: true };
       });
-      
       const sortData = (a, b, isFolder) => {
           let valA, valB;
           if (appSortMode === 'name') {
@@ -911,7 +901,6 @@
           if (valA > valB) return sortDesc ? -1 : 1;
           return 0;
       };
-      
       folderList.sort((a, b) => sortData(a, b, true));
       filesInCurrentPath.sort((a, b) => sortData(a, b, false));
 
@@ -920,7 +909,7 @@
           const folderName = folder.name;
           const safeFolderName = encodeURIComponent(folderName);
           let meta = folder.meta;
-          let lockHtml = meta.password ? `<div class="grid-lock">🔒</div>` : "";
+          let lockHtml = meta.password ? `<div class="grid-lock">${icons.lock} ติดรหัสผ่าน</div>` : "";
           let timeStr = formatTime(meta.updatedAt);
           
           html += `
@@ -932,7 +921,6 @@
             </div>
           `;
       });
-      
       filesInCurrentPath.forEach((file) => {
           const index = userFiles.findIndex(f => f.id === file.id);
           let iconSvg = icons.pdf; 
@@ -940,7 +928,7 @@
           else if (file.type === "image") iconSvg = icons.image;
           else if (file.type === "link") iconSvg = icons.link;
           
-          let lockHtml = file.password ? `<div class="grid-lock">🔒</div>` : "";
+          let lockHtml = file.password ? `<div class="grid-lock">${icons.lock} ติดรหัสผ่าน</div>` : "";
           let fileTimeStr = file.updatedAt ? formatTime(file.updatedAt) : (file.createdAt ? formatTime(file.createdAt) : "");
 
           html += `
@@ -952,18 +940,17 @@
             </div>
           `;
       });
-      
       if(html === "") html = "<p style='grid-column: 1/-1; text-align:center; color:#86868b; margin-top:20px;'>ไม่มีเอกสารในโฟลเดอร์นี้</p>";
       document.getElementById("itemList").innerHTML = html;
       
-      const navHeader = document.getElementById("navHeader");
+      const navBackBtn = document.getElementById("navBackBtn");
       const pathTitleEl = document.getElementById("currentPathTitle");
       
       if (currentPath === "") {
-         navHeader.style.display = "none";
+         navBackBtn.style.display = "none";
          pathTitleEl.innerText = "หน้าหลัก";
       } else {
-         navHeader.style.display = "flex";
+         navBackBtn.style.display = "flex";
          let parts = currentPath.split('/');
          pathTitleEl.innerText = parts[parts.length - 1];
       }
@@ -974,12 +961,13 @@
       let targetPath = currentPath === "" ? folderName : currentPath + "/" + folderName;
       let meta = folderMeta[targetPath];
       
-      if (meta && meta.password) {
+      if (meta && meta.password && !unlockedItems.has(targetPath)) {
           let pwd = prompt("โฟลเดอร์นี้ถูกล็อก กรุณาใส่รหัสผ่าน:");
           if (pwd !== meta.password) {
               alert("รหัสผ่านไม่ถูกต้อง");
               return;
           }
+          unlockedItems.add(targetPath); // ปลดล็อกแล้วจำไว้
       }
       currentPath = targetPath;
       renderExplorer();
@@ -995,12 +983,13 @@
 
     window.openFile = function(index) {
       const file = userFiles[index];
-      if (file.password) {
+      if (file.password && !unlockedItems.has(file.id)) {
           let pwd = prompt("เอกสารนี้ถูกล็อก กรุณาใส่รหัสผ่าน:");
           if (pwd !== file.password) {
               alert("รหัสผ่านไม่ถูกต้อง");
               return;
           }
+          unlockedItems.add(file.id); // ปลดล็อกแล้วจำไว้
       }
       
       document.getElementById("menuBox").style.display = "none";
@@ -1060,29 +1049,24 @@
         
         const isApproved = reqSnap.exists() && reqSnap.data().status === "approved" && 
                            (!reqSnap.data().expiresAt || new Date() < reqSnap.data().expiresAt.toDate());
-                           
         if (isApproved) {
             let expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">สิทธิ์เข้าถึงถาวร (ไม่มีวันหมดอายุ)</p>`;
             if (reqSnap.data().expiresAt) {
                 expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">สิทธิ์ใช้งานถึง: ${reqSnap.data().expiresAt.toDate().toLocaleString('th-TH')}</p>`;
             }
-            downloadSection.innerHTML = `<button style="background: var(--apple-green); margin-bottom: 0;"
-onclick="downloadWork('${jobId}')">เข้าถึง / ดาวน์โหลดเนื้อหา</button>${expireMsg}`;
+            downloadSection.innerHTML = `<button style="background: var(--apple-green); margin-bottom: 0;" onclick="downloadWork('${jobId}')">เข้าถึง / ดาวน์โหลดเนื้อหา</button>${expireMsg}`;
             if (linkStatusText) linkStatusText.innerHTML = `<button onclick="downloadWork('${jobId}')" class="link-btn" style="border:none; cursor:pointer;">กดเพื่อเข้าสู่ลิงก์ (ได้รับสิทธิ์แล้ว)</button>`;
         } else {
             if (!reqSnap.exists()) {
-                downloadSection.innerHTML = `<button style="background: var(--apple-blue); margin-bottom: 0;"
-onclick="requestDownload('${jobId}')">ยื่นขอสิทธิ์การดาวน์โหลด / เข้าถึง</button>`;
+                downloadSection.innerHTML = `<button style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">ยื่นขอสิทธิ์การดาวน์โหลด / เข้าถึง</button>`;
             } else {
                 const data = reqSnap.data();
                 if (data.status === "pending") {
                     downloadSection.innerHTML = `<div style="color: #8c6b0a; background-color: #fcf1d4; padding: 16px; border-radius: 12px; font-weight: 500; font-size: 15px;">สถานะ: อยู่ระหว่างการตรวจสอบ (โดยปกติจะใช้เวลา 3 วันทำการ)</div>`;
                 } else if (data.status === "rejected") {
-                    downloadSection.innerHTML = `<div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">สถานะ: คำขอถูกปฏิเสธ (ไม่อนุญาตให้เข้าถึง)</div><button style="background: var(--apple-blue); margin-bottom: 0;"
-onclick="requestDownload('${jobId}')">ยื่นคำขอสิทธิ์ใหม่อีกครั้ง</button>`;
+                    downloadSection.innerHTML = `<div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">สถานะ: คำขอถูกปฏิเสธ (ไม่อนุญาตให้เข้าถึง)</div><button style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">ยื่นคำขอสิทธิ์ใหม่อีกครั้ง</button>`;
                 } else if (data.status === "approved" && data.expiresAt && new Date() >= data.expiresAt.toDate()) {
-                    downloadSection.innerHTML = `<div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">สถานะ: สิทธิ์การเข้าถึงของคุณหมดอายุแล้ว</div><button style="background: var(--apple-blue); margin-bottom: 0;"
-onclick="requestDownload('${jobId}')">ยื่นคำขอต่ออายุสิทธิ์</button>`;
+                    downloadSection.innerHTML = `<div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">สถานะ: สิทธิ์การเข้าถึงของคุณหมดอายุแล้ว</div><button style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">ยื่นคำขอต่ออายุสิทธิ์</button>`;
                 }
             }
             if (linkStatusText) linkStatusText.innerText = "คุณยังไม่ได้รับอนุญาตให้เข้าถึงลิงก์นี้ กรุณาตรวจสอบสถานะด้านบน";
@@ -1097,26 +1081,22 @@ onclick="requestDownload('${jobId}')">ยื่นคำขอต่ออาย
       if (!file) return;
       const downloadSection = document.getElementById("downloadSection");
       downloadSection.innerHTML = "<p style='color:var(--apple-blue); margin:0; font-weight: 500;'>ระบบกำลังส่งคำขอ...</p>";
-      
       try {
         const reqId = `${jobId}_${currentId}`;
         const reqRef = doc(db, "download_requests", reqId);
         await setDoc(reqRef, { jobId: jobId, jobTitle: file.title, studentId: currentId, status: "pending", updatedAt: serverTimestamp() });
-        
         // สร้างวันที่แบบไทย
         const now = new Date();
         const thaiDays = ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'];
         const thaiMonths = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
         const timeString = `${thaiDays[now.getDay()]} / ${now.getDate()} / ${thaiMonths[now.getMonth()]} / ${now.getFullYear() + 543} เวลา ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} น.`;
-        
         // === ระบบแจ้งเตือนเข้า Discord ===
         const part1 = "https://discord.com/api/webhooks/";
-        const part2 = "1526287897278287882"; 
+        const part2 = "1526287897278287882";
         const part3 = "/8hJeV6lo92ATlk0TgB-JyQHXNSc4lkw554XR80gZud0-QCWwEl_e6fvjGKR2lvHkp4VL";
         
         const webhookUrl = part1 + part2 + part3;
         const adminUrl = "https://natchanonhh.github.io/Management-/";
-        
         const discordPayload = {
           content: "🔔 **มีคำขอสิทธิ์การเข้าถึงเอกสารใหม่!**",
           embeds: [{
@@ -1131,13 +1111,11 @@ onclick="requestDownload('${jobId}')">ยื่นคำขอต่ออาย
             ]
           }]
         };
-        
         const response = await fetch(webhookUrl + "?wait=true", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(discordPayload)
         });
-        
         if (response.ok) {
            const discordData = await response.json();
            await updateDoc(reqRef, { discordMessageId: discordData.id });
@@ -1162,7 +1140,6 @@ onclick="requestDownload('${jobId}')">ยื่นคำขอต่ออาย
         e.preventDefault(); return false;
       }
     });
-    
     window.addEventListener("beforeunload", (e) => {
       if (currentLogId) updateDoc(doc(db, "access_logs", currentLogId), { logoutTime: serverTimestamp() });
     });
