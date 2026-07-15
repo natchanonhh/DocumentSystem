@@ -34,7 +34,7 @@
 
     .container { 
       width: 100%; 
-      max-width: 650px; 
+      max-width: 1200px; /* ปรับให้กว้างขึ้นสำหรับ PC/iPad */
       background: var(--apple-card-bg);
       padding: 45px 40px; 
       border-radius: 20px; 
@@ -43,6 +43,13 @@
       margin-top: 20px; 
       box-sizing: border-box;
       position: relative;
+    }
+
+    /* กล่องล็อคอินให้คงขนาดกะทัดรัดไว้ */
+    #loginBox { 
+      max-width: 500px; 
+      margin-left: auto; 
+      margin-right: auto; 
     }
 
     h2 { 
@@ -87,8 +94,7 @@
       box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15); 
       outline: none; 
     }
-    input::placeholder { color: #a1a1a6;
-    }
+    input::placeholder { color: #a1a1a6; }
     
     button { 
       width: 100%; 
@@ -104,8 +110,7 @@
       margin-bottom: 12px;
       transition: transform 0.1s, background 0.2s, opacity 0.2s;
     }
-    button:active { transform: scale(0.97);
-    }
+    button:active { transform: scale(0.97); }
     button:hover { background: var(--apple-blue-hover); }
     
     /* ระบบป้ายโฆษณา (Banner Slider) */
@@ -180,11 +185,9 @@
       position: relative;
     }
     
-    .grid-icon svg.icon-folder { width: 70px; height: auto;
-    }
+    .grid-icon svg.icon-folder { width: 70px; height: auto; }
     .grid-icon svg.icon-file { width: 48px; height: auto; }
-    .grid-icon svg.icon-wide { width: 62px;
-      height: auto; }
+    .grid-icon svg.icon-wide { width: 62px; height: auto; }
 
     /* ปรับแต่งส่วนแสดงชื่อสำหรับมุมมอง Grid ไม่ให้ตัดคำ แต่ให้ขึ้นบรรทัดใหม่ */
     .grid-name {
@@ -238,8 +241,7 @@
       justify-content: center;
       transition: background 0.2s;
     }
-    .options-btn:hover { background: rgba(0, 113, 227, 0.1); transform: none;
-    }
+    .options-btn:hover { background: rgba(0, 113, 227, 0.1); transform: none; }
     .options-btn:active { transform: scale(0.92); }
     
     .apple-dropdown {
@@ -269,17 +271,12 @@
       transition: background 0.1s;
       position: relative;
     }
-    .dropdown-item:hover { background: var(--apple-blue); color: white;
-    }
-    .dropdown-item:hover .check-icon, .dropdown-item:hover small, .dropdown-item:hover .dropdown-icon { color: white !important;
-    }
-    .dropdown-divider { height: 1px; background: rgba(0,0,0,0.1); margin: 6px 0;
-    }
-    .check-icon { width: 24px; font-weight: bold; font-size: 14px; display: inline-block;
-    }
+    .dropdown-item:hover { background: var(--apple-blue); color: white; }
+    .dropdown-item:hover .check-icon, .dropdown-item:hover small, .dropdown-item:hover .dropdown-icon { color: white !important; }
+    .dropdown-divider { height: 1px; background: rgba(0,0,0,0.1); margin: 6px 0; }
+    .check-icon { width: 24px; font-weight: bold; font-size: 14px; display: inline-block; }
     .dropdown-icon { margin-right: 12px; display:flex; align-items:center; }
-    .dropdown-text { flex-grow: 1; display: flex;
-      flex-direction: column; font-weight: 500; }
+    .dropdown-text { flex-grow: 1; display: flex; flex-direction: column; font-weight: 500; }
 
     /* --- List View Styles --- */
     .item-grid.list-view { 
@@ -306,8 +303,7 @@
       box-sizing: border-box;
     }
     .item-grid.list-view .grid-item:last-child { border-bottom: none; }
-    .item-grid.list-view .grid-item:hover { background-color: rgba(0,0,0,0.04); transform: none;
-    }
+    .item-grid.list-view .grid-item:hover { background-color: rgba(0,0,0,0.04); transform: none; }
     .item-grid.list-view .grid-icon { 
       width: 40px; 
       height: 40px; 
@@ -318,8 +314,7 @@
       justify-content:center; 
       align-items:center; 
     }
-    .item-grid.list-view .grid-icon svg { width: 100% !important;
-      height: auto !important; max-height: 100%; }
+    .item-grid.list-view .grid-icon svg { width: 100% !important; height: auto !important; max-height: 100%; }
     
     /* ปรับแต่งส่วนแสดงชื่อสำหรับมุมมอง List ให้แสดงเต็มและขึ้นบรรทัดใหม่ */
     .item-grid.list-view .grid-name { 
@@ -351,7 +346,8 @@
       position: relative;
       margin-top: 25px; 
       width: 100%;
-      height: 650px;
+      height: 75vh; /* ปรับให้ยืดหยุ่นตามความสูงของหน้าจอ */
+      min-height: 400px;
       background: #fbfbfd; 
       border-radius: 16px; 
       border: 1px solid var(--apple-border);
@@ -372,14 +368,11 @@
       text-shadow: 1px 1px 2px rgba(255,255,255,0.8); 
     }
     
-    iframe, img { width: 100%; height: 100%;
-      border: none; }
+    iframe, img { width: 100%; height: 100%; border: none; }
     .block-interaction { pointer-events: none; }
-    .pdf-viewer { pointer-events: auto !important;
-    }
+    .pdf-viewer { pointer-events: auto !important; }
     
-    .drive-blocker { position: absolute; top: 0; left: 0; width: 100%; height: 60px;
-      background: transparent; z-index: 99; cursor: not-allowed; }
+    .drive-blocker { position: absolute; top: 0; left: 0; width: 100%; height: 60px; background: transparent; z-index: 99; cursor: not-allowed; }
 
     #downloadSection {
       margin-bottom: 25px;
@@ -402,15 +395,53 @@
     }
     .link-btn:hover { background: var(--apple-blue-hover); }
 
-    @media (max-width: 580px) { 
-      .item-grid { grid-template-columns: repeat(3, 1fr);
-      gap: 20px 10px; } 
-      .container { padding: 35px 20px;
-      }
+    /* =========================================================================
+       ระบบ Responsive ปรับจออัตโนมัติตามอุปกรณ์
+       ========================================================================= */
+    @media (max-width: 1024px) {
+      .item-grid { grid-template-columns: repeat(4, 1fr); gap: 20px 15px; }
     }
-    @media (max-width: 400px) { 
-      .item-grid { grid-template-columns: repeat(2, 1fr);
-      gap: 15px 10px; } 
+    
+    @media (max-width: 820px) { /* สำหรับ iPad และ Tablet */
+      body { padding: 20px 15px; }
+      .container { padding: 30px 25px; }
+      .item-grid { grid-template-columns: repeat(3, 1fr); gap: 15px 12px; }
+      .protected-view { height: 65vh; }
+    }
+
+    @media (max-width: 580px) { /* สำหรับมือถือจอใหญ่ */
+      body { padding: 10px; }
+      .container { 
+        padding: 20px 15px; 
+        border-radius: 16px; 
+        margin-top: 10px;
+      }
+      .item-grid { grid-template-columns: repeat(2, 1fr); gap: 15px 10px; }
+      h2 { font-size: 24px; }
+      h3 { font-size: 19px; }
+      .grid-item { min-height: 120px; }
+      
+      #displayName { font-size: 18px !important; }
+      
+      .link-btn { 
+        width: 100%; 
+        box-sizing: border-box; 
+        text-align: center; 
+        padding: 14px 20px; 
+        font-size: 15px; 
+      }
+      .protected-view { height: 60vh; }
+    }
+
+    @media (max-width: 400px) { /* สำหรับมือถือจอเล็กมาก */
+      .container { padding: 15px 10px; }
+      .item-grid { grid-template-columns: repeat(2, 1fr); gap: 10px 8px; }
+      .grid-icon { height: 55px; }
+      .grid-icon svg.icon-folder { width: 55px; }
+      .grid-icon svg.icon-file { width: 40px; }
+      .grid-icon svg.icon-wide { width: 50px; }
+      .grid-name { font-size: 12px; }
+      .item-grid.list-view .grid-item { padding: 10px; }
     }
   </style>
 </head>
@@ -429,6 +460,7 @@
   </div>
 
   <div class="container" id="menuBox" style="display: none;">
+    
     <h3 id="menuTitle" style="margin-bottom: 5px;"></h3>
     <p style="margin-bottom: 15px;" id="menuSubtitle">กรุณาเลือกรายการที่คุณต้องการเข้าชม</p>
     
@@ -465,7 +497,7 @@
           </button>
           <div id="optionsMenu" class="apple-dropdown" style="display: none;">
             <div class="dropdown-item" onclick="setViewMode('grid')">
-                 <span class="check-icon" id="checkGrid">✓</span>
+                <span class="check-icon" id="checkGrid">✓</span>
                 <span class="dropdown-icon">
                   <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect></svg>
                 </span>
@@ -488,7 +520,7 @@
                 <span class="dropdown-text">ประเภท</span>
             </div>
             <div class="dropdown-item" onclick="setSortMode('date')">
-                 <span class="check-icon" id="checkSortDate">✓</span>
+                <span class="check-icon" id="checkSortDate">✓</span>
                 <span class="dropdown-text" style="line-height: 1.2;">วันที่<br><small id="sortDateLabel" style="font-size: 11px; color: var(--apple-text-muted);">ใหม่ที่สุดถึงเก่าที่สุด</small></span>
             </div>
             <div class="dropdown-item" onclick="setSortMode('size')">
@@ -507,7 +539,7 @@
     <button style="background: var(--apple-red); margin-top: 20px;" onclick="location.reload()">ออกจากระบบ</button>
   </div>
 
-  <div class="container" id="contentBox" style="display: none; max-width: 700px;">
+  <div class="container" id="contentBox" style="display: none;">
     
     <div style="display: flex; align-items: center; justify-content: flex-start; margin-bottom: 25px; width: 100%; box-sizing: border-box;">
         <button id="fileBackBtn" onclick="closeFile()" style="background: transparent; border: none; color: var(--apple-blue); cursor: pointer; padding: 0 10px 0 0; margin: 0; align-items: center; justify-content: center; width: auto; height: auto;" title="กลับไปหน้ารายการ">
@@ -551,7 +583,8 @@
     let appViewMode = 'grid';
     let appSortMode = 'date'; 
     let sortDesc = true; 
-    let unlockedItems = new Set(); // ระบบจำรหัสผ่านที่กรอกผ่านแล้ว จนกว่าจะรีโหลด/ออกจากระบบ
+    let unlockedItems = new Set();
+    // ระบบจำรหัสผ่านที่กรอกผ่านแล้ว จนกว่าจะรีโหลด/ออกจากระบบ
 
     const studentInput = document.getElementById("studentId");
     if(studentInput) {
@@ -576,6 +609,7 @@
       link: `<svg class="icon-file" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="40" r="36" fill="#F9F9FB" stroke="#D2D2D7" stroke-width="2"/><path d="M40 10C28 10 20 25 20 40C20 55 28 70 40 70C52 70 60 55 60 40C60 25 52 10 40 10Z" stroke="#0071E3" stroke-width="2"/><path d="M10 40H70" stroke="#0071E3" stroke-width="2"/><path d="M20 25H60" stroke="#0071E3" stroke-width="2"/><path d="M20 55H60" stroke="#0071E3" stroke-width="2"/></svg>`,
       lock: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>`
     };
+    
     function getFolderIcon(color, emoji) {
         let c = appleColors[color] || appleColors.blue;
         let svg = `<svg class="icon-folder" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -611,6 +645,7 @@
           menu.style.display = "none";
       }
     });
+    
     window.setViewMode = function(mode) {
       appViewMode = mode;
       document.getElementById("checkGrid").style.opacity = mode === 'grid' ? "1" : "0";
@@ -641,12 +676,15 @@
       const nameLabel = document.getElementById("sortNameLabel");
       nameLabel.style.display = mode === 'name' ? "block" : "none";
       nameLabel.innerText = sortDesc ? "ฮ ถึง ก" : "ก ถึง ฮ";
+      
       const dateLabel = document.getElementById("sortDateLabel");
       dateLabel.style.display = mode === 'date' ? "block" : "none";
       dateLabel.innerText = sortDesc ? "ใหม่ที่สุดถึงเก่าที่สุด" : "เก่าที่สุดถึงใหม่ที่สุด";
+      
       const sizeLabel = document.getElementById("sortSizeLabel");
       sizeLabel.style.display = mode === 'size' ? "block" : "none";
       sizeLabel.innerText = sortDesc ? "ใหญ่ที่สุดถึงเล็กที่สุด" : "เล็กที่สุดถึงใหญ่ที่สุด";
+      
       renderExplorer(); 
       document.getElementById("optionsMenu").style.display = "none";
     }
@@ -665,7 +703,6 @@
             
             // จัดเรียงตามลำดับที่จัดการมาจากหลังบ้าน
             banners.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
-
             if (banners.length === 0) return;
             
             let html = '';
@@ -681,9 +718,11 @@
             const menuBanner = document.getElementById('menuBanner');
             
             if(loginBanner) { loginBanner.innerHTML = html;
-              loginBanner.style.display = "flex"; document.getElementById('loginClock').style.display = "block"; }
+              loginBanner.style.display = "flex"; document.getElementById('loginClock').style.display = "block";
+            }
             if(menuBanner) { menuBanner.innerHTML = html;
-              menuBanner.style.display = "flex"; document.getElementById('menuClock').style.display = "block"; }
+              menuBanner.style.display = "flex";
+              document.getElementById('menuClock').style.display = "block"; }
 
             if(window.bannerInterval) clearInterval(window.bannerInterval);
             // เวลาโฆษณาเลือนอัตโนมัติเป็น 6 วินาที (6000 ms) ตามต้นฉบับ
@@ -705,6 +744,7 @@
     }
     
     initBanners();
+    
     // ---------------- ระบบเวลาใต้ภาพโฆษณาแบบเรียลไทม์ ----------------
     function updateRealtimeClock() {
         const now = new Date();
@@ -720,6 +760,7 @@
         const minutes = String(now.getMinutes()).padStart(2, '0');
         
         const timeString = `ข้อมูล ณ วัน${dayName} ที่ ${date} เดือน${monthName} พ.ศ.${year} เวลา ${hours}:${minutes} น.`;
+        
         const loginClock = document.getElementById('loginClock');
         const menuClock = document.getElementById('menuClock');
         
@@ -754,6 +795,7 @@
         
         if (allFiles.length > 0) {
           let matchedId = rawId;
+        
           folderMeta = {};
           userFiles = [];
 
@@ -764,6 +806,7 @@
              }
           }
           currentId = matchedId;
+          
           snap3.forEach(docSnap => {
               const data = docSnap.data();
               let path = (data.folder || "").trim().replace(/^\/+|\/+$/g, '');
@@ -774,6 +817,7 @@
                   updatedAt: data.updatedAt || data.createdAt || null
               };
           });
+          
           allFiles.forEach(file => {
               if (file.type !== "system_folder") {
                   let path = (file.folder || "").trim().replace(/^\/+|\/+$/g, '');
@@ -843,6 +887,7 @@
                     updatedAt: data.updatedAt || data.createdAt || null
                 };
             });
+            
             allFiles.forEach(file => {
                 if (file.type !== "system_folder") {
                     let path = (file.folder || "").trim().replace(/^\/+|\/+$/g, '');
@@ -850,6 +895,7 @@
                     userFiles.push(file);
                 }
             });
+            
             // อัปเดตการแสดงผล (คงอยู่ที่โฟลเดอร์หรือหน้าปัจจุบันไว้ไม่เปลี่ยนแปลง)
             renderExplorer();
         } catch (error) {
@@ -876,11 +922,13 @@
               if (immediateSubfolder) foldersInCurrentPath.add(immediateSubfolder);
           }
       });
+      
       let folderList = Array.from(foldersInCurrentPath).map(folderName => {
           let targetPath = currentPath ? `${currentPath}/${folderName}` : folderName;
           let meta = folderMeta[targetPath] || { color: 'blue', emoji: '', password: '', updatedAt: null };
           return { name: folderName, targetPath, meta, isFolder: true };
       });
+      
       const sortData = (a, b, isFolder) => {
           let valA, valB;
           if (appSortMode === 'name') {
@@ -901,10 +949,12 @@
           if (valA > valB) return sortDesc ? -1 : 1;
           return 0;
       };
+      
       folderList.sort((a, b) => sortData(a, b, true));
       filesInCurrentPath.sort((a, b) => sortData(a, b, false));
 
       let html = "";
+      
       folderList.forEach(folder => {
           const folderName = folder.name;
           const safeFolderName = encodeURIComponent(folderName);
@@ -921,6 +971,7 @@
             </div>
           `;
       });
+      
       filesInCurrentPath.forEach((file) => {
           const index = userFiles.findIndex(f => f.id === file.id);
           let iconSvg = icons.pdf; 
@@ -940,6 +991,7 @@
             </div>
           `;
       });
+      
       if(html === "") html = "<p style='grid-column: 1/-1; text-align:center; color:#86868b; margin-top:20px;'>ไม่มีเอกสารในโฟลเดอร์นี้</p>";
       document.getElementById("itemList").innerHTML = html;
       
@@ -967,7 +1019,8 @@
               alert("รหัสผ่านไม่ถูกต้อง");
               return;
           }
-          unlockedItems.add(targetPath); // ปลดล็อกแล้วจำไว้
+          unlockedItems.add(targetPath);
+          // ปลดล็อกแล้วจำไว้
       }
       currentPath = targetPath;
       renderExplorer();
@@ -983,13 +1036,15 @@
 
     window.openFile = function(index) {
       const file = userFiles[index];
+      
       if (file.password && !unlockedItems.has(file.id)) {
           let pwd = prompt("เอกสารนี้ถูกล็อก กรุณาใส่รหัสผ่าน:");
           if (pwd !== file.password) {
               alert("รหัสผ่านไม่ถูกต้อง");
               return;
           }
-          unlockedItems.add(file.id); // ปลดล็อกแล้วจำไว้
+          unlockedItems.add(file.id);
+          // ปลดล็อกแล้วจำไว้
       }
       
       document.getElementById("menuBox").style.display = "none";
@@ -1041,32 +1096,39 @@
       const downloadSection = document.getElementById("downloadSection");
       const linkStatusText = document.getElementById("linkStatusText");
       downloadSection.innerHTML = "<p style='color:var(--apple-text-muted); margin:0; font-weight:500;'>กำลังตรวจสอบสิทธิ์...</p>";
+      
       try {
         const reqRef = doc(db, "download_requests", `${jobId}_${currentId}`);
         const reqSnap = await getDoc(reqRef);
+        
         const activeJobId = document.getElementById("contentBox").getAttribute("data-active-job");
         if (activeJobId !== jobId) return; 
         
         const isApproved = reqSnap.exists() && reqSnap.data().status === "approved" && 
                            (!reqSnap.data().expiresAt || new Date() < reqSnap.data().expiresAt.toDate());
+                           
         if (isApproved) {
             let expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">สิทธิ์เข้าถึงถาวร (ไม่มีวันหมดอายุ)</p>`;
             if (reqSnap.data().expiresAt) {
                 expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">สิทธิ์ใช้งานถึง: ${reqSnap.data().expiresAt.toDate().toLocaleString('th-TH')}</p>`;
             }
-            downloadSection.innerHTML = `<button style="background: var(--apple-green); margin-bottom: 0;" onclick="downloadWork('${jobId}')">เข้าถึง / ดาวน์โหลดเนื้อหา</button>${expireMsg}`;
+            downloadSection.innerHTML = `<button style="background: var(--apple-green); margin-bottom: 0;"
+onclick="downloadWork('${jobId}')">เข้าถึง / ดาวน์โหลดเนื้อหา</button>${expireMsg}`;
             if (linkStatusText) linkStatusText.innerHTML = `<button onclick="downloadWork('${jobId}')" class="link-btn" style="border:none; cursor:pointer;">กดเพื่อเข้าสู่ลิงก์ (ได้รับสิทธิ์แล้ว)</button>`;
         } else {
             if (!reqSnap.exists()) {
-                downloadSection.innerHTML = `<button style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">ยื่นขอสิทธิ์การดาวน์โหลด / เข้าถึง</button>`;
+                downloadSection.innerHTML = `<button style="background: var(--apple-blue); margin-bottom: 0;"
+onclick="requestDownload('${jobId}')">ยื่นขอสิทธิ์การดาวน์โหลด / เข้าถึง</button>`;
             } else {
                 const data = reqSnap.data();
                 if (data.status === "pending") {
                     downloadSection.innerHTML = `<div style="color: #8c6b0a; background-color: #fcf1d4; padding: 16px; border-radius: 12px; font-weight: 500; font-size: 15px;">สถานะ: อยู่ระหว่างการตรวจสอบ (โดยปกติจะใช้เวลา 3 วันทำการ)</div>`;
                 } else if (data.status === "rejected") {
-                    downloadSection.innerHTML = `<div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">สถานะ: คำขอถูกปฏิเสธ (ไม่อนุญาตให้เข้าถึง)</div><button style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">ยื่นคำขอสิทธิ์ใหม่อีกครั้ง</button>`;
+                    downloadSection.innerHTML = `<div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">สถานะ: คำขอถูกปฏิเสธ (ไม่อนุญาตให้เข้าถึง)</div><button style="background: var(--apple-blue); margin-bottom: 0;"
+onclick="requestDownload('${jobId}')">ยื่นคำขอสิทธิ์ใหม่อีกครั้ง</button>`;
                 } else if (data.status === "approved" && data.expiresAt && new Date() >= data.expiresAt.toDate()) {
-                    downloadSection.innerHTML = `<div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">สถานะ: สิทธิ์การเข้าถึงของคุณหมดอายุแล้ว</div><button style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">ยื่นคำขอต่ออายุสิทธิ์</button>`;
+                    downloadSection.innerHTML = `<div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">สถานะ: สิทธิ์การเข้าถึงของคุณหมดอายุแล้ว</div><button style="background: var(--apple-blue); margin-bottom: 0;"
+onclick="requestDownload('${jobId}')">ยื่นคำขอต่ออายุสิทธิ์</button>`;
                 }
             }
             if (linkStatusText) linkStatusText.innerText = "คุณยังไม่ได้รับอนุญาตให้เข้าถึงลิงก์นี้ กรุณาตรวจสอบสถานะด้านบน";
@@ -1081,15 +1143,19 @@
       if (!file) return;
       const downloadSection = document.getElementById("downloadSection");
       downloadSection.innerHTML = "<p style='color:var(--apple-blue); margin:0; font-weight: 500;'>ระบบกำลังส่งคำขอ...</p>";
+      
       try {
         const reqId = `${jobId}_${currentId}`;
         const reqRef = doc(db, "download_requests", reqId);
+        
         await setDoc(reqRef, { jobId: jobId, jobTitle: file.title, studentId: currentId, status: "pending", updatedAt: serverTimestamp() });
+        
         // สร้างวันที่แบบไทย
         const now = new Date();
         const thaiDays = ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'];
         const thaiMonths = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
         const timeString = `${thaiDays[now.getDay()]} / ${now.getDate()} / ${thaiMonths[now.getMonth()]} / ${now.getFullYear() + 543} เวลา ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} น.`;
+        
         // === ระบบแจ้งเตือนเข้า Discord ===
         const part1 = "https://discord.com/api/webhooks/";
         const part2 = "1526287897278287882";
@@ -1097,6 +1163,7 @@
         
         const webhookUrl = part1 + part2 + part3;
         const adminUrl = "https://natchanonhh.github.io/Management-/";
+        
         const discordPayload = {
           content: "🔔 **มีคำขอสิทธิ์การเข้าถึงเอกสารใหม่!**",
           embeds: [{
@@ -1111,11 +1178,13 @@
             ]
           }]
         };
+        
         const response = await fetch(webhookUrl + "?wait=true", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(discordPayload)
         });
+        
         if (response.ok) {
            const discordData = await response.json();
            await updateDoc(reqRef, { discordMessageId: discordData.id });
@@ -1140,6 +1209,7 @@
         e.preventDefault(); return false;
       }
     });
+    
     window.addEventListener("beforeunload", (e) => {
       if (currentLogId) updateDoc(doc(db, "access_logs", currentLogId), { logoutTime: serverTimestamp() });
     });
