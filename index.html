@@ -34,7 +34,7 @@
 
     .container { 
       width: 100%; 
-      max-width: 1200px; /* ปรับให้กว้างขึ้นสำหรับ PC/iPad */
+      max-width: 1200px; 
       background: var(--apple-card-bg);
       padding: 45px 40px; 
       border-radius: 20px; 
@@ -45,7 +45,6 @@
       position: relative;
     }
 
-    /* กล่องล็อคอินให้คงขนาดกะทัดรัดไว้ */
     #loginBox { 
       max-width: 500px; 
       margin-left: auto; 
@@ -113,7 +112,6 @@
     button:active { transform: scale(0.97); }
     button:hover { background: var(--apple-blue-hover); }
     
-    /* ระบบป้ายโฆษณา (Banner Slider) */
     .banner-wrapper {
       width: 100%;
       aspect-ratio: 2 / 1;
@@ -189,7 +187,6 @@
     .grid-icon svg.icon-file { width: 48px; height: auto; }
     .grid-icon svg.icon-wide { width: 62px; height: auto; }
 
-    /* ปรับแต่งส่วนแสดงชื่อสำหรับมุมมอง Grid ไม่ให้ตัดคำ แต่ให้ขึ้นบรรทัดใหม่ */
     .grid-name {
       font-size: 13px;
       font-weight: 500;
@@ -221,7 +218,6 @@
       line-height: 1.3;
     }
 
-    /* --- Apple View Menu Styles --- */
     .options-btn-wrap-relative {
       position: relative;
       flex-shrink: 0;
@@ -278,7 +274,6 @@
     .dropdown-icon { margin-right: 12px; display:flex; align-items:center; }
     .dropdown-text { flex-grow: 1; display: flex; flex-direction: column; font-weight: 500; }
 
-    /* --- List View Styles --- */
     .item-grid.list-view { 
       display: flex;
       flex-direction: column; 
@@ -316,7 +311,6 @@
     }
     .item-grid.list-view .grid-icon svg { width: 100% !important; height: auto !important; max-height: 100%; }
     
-    /* ปรับแต่งส่วนแสดงชื่อสำหรับมุมมอง List ให้แสดงเต็มและขึ้นบรรทัดใหม่ */
     .item-grid.list-view .grid-name { 
       text-align: left;
       font-size: 15px; 
@@ -346,7 +340,7 @@
       position: relative;
       margin-top: 25px; 
       width: 100%;
-      height: 75vh; /* ปรับให้ยืดหยุ่นตามความสูงของหน้าจอ */
+      height: 75vh; 
       min-height: 400px;
       background: #fbfbfd; 
       border-radius: 16px; 
@@ -395,45 +389,161 @@
     }
     .link-btn:hover { background: var(--apple-blue-hover); }
 
-    /* =========================================================================
-       ระบบ Responsive ปรับจออัตโนมัติตามอุปกรณ์
-       ========================================================================= */
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.4); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+      z-index: 9999; display: none; justify-content: center; align-items: center;
+    }
+    
+    .calendar-modal {
+      background: white; border-radius: 24px; padding: 30px; width: 90%; max-width: 900px;
+      height: 85vh; display: flex; flex-direction: column; position: relative;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+      overflow: hidden; /* Prevent body scroll if contents are large */
+    }
+    .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .calendar-header h2 { font-size: 28px; margin: 0; font-weight: 700; color: #000; }
+    
+    /* ปุ่มเปลี่ยนเดือนบนปฏิทิน - ปรับแต่งให้เห็นชัดขึ้น */
+    .calendar-nav { display: flex; align-items: center; gap: 8px; margin-left: 15px; }
+    .calendar-nav button { 
+      background: #e5e5ea; 
+      border: 1px solid #d2d2d7; 
+      width: 34px; 
+      height: 34px; 
+      border-radius: 50%; 
+      cursor: pointer; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      color: #1d1d1f; 
+      transition: 0.2s; 
+      font-weight: 600;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .calendar-nav button:hover { background: #d1d1d6; }
+    
+    .close-btn { background: #f2f2f7; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-weight: bold; font-size: 16px; color: #8e8e93; display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
+    
+    .calendar-grid {
+      display: grid; grid-template-columns: repeat(7, 1fr); flex: 1; gap: 8px;
+      overflow-y: auto; /* เพิ่ม Scroll เพื่อไม่ให้ล้นหน้าจอ */
+      padding-right: 4px;
+      align-content: start; /* จัดให้อยู่ด้านบน ไม่ยืดขยายจนน่าเกลียด */
+    }
+    .cal-day-header { text-align: center; font-weight: 600; font-size: 14px; color: #8e8e93; padding-bottom: 10px; }
+    .cal-cell {
+      border-radius: 12px; padding: 8px; position: relative; min-height: 80px; display: flex; flex-direction: column; cursor: pointer; transition: background 0.2s;
+    }
+    .cal-cell:hover { background: #f2f2f7; }
+    .cal-cell.today { background: #f2f2f7; }
+    .cal-date-num { font-size: 16px; font-weight: 500; text-align: center; margin-bottom: 5px; color: #8e8e93; }
+    .cal-cell.today .cal-date-num { color: #000; font-weight: 600; }
+    
+    .cal-event-bar {
+      font-size: 11px; padding: 3px 6px; border-radius: 4px; margin-bottom: 3px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500;
+      border-left: 3px solid; background: rgba(0,0,0,0.03); text-align: left;
+      max-width: 100%; box-sizing: border-box; /* ป้องกันไม่ให้ทะลุกรอบ */
+    }
+    /* ป้ายวันหยุดราชการไทยในปฏิทิน */
+    .cal-holiday-bar {
+      font-size: 10.5px; padding: 2px 4px; border-radius: 4px; margin-bottom: 3px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600;
+      background: #fce4ec; color: #d81b60; border-left: 3px solid #d81b60; text-align: left; pointer-events: none;
+      max-width: 100%; box-sizing: border-box; /* ป้องกันไม่ให้ทะลุกรอบ */
+    }
+
+    .event-detail-modal {
+      background: #f2f2f7; border-radius: 20px; padding: 25px; width: 90%; max-width: 450px;
+      position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    }
+    .event-d-title { font-size: 24px; font-weight: 600; margin-bottom: 20px; border-left: 4px solid var(--apple-blue); padding-left: 10px; text-align: left;}
+    .event-d-row { display: flex; align-items: center; margin-bottom: 15px; font-size: 15px; color: #1d1d1f; text-align: left;}
+    .event-d-row svg { margin-right: 15px; color: #8e8e93; width: 20px; height: 20px; flex-shrink: 0;}
+    .event-d-box { background: white; border-radius: 12px; padding: 15px; margin-bottom: 20px; text-align: left;}
+    
+    .event-complete-btn {
+      position: absolute; bottom: 20px; right: 20px;
+      background: #1d1d1f; color: white; width: 50px; height: 50px; border-radius: 50%;
+      display: flex; justify-content: center; align-items: center; border: none; cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: transform 0.2s;
+    }
+    .event-complete-btn:hover { transform: scale(1.05); }
+
+    .schedule-modal {
+      background: white; border-radius: 20px; padding: 20px; width: 95%; max-width: 800px; max-height: 90vh;
+      overflow: hidden; display: flex; flex-direction: column; position: relative;
+    }
+    .schedule-img { width: 100%; height: auto; max-height: 70vh; object-fit: contain; border-radius: 12px; }
+    
+    /* สไตล์สำหรับ Slider ตารางเรียน */
+    .schedule-slider {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 20px;
+      padding-bottom: 10px;
+      scroll-behavior: smooth;
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+    .schedule-slider::-webkit-scrollbar { display: none; }
+    .schedule-slide {
+      flex: 0 0 100%;
+      scroll-snap-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .schedule-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      margin-top: 10px;
+      color: var(--apple-text-main);
+    }
+
     @media (max-width: 1024px) {
       .item-grid { grid-template-columns: repeat(4, 1fr); gap: 20px 15px; }
     }
     
-    @media (max-width: 820px) { /* สำหรับ iPad และ Tablet */
+    @media (max-width: 820px) { 
       body { padding: 20px 15px; }
       .container { padding: 30px 25px; }
       .item-grid { grid-template-columns: repeat(3, 1fr); gap: 15px 12px; }
       .protected-view { height: 65vh; }
+      .calendar-modal { width: 95%; padding: 20px; height: 80vh; }
     }
 
-    @media (max-width: 580px) { /* สำหรับมือถือจอใหญ่ */
+    @media (max-width: 580px) { 
       body { padding: 10px; }
-      .container { 
-        padding: 20px 15px; 
-        border-radius: 16px; 
-        margin-top: 10px;
-      }
+      .container { padding: 20px 15px; border-radius: 16px; margin-top: 10px; }
       .item-grid { grid-template-columns: repeat(2, 1fr); gap: 15px 10px; }
       h2 { font-size: 24px; }
       h3 { font-size: 19px; }
       .grid-item { min-height: 120px; }
-      
       #displayName { font-size: 18px !important; }
-      
-      .link-btn { 
-        width: 100%; 
-        box-sizing: border-box; 
-        text-align: center; 
-        padding: 14px 20px; 
-        font-size: 15px; 
-      }
+      .link-btn { width: 100%; box-sizing: border-box; text-align: center; padding: 14px 20px; font-size: 15px; }
       .protected-view { height: 60vh; }
+      
+      /* ปรับแต่งปฏิทินให้พอดีจอมือถือ */
+      .calendar-modal { padding: 15px; width: 95%; height: 85vh; }
+      .calendar-header h2 { font-size: 20px; }
+      .calendar-nav button { width: 28px; height: 28px; font-size: 12px; }
+      .cal-day-header { font-size: 12px; padding-bottom: 5px; }
+      .cal-cell { min-height: 60px; padding: 4px; border-radius: 8px; }
+      .cal-date-num { font-size: 14px; margin-bottom: 2px; }
+      .cal-holiday-bar, .cal-event-bar { font-size: 9.5px; padding: 1px 3px; border-left-width: 2px; }
+      
+      /* ปรับแต่งตารางเรียนบนจอมือถือ */
+      .schedule-modal { padding: 15px; width: 95%; }
+      .schedule-title { font-size: 16px; }
     }
 
-    @media (max-width: 400px) { /* สำหรับมือถือจอเล็กมาก */
+    @media (max-width: 400px) {
       .container { padding: 15px 10px; }
       .item-grid { grid-template-columns: repeat(2, 1fr); gap: 10px 8px; }
       .grid-icon { height: 55px; }
@@ -443,9 +553,58 @@
       .grid-name { font-size: 12px; }
       .item-grid.list-view .grid-item { padding: 10px; }
     }
+
+    /* ปรับแต่งไอคอนมุมขวาบนให้เล็กลงตามคำขอ */
+    .top-right-icons {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 10;
+    }
+    .tr-icon {
+      cursor: pointer;
+      position: relative;
+      width: 26px; /* ลดขนาดไอคอน */
+      height: 26px; 
+      color: var(--apple-text-main);
+      transition: transform 0.2s;
+    }
+    .tr-icon:hover { transform: scale(1.1); color: var(--apple-blue); }
+    .badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: var(--apple-red);
+      color: white;
+      font-size: 9px; 
+      font-weight: bold;
+      border-radius: 50%;
+      min-width: 14px; 
+      height: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2px;
+    }
   </style>
 </head>
 <body oncontextmenu="return false;">
+
+  <div class="top-right-icons" id="mainTopIcons" style="display: none;">
+    <div class="tr-icon" onclick="openCalendarModal()" title="แจ้งเตือนความจำ">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+      </svg>
+      <div class="badge" id="reminderBadgeCount" style="display: none;">0</div>
+    </div>
+    <div class="tr-icon" onclick="openScheduleModal()" title="ตารางเรียน">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+      </svg>
+    </div>
+  </div>
 
   <div class="container" id="loginBox">
     <h2>Document System</h2>
@@ -460,7 +619,6 @@
   </div>
 
   <div class="container" id="menuBox" style="display: none;">
-    
     <h3 id="menuTitle" style="margin-bottom: 5px;"></h3>
     <p style="margin-bottom: 15px;" id="menuSubtitle">กรุณาเลือกรายการที่คุณต้องการเข้าชม</p>
     
@@ -469,15 +627,12 @@
 
     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; position: relative; width: 100%; box-sizing: border-box; padding: 0 5px;">
         <div style="display: flex; align-items: center; flex: 1 1 auto; min-width: 0; text-align: left;">
-            
             <button id="navBackBtn" onclick="navigateUp()" style="display:none; background: transparent; border: none; color: var(--apple-blue); cursor: pointer; padding: 0 8px 0 0; margin: 0; align-items: center; justify-content: center; width: auto; height: auto;" title="ย้อนกลับ">
                 <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="15 18 9 12 15 6"></polyline>
                 </svg>
             </button>
-
             <div class="path-title" id="currentPathTitle" style="margin: 0; font-size: 19px; word-break: break-word; font-weight: 600;">หน้าหลัก</div>
-           
             <button onclick="refreshData(event)" style="background: transparent; border: none; color: var(--apple-blue); cursor: pointer; padding: 0 0 0 8px; margin: 0; display: inline-flex; align-items: center; justify-content: center; box-shadow: none; width: auto; height: auto;" title="รันข้อมูลให้เป็นปัจจุบัน">
                 <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="23 4 23 10 17 10"></polyline>
@@ -531,31 +686,90 @@
         </div>
     </div>
 
-    <div id="fileExplorer">
-      <div id="itemList" class="item-grid"></div>
-    </div>
-
-    <br>
-    <button style="background: var(--apple-red); margin-top: 20px;" onclick="location.reload()">ออกจากระบบ</button>
+    <div id="fileExplorer"><div id="itemList" class="item-grid"></div></div>
+    <br><button style="background: var(--apple-red); margin-top: 20px;" onclick="location.reload()">ออกจากระบบ</button>
   </div>
 
   <div class="container" id="contentBox" style="display: none;">
-    
     <div style="display: flex; align-items: center; justify-content: flex-start; margin-bottom: 25px; width: 100%; box-sizing: border-box;">
         <button id="fileBackBtn" onclick="closeFile()" style="background: transparent; border: none; color: var(--apple-blue); cursor: pointer; padding: 0 10px 0 0; margin: 0; align-items: center; justify-content: center; width: auto; height: auto;" title="กลับไปหน้ารายการ">
-            <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
+            <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
         </button>
         <h3 id="displayName" style="margin: 0; word-break: break-word; text-align: left; font-size: 22px; flex: 1;"></h3>
     </div>
-
     <div id="downloadSection"></div>
-    
     <div class="protected-view">
       <div class="watermark" id="watermarkText"></div>
       <div id="driveBlocker" class="drive-blocker" style="display: none;" title="ไม่อนุญาตให้เปิดภายนอก"></div>
       <div id="fileViewer" style="width: 100%; height: 100%;"></div>
+    </div>
+  </div>
+
+  <!-- Calendar Modal -->
+  <div class="modal-overlay" id="calendarModalOverlay">
+    <div class="calendar-modal">
+        <div class="calendar-header">
+            <div style="display: flex; align-items: center;">
+                <h2 id="calendarMonthTitle">กรกฎาคม 2569</h2>
+                <div class="calendar-nav">
+                    <button onclick="prevMonth()" title="เดือนก่อนหน้า">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="#1d1d1f" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    </button>
+                    <button onclick="nextMonth()" title="เดือนถัดไป">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="#1d1d1f" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
+                    <button onclick="currentMonth()" style="width: auto; padding: 0 12px; font-size: 13px; border-radius: 12px;">วันนี้</button>
+                </div>
+            </div>
+            <button class="close-btn" onclick="closeCalendarModal()">×</button>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
+  </div>
+
+  <!-- Event Detail Modal -->
+  <div class="modal-overlay" id="eventDetailOverlay">
+    <div class="event-detail-modal">
+        <button class="close-btn" style="position: absolute; top: 15px; right: 15px;" onclick="closeEventDetail()">×</button>
+        <div class="event-d-title" id="eventDetailTitle">ชื่อเรื่อง</div>
+        <div class="event-d-box">
+            <div class="event-d-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <div id="eventDetailTime">อา. 26 ก.ค. 17:00 > 18:00</div>
+            </div>
+            <div class="event-d-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.59-9.21L21.5 8"></path></svg>
+                <div id="eventDetailRepeat">ไม่ทำประจำ</div>
+            </div>
+        </div>
+        <div class="event-d-box">
+            <div class="event-d-row" id="eventDetailLocationWrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                <div id="eventDetailLocation">สถานที่</div>
+            </div>
+            <div class="event-d-row" id="eventDetailUrlWrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                <div id="eventDetailUrl">URL</div>
+            </div>
+            <div class="event-d-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                <div id="eventDetailNote">โน้ต</div>
+            </div>
+        </div>
+        <button class="event-complete-btn" onclick="markEventComplete()">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
+    </div>
+  </div>
+
+  <!-- Schedule Modal -->
+  <div class="modal-overlay" id="scheduleModalOverlay">
+    <div class="schedule-modal">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3 style="margin:0;">ตารางเรียนของคุณ</h3>
+            <button class="close-btn" onclick="closeScheduleModal()">×</button>
+        </div>
+        <div id="scheduleContent" style="text-align: center; margin-top: 10px;"></div>
     </div>
   </div>
 
@@ -584,7 +798,14 @@
     let appSortMode = 'date'; 
     let sortDesc = true; 
     let unlockedItems = new Set();
-    // ระบบจำรหัสผ่านที่กรอกผ่านแล้ว จนกว่าจะรีโหลด/ออกจากระบบ
+    
+    let userReminders = [];
+    let userSchedules = [];
+    let currentEventId = null;
+
+    // ตัวแปรควบคุมปฏิทิน
+    let currentDisplayYear = new Date().getFullYear();
+    let currentDisplayMonth = new Date().getMonth();
 
     const studentInput = document.getElementById("studentId");
     if(studentInput) {
@@ -594,13 +815,8 @@
     }
 
     const appleColors = {
-        blue: ['#89C4FA', '#74B5F6'],
-        red: ['#ff8a8a', '#ff5c5c'],
-        orange: ['#ffb380', '#ff944d'],
-        yellow: ['#ffe082', '#ffcc33'],
-        green: ['#85e098', '#5cd675'],
-        purple: ['#d1a3ff', '#b870ff'],
-        gray: ['#c2c2c2', '#a8a8a8']
+        blue: ['#89C4FA', '#74B5F6'], red: ['#ff8a8a', '#ff5c5c'], orange: ['#ffb380', '#ff944d'],
+        yellow: ['#ffe082', '#ffcc33'], green: ['#85e098', '#5cd675'], purple: ['#d1a3ff', '#b870ff'], gray: ['#c2c2c2', '#a8a8a8']
     };
     const icons = {
       pdf: `<svg class="icon-file" viewBox="0 0 64 80" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="56" height="72" rx="6" fill="#F9F9FB" stroke="#D2D2D7" stroke-width="2"/><path d="M40 4L60 24V10C60 6.68629 57.3137 4 54 4H40Z" fill="#E5E5EA"/><path d="M40 4V18C40 21.3137 42.6863 24 46 24H60" stroke="#D2D2D7" stroke-width="2" stroke-linejoin="round"/><rect x="16" y="32" width="32" height="4" rx="2" fill="#FF3B30"/><rect x="16" y="44" width="24" height="4" rx="2" fill="#D2D2D7"/><rect x="16" y="56" width="28" height="4" rx="2" fill="#D2D2D7"/></svg>`,
@@ -615,9 +831,7 @@
         let svg = `<svg class="icon-folder" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 12C0 5.37258 5.37258 0 12 0H36.5C39.5 0 42.2 1.5 43.8 4L51 15H88C94.6274 15 100 20.3726 100 27V68C100 74.6274 94.6274 80 88 80H12C5.37258 80 0 74.6274 0 68V12Z" fill="${c[0]}"/>
             <path d="M0 24C0 20.6863 2.68629 18 6 18H94C97.3137 18 100 20.6863 100 24V68C100 74.6274 94.6274 80 88 80H12C5.37258 80 0 74.6274 0 68V24Z" fill="${c[1]}"/>`;
-        if (emoji) {
-            svg += `<text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-size="28">${emoji}</text>`;
-        }
+        if (emoji) svg += `<text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-size="28">${emoji}</text>`;
         svg += `</svg>`;
         return svg;
     }
@@ -626,10 +840,7 @@
         if (!timestamp) return "";
         try {
             const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-            return date.toLocaleDateString('th-TH', { 
-                year: 'numeric', month: 'short', day: 'numeric', 
-                hour: '2-digit', minute: '2-digit' 
-            }) + " น.";
+            return date.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) + " น.";
         } catch(e) { return ""; }
     }
 
@@ -641,9 +852,7 @@
     
     window.addEventListener('click', function(e) {
       const menu = document.getElementById("optionsMenu");
-      if (menu && menu.style.display === "block" && !e.target.closest('.options-btn-wrap-relative')) {
-          menu.style.display = "none";
-      }
+      if (menu && menu.style.display === "block" && !e.target.closest('.options-btn-wrap-relative')) menu.style.display = "none";
     });
     
     window.setViewMode = function(mode) {
@@ -652,21 +861,14 @@
       document.getElementById("checkList").style.opacity = mode === 'list' ? "1" : "0";
       
       const itemList = document.getElementById("itemList");
-      if (mode === 'list') {
-          itemList.classList.add("list-view");
-      } else {
-          itemList.classList.remove("list-view");
-      }
+      if (mode === 'list') itemList.classList.add("list-view");
+      else itemList.classList.remove("list-view");
       document.getElementById("optionsMenu").style.display = "none";
     }
 
     window.setSortMode = function(mode) {
-      if (appSortMode === mode) {
-          sortDesc = !sortDesc;
-      } else {
-          appSortMode = mode;
-          sortDesc = mode === 'date' || mode === 'size'; 
-      }
+      if (appSortMode === mode) sortDesc = !sortDesc;
+      else { appSortMode = mode; sortDesc = mode === 'date' || mode === 'size'; }
       
       document.getElementById("checkSortName").style.opacity = mode === 'name' ? "1" : "0";
       document.getElementById("checkSortType").style.opacity = mode === 'type' ? "1" : "0";
@@ -674,19 +876,13 @@
       document.getElementById("checkSortSize").style.opacity = mode === 'size' ? "1" : "0";
       
       const nameLabel = document.getElementById("sortNameLabel");
-      nameLabel.style.display = mode === 'name' ? "block" : "none";
-      nameLabel.innerText = sortDesc ? "ฮ ถึง ก" : "ก ถึง ฮ";
-      
+      nameLabel.style.display = mode === 'name' ? "block" : "none"; nameLabel.innerText = sortDesc ? "ฮ ถึง ก" : "ก ถึง ฮ";
       const dateLabel = document.getElementById("sortDateLabel");
-      dateLabel.style.display = mode === 'date' ? "block" : "none";
-      dateLabel.innerText = sortDesc ? "ใหม่ที่สุดถึงเก่าที่สุด" : "เก่าที่สุดถึงใหม่ที่สุด";
-      
+      dateLabel.style.display = mode === 'date' ? "block" : "none"; dateLabel.innerText = sortDesc ? "ใหม่ที่สุดถึงเก่าที่สุด" : "เก่าที่สุดถึงใหม่ที่สุด";
       const sizeLabel = document.getElementById("sortSizeLabel");
-      sizeLabel.style.display = mode === 'size' ? "block" : "none";
-      sizeLabel.innerText = sortDesc ? "ใหญ่ที่สุดถึงเล็กที่สุด" : "เล็กที่สุดถึงใหญ่ที่สุด";
+      sizeLabel.style.display = mode === 'size' ? "block" : "none"; sizeLabel.innerText = sortDesc ? "ใหญ่ที่สุดถึงเล็กที่สุด" : "เล็กที่สุดถึงใหญ่ที่สุด";
       
-      renderExplorer(); 
-      document.getElementById("optionsMenu").style.display = "none";
+      renderExplorer(); document.getElementById("optionsMenu").style.display = "none";
     }
 
     function getSortDate(obj, isFolder) {
@@ -701,82 +897,52 @@
             let banners = [];
             snap.forEach(doc => banners.push({id: doc.id, ...doc.data()}));
             
-            // จัดเรียงตามลำดับที่จัดการมาจากหลังบ้าน
             banners.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
             if (banners.length === 0) return;
             
             let html = '';
             banners.forEach(b => {
-                if(b.link) {
-                    html += `<div class="banner-slide"><a href="${b.link}" target="_blank"><img src="${b.imageUrl}"></a></div>`;
-                } else {
-                    html += `<div class="banner-slide"><img src="${b.imageUrl}"></div>`;
-                }
+                if(b.link) html += `<div class="banner-slide"><a href="${b.link}" target="_blank"><img src="${b.imageUrl}"></a></div>`;
+                else html += `<div class="banner-slide"><img src="${b.imageUrl}"></div>`;
             });
             
             const loginBanner = document.getElementById('loginBanner');
             const menuBanner = document.getElementById('menuBanner');
             
-            if(loginBanner) { loginBanner.innerHTML = html;
-              loginBanner.style.display = "flex"; document.getElementById('loginClock').style.display = "block";
-            }
-            if(menuBanner) { menuBanner.innerHTML = html;
-              menuBanner.style.display = "flex";
-              document.getElementById('menuClock').style.display = "block"; }
+            if(loginBanner) { loginBanner.innerHTML = html; loginBanner.style.display = "flex"; document.getElementById('loginClock').style.display = "block"; }
+            if(menuBanner) { menuBanner.innerHTML = html; menuBanner.style.display = "flex"; document.getElementById('menuClock').style.display = "block"; }
 
             if(window.bannerInterval) clearInterval(window.bannerInterval);
-            // เวลาโฆษณาเลือนอัตโนมัติเป็น 6 วินาที (6000 ms) ตามต้นฉบับ
             window.bannerInterval = setInterval(() => {
                 [loginBanner, menuBanner].forEach(container => {
                     if(container && container.style.display !== "none") {
                         const scrollWidth = container.clientWidth;
-                        if (container.scrollLeft + scrollWidth >= container.scrollWidth - 10) {
-                            container.scrollTo({ left: 0, behavior: 'smooth' });
-                        } else {
-                             container.scrollBy({ left: scrollWidth, behavior: 'smooth' }); 
-                        }
+                        if (container.scrollLeft + scrollWidth >= container.scrollWidth - 10) container.scrollTo({ left: 0, behavior: 'smooth' });
+                        else container.scrollBy({ left: scrollWidth, behavior: 'smooth' }); 
                     }
                 });
             }, 6000);
-        } catch(e) {
-            console.error("โหลดแบนเนอร์ล้มเหลว", e);
-        }
+        } catch(e) { console.error("โหลดแบนเนอร์ล้มเหลว", e); }
     }
-    
     initBanners();
     
-    // ---------------- ระบบเวลาใต้ภาพโฆษณาแบบเรียลไทม์ ----------------
     function updateRealtimeClock() {
         const now = new Date();
         const daysTh = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
-        const monthsTh = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกาคน', 'ธันวาคม'];
-        
-        const dayName = daysTh[now.getDay()];
-        const date = now.getDate();
-        const monthName = monthsTh[now.getMonth()];
-        const year = now.getFullYear() + 543;
-        
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        
-        const timeString = `ข้อมูล ณ วัน${dayName} ที่ ${date} เดือน${monthName} พ.ศ.${year} เวลา ${hours}:${minutes} น.`;
+        const monthsTh = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+        const timeString = `ข้อมูล ณ วัน${daysTh[now.getDay()]} ที่ ${now.getDate()} เดือน${monthsTh[now.getMonth()]} พ.ศ.${now.getFullYear() + 543} เวลา ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} น.`;
         
         const loginClock = document.getElementById('loginClock');
         const menuClock = document.getElementById('menuClock');
-        
         if (loginClock && loginClock.style.display !== "none") loginClock.innerText = timeString;
         if (menuClock && menuClock.style.display !== "none") menuClock.innerText = timeString;
     }
-    
-    setInterval(updateRealtimeClock, 1000);
-    updateRealtimeClock();
-    // -------------------------------------------------------------
+    setInterval(updateRealtimeClock, 1000); updateRealtimeClock();
 
     window.checkData = async function() {
       const rawId = document.getElementById("studentId").value.trim();
       if (!rawId) return;
-      document.getElementById("errorMsg").style.display = "none";
-      unlockedItems.clear(); // ล้างรหัสผ่านเมื่อเข้าสู่ระบบใหม่
+      document.getElementById("errorMsg").style.display = "none"; unlockedItems.clear(); 
       
       try {
         const searchId = rawId.replace(/[\s"']/g, '').toLowerCase();
@@ -784,20 +950,23 @@
         const q2 = query(collection(db, "jobs"), where("searchableUsers", "array-contains", searchId));
         const q3 = query(collection(db, "jobs"), where("type", "==", "system_folder"));
 
-        const [snap1, snap2, snap3] = await Promise.all([getDocs(q1), getDocs(q2), getDocs(q3)]);
+        const qRem = query(collection(db, "reminders"), where("allowedUsers", "array-contains", rawId));
+        const qSch = query(collection(db, "schedules"), where("allowedUsers", "array-contains", rawId));
+
+        const [snap1, snap2, snap3, snapRem, snapSch] = await Promise.all([getDocs(q1), getDocs(q2), getDocs(q3), getDocs(qRem), getDocs(qSch)]);
 
         const fileMap = new Map();
-        
         snap1.forEach(docSnap => { fileMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() }); });
         snap2.forEach(docSnap => { fileMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() }); });
 
+        userReminders = []; snapRem.forEach(docSnap => { userReminders.push({ id: docSnap.id, ...docSnap.data() }); });
+        userSchedules = []; snapSch.forEach(docSnap => { userSchedules.push({ id: docSnap.id, ...docSnap.data() }); });
+
         let allFiles = Array.from(fileMap.values());
         
-        if (allFiles.length > 0) {
+        if (allFiles.length > 0 || userReminders.length > 0 || userSchedules.length > 0) {
           let matchedId = rawId;
-        
-          folderMeta = {};
-          userFiles = [];
+          folderMeta = {}; userFiles = [];
 
           for (const file of allFiles) {
              if (file.allowedUsers) {
@@ -810,19 +979,13 @@
           snap3.forEach(docSnap => {
               const data = docSnap.data();
               let path = (data.folder || "").trim().replace(/^\/+|\/+$/g, '');
-              folderMeta[path] = { 
-                  color: data.color || 'blue', 
-                  emoji: data.emoji || '', 
-                  password: data.password || '',
-                  updatedAt: data.updatedAt || data.createdAt || null
-              };
+              folderMeta[path] = { color: data.color || 'blue', emoji: data.emoji || '', password: data.password || '', updatedAt: data.updatedAt || data.createdAt || null };
           });
           
           allFiles.forEach(file => {
               if (file.type !== "system_folder") {
                   let path = (file.folder || "").trim().replace(/^\/+|\/+$/g, '');
-                  file.normalizedPath = path;
-                  userFiles.push(file);
+                  file.normalizedPath = path; userFiles.push(file);
               }
           });
 
@@ -833,92 +996,297 @@
           document.getElementById("loginBox").style.display = "none";
           document.getElementById("menuBox").style.display = "block";
           document.getElementById("menuTitle").innerText = `รหัสผู้ใช้งาน: ${currentId}`;
-          
-          currentPath = "";
-          renderExplorer();
-        } else {
-          document.getElementById("errorMsg").style.display = "block";
-        }
-      } catch (error) {
-        alert("เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล");
-      }
+          document.getElementById("mainTopIcons").style.display = "flex";
+          updateReminderBadge();
+
+          currentPath = ""; renderExplorer();
+        } else { document.getElementById("errorMsg").style.display = "block"; }
+      } catch (error) { alert("เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล"); }
     }
 
-    // ฟังก์ชันรันข้อมูลให้เป็นปัจจุบัน โดยไม่ต้องออกจากระบบ
+    window.updateReminderBadge = function() {
+        const badge = document.getElementById("reminderBadgeCount");
+        const pendingCount = userReminders.filter(r => r.status !== 'Complete').length;
+        if(pendingCount > 0) { badge.style.display = "flex"; badge.innerText = pendingCount; } 
+        else badge.style.display = "none";
+    }
+
+    /* --- ดึงข้อมูลวันสำคัญทางราชการ/วันหยุด (ปฏิทินไทย) --- */
+    function getThaiHolidays(year) {
+        // วันหยุดราชการไทยแบบคงที่
+        const holidays = {
+            [`${year}-01-01`]: "วันขึ้นปีใหม่",
+            [`${year}-04-06`]: "วันจักรี",
+            [`${year}-04-13`]: "วันสงกรานต์",
+            [`${year}-04-14`]: "วันสงกรานต์",
+            [`${year}-04-15`]: "วันสงกรานต์",
+            [`${year}-05-01`]: "วันแรงงานแห่งชาติ",
+            [`${year}-05-04`]: "วันฉัตรมงคล",
+            [`${year}-06-03`]: "วันเฉลิมฯ พระราชินี",
+            [`${year}-07-28`]: "วันเฉลิมฯ ร.10",
+            [`${year}-08-12`]: "วันแม่แห่งชาติ",
+            [`${year}-10-13`]: "วันนวมินทรมหาราช",
+            [`${year}-10-23`]: "วันปิยมหาราช",
+            [`${year}-12-05`]: "วันพ่อแห่งชาติ",
+            [`${year}-12-10`]: "วันรัฐธรรมนูญ",
+            [`${year}-12-31`]: "วันสิ้นปี"
+        };
+        
+        // ข้อมูลวันหยุดอ้างอิงปี 2026 ตามที่ระบุ
+        if (year === 2026) {
+            holidays["2026-01-02"] = "วันหยุดพิเศษ";
+            holidays["2026-03-03"] = "วันมาฆบูชา";
+            holidays["2026-05-31"] = "วันวิสาขบูชา";
+            holidays["2026-06-01"] = "ชดเชยวันวิสาขบูชา";
+            holidays["2026-07-29"] = "วันอาสาฬหบูชา";
+            holidays["2026-07-30"] = "วันเข้าพรรษา";
+            holidays["2026-12-07"] = "ชดเชยวันพ่อแห่งชาติ";
+        } else if (year === 2025) {
+            holidays["2025-02-13"] = "วันมาฆบูชา";
+            holidays["2025-05-11"] = "วันวิสาขบูชา";
+            holidays["2025-07-10"] = "วันอาสาฬหบูชา";
+            holidays["2025-07-11"] = "วันเข้าพรรษา";
+        } else if (year === 2024) {
+            holidays["2024-02-24"] = "วันมาฆบูชา";
+            holidays["2024-05-22"] = "วันวิสาขบูชา";
+            holidays["2024-07-20"] = "วันอาสาฬหบูชา";
+            holidays["2024-07-21"] = "วันเข้าพรรษา";
+        }
+        return holidays;
+    }
+
+    // --- Calendar System ---
+    window.openCalendarModal = function() {
+        currentDisplayYear = new Date().getFullYear();
+        currentDisplayMonth = new Date().getMonth();
+        document.getElementById('calendarModalOverlay').style.display = 'flex';
+        renderCalendar();
+    }
+    window.closeCalendarModal = function() {
+        document.getElementById('calendarModalOverlay').style.display = 'none';
+    }
+
+    window.prevMonth = function() {
+        currentDisplayMonth--;
+        if(currentDisplayMonth < 0) { currentDisplayMonth = 11; currentDisplayYear--; }
+        renderCalendar();
+    }
+    window.nextMonth = function() {
+        currentDisplayMonth++;
+        if(currentDisplayMonth > 11) { currentDisplayMonth = 0; currentDisplayYear++; }
+        renderCalendar();
+    }
+    window.currentMonth = function() {
+        currentDisplayYear = new Date().getFullYear();
+        currentDisplayMonth = new Date().getMonth();
+        renderCalendar();
+    }
+
+    window.renderCalendar = function() {
+        const grid = document.getElementById("calendarGrid");
+        grid.innerHTML = "";
+        
+        const daysTh = ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'];
+        daysTh.forEach(day => {
+            const el = document.createElement("div");
+            el.className = "cal-day-header";
+            el.innerText = day;
+            grid.appendChild(el);
+        });
+
+        const today = new Date();
+        const year = currentDisplayYear;
+        const month = currentDisplayMonth;
+        
+        const monthsThai = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+        document.getElementById("calendarMonthTitle").innerText = `${monthsThai[month]} ${year + 543}`;
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const thaiHolidays = getThaiHolidays(year);
+        
+        for(let i=0; i<firstDay; i++) {
+            const cell = document.createElement("div");
+            cell.className = "cal-cell";
+            cell.style.visibility = "hidden";
+            grid.appendChild(cell);
+        }
+
+        for(let i=1; i<=daysInMonth; i++) {
+            const cell = document.createElement("div");
+            cell.className = "cal-cell";
+            if(year === today.getFullYear() && month === today.getMonth() && i === today.getDate()) {
+                cell.classList.add("today");
+            }
+            
+            const num = document.createElement("div");
+            num.className = "cal-date-num";
+            num.innerText = i;
+            cell.appendChild(num);
+
+            let cellDateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
+            
+            // เพิ่มวันหยุดราชการไทยเข้าไปในปฏิทิน
+            if(thaiHolidays[cellDateStr]) {
+                const hBar = document.createElement("div");
+                hBar.className = "cal-holiday-bar";
+                hBar.innerText = thaiHolidays[cellDateStr];
+                hBar.title = thaiHolidays[cellDateStr]; // เผื่อแสดงเต็มตอน hover
+                cell.appendChild(hBar);
+                num.style.color = "#d81b60"; 
+            }
+
+            // หา events หรือ Reminders (ตรวจสอบช่วงเวลาเริ่ม - สิ้นสุด)
+            let dayEvents = userReminders.filter(r => {
+                if(r.status === 'Complete') return false;
+                if(!r.startDate) return false;
+                let start = r.startDate;
+                let end = r.endDate || r.startDate; // ถ้าไม่มี endDate ให้ถือว่าเป็นวันเดียว
+                return cellDateStr >= start && cellDateStr <= end;
+            });
+            
+            dayEvents.forEach(ev => {
+                const bar = document.createElement("div");
+                bar.className = "cal-event-bar";
+                bar.innerText = ev.title;
+                bar.title = ev.title; // เผื่อแสดงเต็มตอน hover
+                bar.style.borderColor = varAppleColor(ev.color);
+                cell.appendChild(bar);
+            });
+
+            cell.onclick = () => { if(dayEvents.length > 0) showEventDetail(dayEvents[0]); };
+            grid.appendChild(cell);
+        }
+    }
+
+    function varAppleColor(c) {
+        if(c==='red') return '#ff3b30'; if(c==='green') return '#34c759';
+        if(c==='yellow') return '#ffcc00'; if(c==='purple') return '#af52de';
+        return '#0071e3'; 
+    }
+
+    window.showEventDetail = function(ev) {
+        currentEventId = ev.id;
+        document.getElementById('eventDetailTitle').innerText = ev.title;
+        
+        let dateText = formatDateThaiShort(ev.startDate);
+        if (ev.endDate && ev.startDate !== ev.endDate) {
+            dateText += ` - ${formatDateThaiShort(ev.endDate)}`;
+        }
+
+        let timeText = 'ตลอดวัน';
+        if(ev.startTime) {
+            timeText = ev.endTime ? `${ev.startTime} > ${ev.endTime}` : ev.startTime;
+        }
+
+        document.getElementById('eventDetailTime').innerText = `${dateText} เวลา ${timeText}`;
+        document.getElementById('eventDetailRepeat').innerText = ev.recurring || 'ไม่ทำประจำ';
+        
+        const loc = document.getElementById('eventDetailLocationWrap');
+        if(ev.location) { loc.style.display = 'flex'; document.getElementById('eventDetailLocation').innerText = ev.location; } else loc.style.display = 'none'; 
+        
+        const urlWrap = document.getElementById('eventDetailUrlWrap');
+        if(ev.url) { urlWrap.style.display = 'flex'; document.getElementById('eventDetailUrl').innerHTML = `<a href="${ev.url}" target="_blank">${ev.url}</a>`; } else urlWrap.style.display = 'none';
+
+        document.getElementById('eventDetailNote').innerText = ev.details || '-';
+        document.getElementById('eventDetailOverlay').style.display = 'flex';
+    }
+
+    window.closeEventDetail = function() { document.getElementById('eventDetailOverlay').style.display = 'none'; currentEventId = null; }
+
+    window.markEventComplete = async function() {
+        if(!currentEventId) return;
+        try {
+            await updateDoc(doc(db, "reminders", currentEventId), { status: 'Complete' });
+            let evIndex = userReminders.findIndex(r => r.id === currentEventId);
+            if(evIndex !== -1) userReminders[evIndex].status = 'Complete';
+            updateReminderBadge(); renderCalendar(); closeEventDetail();
+        } catch(e) { alert("เกิดข้อผิดพลาดในการอัปเดตงาน"); }
+    }
+
+    function formatDateThaiShort(ds) {
+        if(!ds) return "";
+        let d = new Date(ds);
+        let thDays = ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'];
+        let thMonths = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+        return `${thDays[d.getDay()]} ${d.getDate()} ${thMonths[d.getMonth()]}`;
+    }
+
+    // --- Schedule System ---
+    window.openScheduleModal = function() {
+        document.getElementById('scheduleModalOverlay').style.display = 'flex';
+        let html = '';
+        if(userSchedules.length > 0) {
+            // สร้างโครงสร้าง Slider
+            html += '<div class="schedule-slider">';
+            userSchedules.forEach(s => { 
+                // ใช้ชื่อเรื่องจากฐานข้อมูล หรือถ้าไม่มีให้แสดงค่าเริ่มต้น
+                let scheduleTitle = s.title || s.name || "ตารางเรียนของคุณ";
+                html += `
+                <div class="schedule-slide">
+                    <div class="schedule-title">${scheduleTitle}</div>
+                    <img src="${s.imageUrl}" class="schedule-img">
+                </div>`; 
+            });
+            html += '</div>';
+        } else {
+            html = `<p style="color:#8e8e93;">ไม่พบตารางเรียนที่แอดมินกำหนดให้คุณ</p>`;
+        }
+        document.getElementById('scheduleContent').innerHTML = html;
+    }
+    window.closeScheduleModal = function() { document.getElementById('scheduleModalOverlay').style.display = 'none'; }
+
     window.refreshData = async function(e) {
         if(e) e.stopPropagation();
         if(!currentId) return;
-        
-        // หมุนไอคอนสีฟ้าขณะที่กำลังดึงข้อมูล
-        const btn = e.currentTarget;
-        const svg = btn.querySelector('svg');
-        if(svg) {
-            svg.style.transition = 'transform 0.5s ease';
-            svg.style.transform = 'rotate(180deg)';
-        }
+        const btn = e.currentTarget; const svg = btn.querySelector('svg');
+        if(svg) { svg.style.transition = 'transform 0.5s ease'; svg.style.transform = 'rotate(180deg)'; }
         
         try {
-            const rawId = currentId;
-            const searchId = rawId.replace(/[\s"']/g, '').toLowerCase();
+            const rawId = currentId; const searchId = rawId.replace(/[\s"']/g, '').toLowerCase();
             const q1 = query(collection(db, "jobs"), where("allowedUsers", "array-contains", rawId));
             const q2 = query(collection(db, "jobs"), where("searchableUsers", "array-contains", searchId));
             const q3 = query(collection(db, "jobs"), where("type", "==", "system_folder"));
+            const qRem = query(collection(db, "reminders"), where("allowedUsers", "array-contains", rawId));
+            const qSch = query(collection(db, "schedules"), where("allowedUsers", "array-contains", rawId));
 
-            const [snap1, snap2, snap3] = await Promise.all([getDocs(q1), getDocs(q2), getDocs(q3)]);
+            const [snap1, snap2, snap3, snapRem, snapSch] = await Promise.all([getDocs(q1), getDocs(q2), getDocs(q3), getDocs(qRem), getDocs(qSch)]);
 
             const fileMap = new Map();
-   
             snap1.forEach(docSnap => { fileMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() }); });
             snap2.forEach(docSnap => { fileMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() }); });
 
-            let allFiles = Array.from(fileMap.values());
-            
-            // ล้างข้อมูลและใส่ข้อมูลใหม่เพื่อไม่ให้หน้าเพจกระตุก
-            folderMeta = {};
-            userFiles = [];
+            userReminders = []; snapRem.forEach(docSnap => { userReminders.push({ id: docSnap.id, ...docSnap.data() }); });
+            userSchedules = []; snapSch.forEach(docSnap => { userSchedules.push({ id: docSnap.id, ...docSnap.data() }); });
+            updateReminderBadge();
+
+            let allFiles = Array.from(fileMap.values()); folderMeta = {}; userFiles = [];
 
             snap3.forEach(docSnap => {
                 const data = docSnap.data();
                 let path = (data.folder || "").trim().replace(/^\/+|\/+$/g, '');
-                folderMeta[path] = { 
-                    color: data.color || 'blue', 
-                    emoji: data.emoji || '', 
-                    password: data.password || '',
-                    updatedAt: data.updatedAt || data.createdAt || null
-                };
+                folderMeta[path] = { color: data.color || 'blue', emoji: data.emoji || '', password: data.password || '', updatedAt: data.updatedAt || data.createdAt || null };
             });
             
             allFiles.forEach(file => {
                 if (file.type !== "system_folder") {
                     let path = (file.folder || "").trim().replace(/^\/+|\/+$/g, '');
-                    file.normalizedPath = path;
-                    userFiles.push(file);
+                    file.normalizedPath = path; userFiles.push(file);
                 }
             });
-            
-            // อัปเดตการแสดงผล (คงอยู่ที่โฟลเดอร์หรือหน้าปัจจุบันไว้ไม่เปลี่ยนแปลง)
             renderExplorer();
-        } catch (error) {
-            console.error("Refresh Error:", error);
-            alert("เกิดข้อผิดพลาดในการดึงข้อมูลอัปเดตใหม่");
-        } finally {
-            // คืนค่าไอคอนกลับตำแหน่งเดิม
-            if(svg) setTimeout(() => svg.style.transform = 'rotate(0deg)', 500);
-        }
+        } catch (error) { alert("เกิดข้อผิดพลาดในการดึงข้อมูลอัปเดตใหม่");
+        } finally { if(svg) setTimeout(() => svg.style.transform = 'rotate(0deg)', 500); }
     }
 
     window.renderExplorer = function() {
-      let foldersInCurrentPath = new Set();
-      let filesInCurrentPath = [];
+      let foldersInCurrentPath = new Set(); let filesInCurrentPath = [];
 
       userFiles.forEach(file => {
           let fp = file.normalizedPath;
-          if (fp === currentPath) {
-              filesInCurrentPath.push(file);
-          } 
+          if (fp === currentPath) filesInCurrentPath.push(file);
           else if (fp.startsWith(currentPath ? currentPath + "/" : "")) {
-              let remainingPath = fp.substring(currentPath ? currentPath.length + 1 : 0);
-              let immediateSubfolder = remainingPath.split('/')[0];
+              let immediateSubfolder = fp.substring(currentPath ? currentPath.length + 1 : 0).split('/')[0];
               if (immediateSubfolder) foldersInCurrentPath.add(immediateSubfolder);
           }
       });
@@ -931,41 +1299,26 @@
       
       const sortData = (a, b, isFolder) => {
           let valA, valB;
-          if (appSortMode === 'name') {
-              valA = (isFolder ? a.name : a.title).toLowerCase();
-              valB = (isFolder ? b.name : b.title).toLowerCase();
-          } else if (appSortMode === 'type') {
-              valA = isFolder ? 'folder' : (a.type || '');
-              valB = isFolder ? 'folder' : (b.type || '');
-          } else if (appSortMode === 'date') {
-              valA = getSortDate(a, isFolder);
-              valB = getSortDate(b, isFolder);
-          } else if (appSortMode === 'size') {
-              valA = isFolder ? 0 : (a.url ? a.url.length : 0);
-              valB = isFolder ? 0 : (b.url ? b.url.length : 0);
-          }
+          if (appSortMode === 'name') { valA = (isFolder ? a.name : a.title).toLowerCase(); valB = (isFolder ? b.name : b.title).toLowerCase(); } 
+          else if (appSortMode === 'type') { valA = isFolder ? 'folder' : (a.type || ''); valB = isFolder ? 'folder' : (b.type || ''); } 
+          else if (appSortMode === 'date') { valA = getSortDate(a, isFolder); valB = getSortDate(b, isFolder); } 
+          else if (appSortMode === 'size') { valA = isFolder ? 0 : (a.url ? a.url.length : 0); valB = isFolder ? 0 : (b.url ? b.url.length : 0); }
           
-          if (valA < valB) return sortDesc ? 1 : -1;
-          if (valA > valB) return sortDesc ? -1 : 1;
-          return 0;
+          if (valA < valB) return sortDesc ? 1 : -1; if (valA > valB) return sortDesc ? -1 : 1; return 0;
       };
       
-      folderList.sort((a, b) => sortData(a, b, true));
-      filesInCurrentPath.sort((a, b) => sortData(a, b, false));
+      folderList.sort((a, b) => sortData(a, b, true)); filesInCurrentPath.sort((a, b) => sortData(a, b, false));
 
       let html = "";
-      
       folderList.forEach(folder => {
-          const folderName = folder.name;
-          const safeFolderName = encodeURIComponent(folderName);
-          let meta = folder.meta;
+          const safeFolderName = encodeURIComponent(folder.name); let meta = folder.meta;
           let lockHtml = meta.password ? `<div class="grid-lock">${icons.lock} ติดรหัสผ่าน</div>` : "";
           let timeStr = formatTime(meta.updatedAt);
           
           html += `
             <div class="grid-item" onclick="openFolder('${safeFolderName}')">
               <div class="grid-icon">${getFolderIcon(meta.color, meta.emoji)}</div>
-              <div class="grid-name">${folderName}</div>
+              <div class="grid-name">${folder.name}</div>
               <div class="grid-time">${timeStr}</div>
               ${lockHtml}
             </div>
@@ -975,9 +1328,7 @@
       filesInCurrentPath.forEach((file) => {
           const index = userFiles.findIndex(f => f.id === file.id);
           let iconSvg = icons.pdf; 
-          if (file.type === "youtube") iconSvg = icons.youtube;
-          else if (file.type === "image") iconSvg = icons.image;
-          else if (file.type === "link") iconSvg = icons.link;
+          if (file.type === "youtube") iconSvg = icons.youtube; else if (file.type === "image") iconSvg = icons.image; else if (file.type === "link") iconSvg = icons.link;
           
           let lockHtml = file.password ? `<div class="grid-lock">${icons.lock} ติดรหัสผ่าน</div>` : "";
           let fileTimeStr = file.updatedAt ? formatTime(file.updatedAt) : (file.createdAt ? formatTime(file.createdAt) : "");
@@ -995,17 +1346,9 @@
       if(html === "") html = "<p style='grid-column: 1/-1; text-align:center; color:#86868b; margin-top:20px;'>ไม่มีเอกสารในโฟลเดอร์นี้</p>";
       document.getElementById("itemList").innerHTML = html;
       
-      const navBackBtn = document.getElementById("navBackBtn");
-      const pathTitleEl = document.getElementById("currentPathTitle");
-      
-      if (currentPath === "") {
-         navBackBtn.style.display = "none";
-         pathTitleEl.innerText = "หน้าหลัก";
-      } else {
-         navBackBtn.style.display = "flex";
-         let parts = currentPath.split('/');
-         pathTitleEl.innerText = parts[parts.length - 1];
-      }
+      const navBackBtn = document.getElementById("navBackBtn"); const pathTitleEl = document.getElementById("currentPathTitle");
+      if (currentPath === "") { navBackBtn.style.display = "none"; pathTitleEl.innerText = "หน้าหลัก"; } 
+      else { navBackBtn.style.display = "flex"; let parts = currentPath.split('/'); pathTitleEl.innerText = parts[parts.length - 1]; }
     }
 
     window.openFolder = function(encodedFolderName) {
@@ -1015,204 +1358,102 @@
       
       if (meta && meta.password && !unlockedItems.has(targetPath)) {
           let pwd = prompt("โฟลเดอร์นี้ถูกล็อก กรุณาใส่รหัสผ่าน:");
-          if (pwd !== meta.password) {
-              alert("รหัสผ่านไม่ถูกต้อง");
-              return;
-          }
+          if (pwd !== meta.password) { alert("รหัสผ่านไม่ถูกต้อง"); return; }
           unlockedItems.add(targetPath);
-          // ปลดล็อกแล้วจำไว้
       }
-      currentPath = targetPath;
-      renderExplorer();
+      currentPath = targetPath; renderExplorer();
     }
 
     window.navigateUp = function() {
        if (currentPath === "") return;
-       let parts = currentPath.split('/');
-       parts.pop(); 
-       currentPath = parts.join('/');
-       renderExplorer();
+       let parts = currentPath.split('/'); parts.pop(); currentPath = parts.join('/'); renderExplorer();
     }
 
     window.openFile = function(index) {
       const file = userFiles[index];
-      
       if (file.password && !unlockedItems.has(file.id)) {
           let pwd = prompt("เอกสารนี้ถูกล็อก กรุณาใส่รหัสผ่าน:");
-          if (pwd !== file.password) {
-              alert("รหัสผ่านไม่ถูกต้อง");
-              return;
-          }
+          if (pwd !== file.password) { alert("รหัสผ่านไม่ถูกต้อง"); return; }
           unlockedItems.add(file.id);
-          // ปลดล็อกแล้วจำไว้
       }
       
-      document.getElementById("menuBox").style.display = "none";
-      document.getElementById("contentBox").style.display = "block";
+      document.getElementById("menuBox").style.display = "none"; document.getElementById("contentBox").style.display = "block";
       document.getElementById("displayName").innerText = file.title;
       
       const watermarkEl = document.getElementById("watermarkText");
-      if (file.showWatermark === false) {
-          watermarkEl.style.display = "none";
-      } else {
-          watermarkEl.style.display = "block";
-          watermarkEl.innerText = `${currentId}\nข้อมูลภายใต้การควบคุมสิทธิ์`;
-      }
+      if (file.showWatermark === false) watermarkEl.style.display = "none";
+      else { watermarkEl.style.display = "block"; watermarkEl.innerText = `${currentId}\nข้อมูลภายใต้การควบคุมสิทธิ์`; }
       
       document.getElementById("contentBox").setAttribute("data-active-job", file.id);
-
-      const viewer = document.getElementById("fileViewer");
-      const blocker = document.getElementById("driveBlocker");
+      const viewer = document.getElementById("fileViewer"); const blocker = document.getElementById("driveBlocker");
       
       if (file.type === "link") {
-        blocker.style.display = "none";
-        viewer.innerHTML = `
-          <div id="linkContainer" style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; flex-direction: column;">
-            <p id="linkStatusText" style="font-size: 18px; color: var(--apple-text-muted);">กำลังตรวจสอบการอนุญาตเข้าถึงลิงก์...</p>
-          </div>
-        `;
+        blocker.style.display = "none"; viewer.innerHTML = `<div id="linkContainer" style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; flex-direction: column;"><p id="linkStatusText" style="font-size: 18px; color: var(--apple-text-muted);">กำลังตรวจสอบการอนุญาตเข้าถึงลิงก์...</p></div>`;
       } else if (file.type === "youtube") {
-        blocker.style.display = "none";
-        viewer.innerHTML = `<iframe class="block-interaction" src="${file.url}?modestbranding=1&controls=0&rel=0&disablekb=1&fs=0" allow="autoplay" allowfullscreen></iframe>`;
+        blocker.style.display = "none"; viewer.innerHTML = `<iframe class="block-interaction" src="${file.url}?modestbranding=1&controls=0&rel=0&disablekb=1&fs=0" allow="autoplay" allowfullscreen></iframe>`;
       } else if (file.type === "image") {
-        blocker.style.display = "none";
-        viewer.innerHTML = `<img class="block-interaction" src="${file.url}" style="object-fit: contain;">`;
+        blocker.style.display = "none"; viewer.innerHTML = `<img class="block-interaction" src="${file.url}" style="object-fit: contain;">`;
       } else if (file.type === "pdf") {
-        blocker.style.display = "block";
-        viewer.innerHTML = `<iframe class="pdf-viewer" src="${file.url}#toolbar=0&navpanes=0&scrollbar=0" allowfullscreen></iframe>`;
+        blocker.style.display = "block"; viewer.innerHTML = `<iframe class="pdf-viewer" src="${file.url}#toolbar=0&navpanes=0&scrollbar=0" allowfullscreen></iframe>`;
       }
       checkDownloadStatus(file.id);
     }
 
     window.closeFile = function() {
       document.getElementById("contentBox").setAttribute("data-active-job", "");
-      document.getElementById("fileViewer").innerHTML = "";
-      document.getElementById("downloadSection").innerHTML = "";
-      document.getElementById("contentBox").style.display = "none";
-      document.getElementById("menuBox").style.display = "block";
+      document.getElementById("fileViewer").innerHTML = ""; document.getElementById("downloadSection").innerHTML = "";
+      document.getElementById("contentBox").style.display = "none"; document.getElementById("menuBox").style.display = "block";
     }
 
     async function checkDownloadStatus(jobId) {
-      const downloadSection = document.getElementById("downloadSection");
-      const linkStatusText = document.getElementById("linkStatusText");
+      const downloadSection = document.getElementById("downloadSection"); const linkStatusText = document.getElementById("linkStatusText");
       downloadSection.innerHTML = "<p style='color:var(--apple-text-muted); margin:0; font-weight:500;'>กำลังตรวจสอบสิทธิ์...</p>";
-      
       try {
-        const reqRef = doc(db, "download_requests", `${jobId}_${currentId}`);
-        const reqSnap = await getDoc(reqRef);
+        const reqRef = doc(db, "download_requests", `${jobId}_${currentId}`); const reqSnap = await getDoc(reqRef);
+        const activeJobId = document.getElementById("contentBox").getAttribute("data-active-job"); if (activeJobId !== jobId) return; 
         
-        const activeJobId = document.getElementById("contentBox").getAttribute("data-active-job");
-        if (activeJobId !== jobId) return; 
-        
-        const isApproved = reqSnap.exists() && reqSnap.data().status === "approved" && 
-                           (!reqSnap.data().expiresAt || new Date() < reqSnap.data().expiresAt.toDate());
+        const isApproved = reqSnap.exists() && reqSnap.data().status === "approved" && (!reqSnap.data().expiresAt || new Date() < reqSnap.data().expiresAt.toDate());
                            
         if (isApproved) {
             let expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">สิทธิ์เข้าถึงถาวร (ไม่มีวันหมดอายุ)</p>`;
-            if (reqSnap.data().expiresAt) {
-                expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">สิทธิ์ใช้งานถึง: ${reqSnap.data().expiresAt.toDate().toLocaleString('th-TH')}</p>`;
-            }
-            downloadSection.innerHTML = `<button style="background: var(--apple-green); margin-bottom: 0;"
-onclick="downloadWork('${jobId}')">เข้าถึง / ดาวน์โหลดเนื้อหา</button>${expireMsg}`;
+            if (reqSnap.data().expiresAt) expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">สิทธิ์ใช้งานถึง: ${reqSnap.data().expiresAt.toDate().toLocaleString('th-TH')}</p>`;
+            downloadSection.innerHTML = `<button style="background: var(--apple-green); margin-bottom: 0;" onclick="downloadWork('${jobId}')">เข้าถึง / ดาวน์โหลดเนื้อหา</button>${expireMsg}`;
             if (linkStatusText) linkStatusText.innerHTML = `<button onclick="downloadWork('${jobId}')" class="link-btn" style="border:none; cursor:pointer;">กดเพื่อเข้าสู่ลิงก์ (ได้รับสิทธิ์แล้ว)</button>`;
         } else {
             if (!reqSnap.exists()) {
-                downloadSection.innerHTML = `<button style="background: var(--apple-blue); margin-bottom: 0;"
-onclick="requestDownload('${jobId}')">ยื่นขอสิทธิ์การดาวน์โหลด / เข้าถึง</button>`;
+                downloadSection.innerHTML = `<button style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">ยื่นขอสิทธิ์การดาวน์โหลด / เข้าถึง</button>`;
             } else {
                 const data = reqSnap.data();
-                if (data.status === "pending") {
-                    downloadSection.innerHTML = `<div style="color: #8c6b0a; background-color: #fcf1d4; padding: 16px; border-radius: 12px; font-weight: 500; font-size: 15px;">สถานะ: อยู่ระหว่างการตรวจสอบ (โดยปกติจะใช้เวลา 3 วันทำการ)</div>`;
-                } else if (data.status === "rejected") {
-                    downloadSection.innerHTML = `<div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">สถานะ: คำขอถูกปฏิเสธ (ไม่อนุญาตให้เข้าถึง)</div><button style="background: var(--apple-blue); margin-bottom: 0;"
-onclick="requestDownload('${jobId}')">ยื่นคำขอสิทธิ์ใหม่อีกครั้ง</button>`;
-                } else if (data.status === "approved" && data.expiresAt && new Date() >= data.expiresAt.toDate()) {
-                    downloadSection.innerHTML = `<div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">สถานะ: สิทธิ์การเข้าถึงของคุณหมดอายุแล้ว</div><button style="background: var(--apple-blue); margin-bottom: 0;"
-onclick="requestDownload('${jobId}')">ยื่นคำขอต่ออายุสิทธิ์</button>`;
-                }
+                if (data.status === "pending") downloadSection.innerHTML = `<div style="color: #8c6b0a; background-color: #fcf1d4; padding: 16px; border-radius: 12px; font-weight: 500; font-size: 15px;">สถานะ: อยู่ระหว่างการตรวจสอบ (โดยปกติจะใช้เวลา 3 วันทำการ)</div>`;
+                else if (data.status === "rejected") downloadSection.innerHTML = `<div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">สถานะ: คำขอถูกปฏิเสธ (ไม่อนุญาตให้เข้าถึง)</div><button style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">ยื่นคำขอสิทธิ์ใหม่อีกครั้ง</button>`;
+                else if (data.status === "approved" && data.expiresAt && new Date() >= data.expiresAt.toDate()) downloadSection.innerHTML = `<div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">สถานะ: สิทธิ์การเข้าถึงของคุณหมดอายุแล้ว</div><button style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">ยื่นคำขอต่ออายุสิทธิ์</button>`;
             }
             if (linkStatusText) linkStatusText.innerText = "คุณยังไม่ได้รับอนุญาตให้เข้าถึงลิงก์นี้ กรุณาตรวจสอบสถานะด้านบน";
         }
-      } catch(e) {
-        downloadSection.innerHTML = "<p style='color:var(--apple-red); margin:0; font-weight: 500;'>เกิดข้อผิดพลาดในการดึงข้อมูล</p>";
-      }
+      } catch(e) { downloadSection.innerHTML = "<p style='color:var(--apple-red); margin:0; font-weight: 500;'>เกิดข้อผิดพลาดในการดึงข้อมูล</p>"; }
     }
 
     window.requestDownload = async function(jobId) {
-      const file = userFiles.find(f => f.id === jobId);
-      if (!file) return;
-      const downloadSection = document.getElementById("downloadSection");
-      downloadSection.innerHTML = "<p style='color:var(--apple-blue); margin:0; font-weight: 500;'>ระบบกำลังส่งคำขอ...</p>";
-      
+      const file = userFiles.find(f => f.id === jobId); if (!file) return;
+      const downloadSection = document.getElementById("downloadSection"); downloadSection.innerHTML = "<p style='color:var(--apple-blue); margin:0; font-weight: 500;'>ระบบกำลังส่งคำขอ...</p>";
       try {
-        const reqId = `${jobId}_${currentId}`;
-        const reqRef = doc(db, "download_requests", reqId);
-        
+        const reqRef = doc(db, "download_requests", `${jobId}_${currentId}`);
         await setDoc(reqRef, { jobId: jobId, jobTitle: file.title, studentId: currentId, status: "pending", updatedAt: serverTimestamp() });
-        
-        // สร้างวันที่แบบไทย
-        const now = new Date();
-        const thaiDays = ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'];
-        const thaiMonths = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
-        const timeString = `${thaiDays[now.getDay()]} / ${now.getDate()} / ${thaiMonths[now.getMonth()]} / ${now.getFullYear() + 543} เวลา ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} น.`;
-        
-        // === ระบบแจ้งเตือนเข้า Discord ===
-        const part1 = "https://discord.com/api/webhooks/";
-        const part2 = "1526287897278287882";
-        const part3 = "/8hJeV6lo92ATlk0TgB-JyQHXNSc4lkw554XR80gZud0-QCWwEl_e6fvjGKR2lvHkp4VL";
-        
-        const webhookUrl = part1 + part2 + part3;
-        const adminUrl = "https://natchanonhh.github.io/Management-/";
-        
-        const discordPayload = {
-          content: "🔔 **มีคำขอสิทธิ์การเข้าถึงเอกสารใหม่!**",
-          embeds: [{
-            title: `📄 เอกสาร: ${file.title}`,
-            color: 16766720,
-            description: `**จัดการคำขอนี้:**\n✅ อนุมัติ: [ไม่จำกัดเวลา](${adminUrl}?action=approve&reqId=${reqId}&duration=0) | [72 ชม.](${adminUrl}?action=approve&reqId=${reqId}&duration=72) | [เลือกเวลาเอง](${adminUrl}?action=approve&reqId=${reqId}&duration=custom)\n❌ [ปฏิเสธคำขอ](${adminUrl}?action=reject&reqId=${reqId})\n🗑️ [ลบคำขอ](${adminUrl}?action=delete&reqId=${reqId})`,
-            fields: [
-              { name: "รหัสผู้ขอสิทธิ์", value: `\`${currentId}\``, inline: true },
-              { name: "รหัสเอกสาร", value: `\`${jobId}\``, inline: true },
-              { name: "เวลาการส่งคำขอ", value: timeString, inline: false },
-              { name: "สถานะคำขอ", value: "🟡 ยังไม่ได้อนุมัติ (รอการตรวจสอบ)", inline: false }
-            ]
-          }]
-        };
-        
-        const response = await fetch(webhookUrl + "?wait=true", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(discordPayload)
-        });
-        
-        if (response.ok) {
-           const discordData = await response.json();
-           await updateDoc(reqRef, { discordMessageId: discordData.id });
-        }
-        // =====================================
-
         checkDownloadStatus(jobId);
-      } catch(e) {
-        alert("เกิดข้อผิดพลาดในการส่งคำขอ"); checkDownloadStatus(jobId);
-      }
+      } catch(e) { alert("เกิดข้อผิดพลาดในการส่งคำขอ"); checkDownloadStatus(jobId); }
     }
 
     window.downloadWork = function(jobId) {
-      const file = userFiles.find(f => f.id === jobId);
-      if (!file) return;
+      const file = userFiles.find(f => f.id === jobId); if (!file) return;
       window.open(file.url, "_blank");
       addDoc(collection(db, "download_history"), { jobId: file.id, jobTitle: file.title, studentId: currentId, downloadedAt: serverTimestamp() });
     }
 
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'p'))) {
-        e.preventDefault(); return false;
-      }
+      if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'p'))) { e.preventDefault(); return false; }
     });
     
-    window.addEventListener("beforeunload", (e) => {
-      if (currentLogId) updateDoc(doc(db, "access_logs", currentLogId), { logoutTime: serverTimestamp() });
-    });
+    window.addEventListener("beforeunload", (e) => { if (currentLogId) updateDoc(doc(db, "access_logs", currentLogId), { logoutTime: serverTimestamp() }); });
   </script>
 </body>
 </html>
