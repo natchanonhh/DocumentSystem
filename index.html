@@ -3,7 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ระบบเอกสาร - Document System</title>
+  
+  <!-- ปรับ Title และเพิ่ม Meta Tags สำหรับ SEO (เพื่อให้ค้นหาคำว่า DMS เจอใน Google) -->
+  <title>DMS - Document System</title>
+  <meta name="description" content="DMS (Document System) ระบบบริหารจัดการเอกสารออนไลน์ แพลตฟอร์มจัดการเอกสารอัจฉริยะ ใช้งานง่ายและปลอดภัย">
+  <meta name="keywords" content="DMS, Document System, ระบบเอกสาร, จัดการเอกสาร, ระบบจัดการเอกสารออนไลน์">
+  <meta name="author" content="Document System">
+  
+  <!-- เพิ่ม Favicon สำหรับแสดงรูปบนแท็บเบราว์เซอร์ (ดึงจาก URL และรองรับไฟล์ favicon.png) -->
+  <link rel="icon" type="image/png" href="https://i.postimg.cc/s2tqkpBb/D.png">
+  <link rel="alternate icon" href="favicon.png">
+  <link rel="apple-touch-icon" href="https://i.postimg.cc/s2tqkpBb/D.png">
   
   <!-- โหลดฟอนต์ Sarabun -->
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -415,7 +425,7 @@
   <header>
       <div class="logo-container">
           <!-- ใช้แค่รูปภาพโลโก้อย่างเดียว -->
-          <img src="https://i.postimg.cc/jdq1yJxN/Docum.png" alt="Logo" class="logo-img">
+          <img src="https://i.postimg.cc/hvWpwkgG/Docum.png" alt="Logo" class="logo-img">
       </div>
 
       <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap; justify-content: flex-end;">
@@ -1923,7 +1933,7 @@
             let expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">${t('status_permanent')}</p>`;
             if (reqSnap.data().expiresAt) expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">${t('status_expire')}${formatTime(reqSnap.data().expiresAt)}</p>`;
             downloadSection.innerHTML = `<button class="sys-btn" style="background: var(--pink-primary); margin-bottom: 0;" onclick="downloadWork('${jobId}')">${t('btn_download')}</button>${expireMsg}`;
-            if (linkStatusText) linkStatusText.innerHTML = `<button onclick="downloadWork('${jobId}')" class="link-btn" style="border:none; cursor:pointer;">${t('btn_link_access')}</button>`;
+            if (linkStatusText) linkStatusText.innerHTML = `<button onclick="downloadWork('${jobId}')" class="link-btn" style="border:none; cursor:pointer; background: var(--pink-primary);">${t('btn_link_access')}</button>`;
         } else {
             if (!reqSnap.exists()) {
                 downloadSection.innerHTML = `<button class="sys-btn" style="background: var(--pink-primary); margin-bottom: 0;" onclick="requestDownload('${jobId}')">${t('btn_request')}</button>`;
