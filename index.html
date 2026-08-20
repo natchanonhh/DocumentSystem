@@ -317,8 +317,8 @@
     .drive-blocker { position: absolute; top: 0; left: 0; width: 100%; height: 60px; background: transparent; z-index: 99; cursor: not-allowed; }
 
     #downloadSection { margin-bottom: 25px; padding: 24px; background: #f5f5f7; border-radius: 16px; border: none; }
-    .link-btn { display: inline-block; background: var(--apple-blue); color: white; padding: 16px 32px; border-radius: 14px; text-decoration: none; font-weight: 600; font-size: 17px; transition: 0.2s; }
-    .link-btn:hover { background: var(--apple-blue-hover); }
+    .link-btn { display: inline-block; background: var(--pink-primary); color: white; padding: 16px 32px; border-radius: 14px; text-decoration: none; font-weight: 600; font-size: 17px; transition: 0.2s; }
+    .link-btn:hover { background: #7a465c; }
 
     /* Modals for System (Calendar, Schedule) */
     .sys-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); z-index: 10000; display: none; justify-content: center; align-items: center; }
@@ -415,7 +415,7 @@
   <header>
       <div class="logo-container">
           <!-- ใช้แค่รูปภาพโลโก้อย่างเดียว -->
-          <img src="https://i.postimg.cc/hvWpwkgG/Docum.png" alt="Logo" class="logo-img">
+          <img src="https://i.postimg.cc/jdq1yJxN/Docum.png" alt="Logo" class="logo-img">
       </div>
 
       <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap; justify-content: flex-end;">
@@ -622,9 +622,9 @@
           
           <!-- ลิงก์มีเส้นใต้สีชมพู (จุฬา Style) -->
           <ul class="document-list">
-              <li><a href="#" data-i18n="doc_1">ข้อบังคับว่าด้วย การคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2563</a></li>
-              <li><a href="#" data-i18n="doc_2">ประกาศเรื่อง การจัดการความปลอดภัยของข้อมูลในระบบแชท พ.ศ. 2565</a></li>
-              <li><a href="#" data-i18n="doc_3">พระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA)</a></li>
+              <li><a href="https://www.ratchakitcha.soc.go.th/DATA/PDF/2563/A/037/T_0001.PDF" target="_blank" data-i18n="doc_1">ข้อบังคับว่าด้วย การคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2563</a></li>
+              <li><a href="https://www.ratchakitcha.soc.go.th/DATA/PDF/2565/E/140/T_0028.PDF" target="_blank" data-i18n="doc_2">ประกาศเรื่อง การจัดการความปลอดภัยของข้อมูลในระบบแชท พ.ศ. 2565</a></li>
+              <li><a href="https://www.ratchakitcha.soc.go.th/DATA/PDF/2562/A/069/T_0052.PDF" target="_blank" data-i18n="doc_3">พระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA)</a></li>
               <li><a href="#" data-i18n="doc_4">คู่มือการอัปโหลดและแชร์เอกสารภายในองค์กร</a></li>
           </ul>
       </div>
@@ -639,16 +639,25 @@
           <!-- กล่องข้อความอธิบายด้านบน -->
           <div style="background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.05); padding: 25px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
               <h3 style="margin-top:0; margin-bottom: 10px; color: var(--pink-primary);" data-i18n="manual_h3">วิธีการใช้งานระบบเบื้องต้น</h3>
-              <p style="margin-bottom: 10px; font-size: 15px;" data-i18n="manual_p">คุณสามารถแก้ไขเนื้อหาส่วนนี้ได้ในโค้ด (ใส่ตัวอย่างไว้ให้ก่อน)</p>
-              <ul style="padding-left: 20px; font-size: 15px; color: #555;">
-                  <li data-i18n="manual_li1">ขั้นตอนที่ 1: เข้าสู่ระบบด้วยรหัสประจำตัว</li>
-                  <li data-i18n="manual_li2">ขั้นตอนที่ 2: ค้นหาและดูไฟล์จากหน้าหลัก</li>
+              <ul style="padding-left: 20px; font-size: 15px; color: #555; line-height: 1.8;">
+                  <li data-i18n="manual_li1">ขั้นตอนที่ 1: เข้าสู่ระบบด้วยรหัสประจำตัว (Smart Login)</li>
+                  <li data-i18n="manual_li2">ขั้นตอนที่ 2: ค้นหาและดูไฟล์จากหน้าหลักผ่านช่องค้นหา</li>
+                  <li data-i18n="manual_li3">ขั้นตอนที่ 3: ปรับเปลี่ยนมุมมองไฟล์ได้ที่ไอคอนมุมขวา (แบบไอคอน, แบบรายการ, แบบต้นไม้)</li>
+                  <li data-i18n="manual_li4">ขั้นตอนที่ 4: หากไฟล์ถูกล็อกรหัสผ่าน ให้กรอกรหัสผ่านที่ได้รับจากผู้ดูแลระบบ</li>
+                  <li data-i18n="manual_li5">ขั้นตอนที่ 5: การขอดาวน์โหลดเอกสาร ให้กดปุ่ม "ยื่นขอสิทธิ์" และรอแอดมินอนุมัติ</li>
+                  <li data-i18n="manual_li6">ขั้นตอนที่ 6: เช็คตารางเรียนและกิจกรรมแจ้งเตือนได้ที่ไอคอนมุมขวาบนของหน้าหลัก</li>
+                  <li data-i18n="manual_li7">ขั้นตอนที่ 7: สามารถเปลี่ยนภาษาและปรับขนาดตัวอักษร (ปุ่ม Aa) ได้ที่แถบเมนูด้านบน</li>
               </ul>
           </div>
 
           <!-- วิดีโอ YouTube ด้านล่าง (ใส่ลิงก์ของคุณที่ src="..." ได้เลย) -->
           <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
               <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0" title="สอนการใช้งานระบบ" allowfullscreen></iframe>
+          </div>
+
+          <!-- กล่องรายละเอียดฟีเจอร์เพิ่มเติม -->
+          <div data-i18n="manual_features" style="margin-top: 40px; text-align: left;">
+              <!-- ข้อความตรงนี้จะถูกแทรกโดยระบบแปลภาษา (JavaScript) -->
           </div>
       </div>
   </main>
@@ -661,9 +670,9 @@
               <h3 data-i18n="footer_col1">เกี่ยวกับระบบ</h3>
               <ul>
                   <!-- คลิกลิงก์เพื่อเปิด Pop-up ข้อความ -->
-                  <li><a href="#" onclick="openInfoModal(t('f_link1'), '<p>เนื้อหาแนะนำระบบ (แก้ไขได้ในโค้ด)</p>')" data-i18n="f_link1">แนะนำระบบ</a></li>
-                  <li><a href="#" onclick="openInfoModal(t('f_link2'), '<p>เนื้อหาความปลอดภัย (แก้ไขได้ในโค้ด)</p>')" data-i18n="f_link2">ความปลอดภัย</a></li>
-                  <li><a href="#" onclick="openInfoModal(t('f_link3'), '<p>เนื้อหาโครงสร้างระบบ (แก้ไขได้ในโค้ด)</p>')" data-i18n="f_link3">โครงสร้างระบบ</a></li>
+                  <li><a href="#" onclick="openInfoModal(t('f_link1'), t('modal_intro'))" data-i18n="f_link1">แนะนำระบบ</a></li>
+                  <li><a href="#" onclick="openInfoModal(t('f_link2'), t('modal_security'))" data-i18n="f_link2">ความปลอดภัย</a></li>
+                  <li><a href="#" onclick="openInfoModal(t('f_link3'), t('modal_structure'))" data-i18n="f_link3">โครงสร้างระบบ</a></li>
               </ul>
           </div>
           
@@ -671,7 +680,7 @@
           <div class="footer-col">
               <h3 data-i18n="footer_col3">ติดต่อเรา</h3>
               <ul style="color: #bbb; font-size: 14px; line-height: 2;">
-                  <li data-i18n="f_address">123 ถนนตัวอย่าง แขวงทดสอบ<br>เขตระบบงาน กรุงเทพมหานคร 10000<br>โทรศัพท์: 02-xxx-xxxx<br>อีเมล: support@docsystem.com</li>
+                  <li data-i18n="f_address">ที่ทำการส่วนตัว ต.คอหงส์ อ.หาดใหญ่ จ.สงขลา 90110<br>โทรศัพท์: 065-034-1801<br>อีเมล: natchanonhh02@gmail.com</li>
               </ul>
           </div>
       </div>
@@ -693,7 +702,7 @@
       <div class="ui-modal-content" style="max-width: 600px;">
           <button class="ui-close-btn" onclick="document.getElementById('infoModal').style.display='none'">&times;</button>
           <h3 id="infoModalTitle" style="color: var(--pink-primary); border-bottom: 2px solid #eee; padding-bottom: 10px;">หัวข้อ</h3>
-          <div id="infoModalContent" style="font-size: 16px; color: #444; line-height: 1.6; word-break: break-word; margin-top: 15px;">
+          <div id="infoModalContent" style="font-size: 15px; color: #444; line-height: 1.6; word-break: break-word; margin-top: 15px;">
               <!-- ข้อความจะถูกแทรกที่นี่ -->
           </div>
       </div>
@@ -775,7 +784,7 @@
   <div class="ui-modal" id="passwordModal" style="z-index: 10002;">
       <div class="ui-modal-content" style="max-width: 350px; text-align: center; padding: 25px;">
           <h3 style="color: #1d1d1f; margin-bottom: 10px; font-size: 20px;" data-i18n="pwd_title">กรุณาใส่รหัสผ่าน</h3>
-          <p id="passwordModalMsg" style="font-size: 14px; color: #86868b; margin-bottom: 20px;">โฟลเดอร์หรือเอกสารนี้ถูกล็อก</p>
+          <p id="passwordModalMsg" style="font-size: 14px; color: #86868b; margin-bottom: 20px;"></p>
           <input type="password" id="passwordModalInput" data-i18n-placeholder="pwd_placeholder" placeholder="รหัสผ่าน">
           <div style="display: flex; gap: 10px; justify-content: center;">
               <button class="sys-btn" style="background: #e5e5ea; color: #1d1d1f; flex: 1; margin-bottom: 0;" onclick="passwordModalCancel()" data-i18n="btn_cancel">ยกเลิก</button>
@@ -899,7 +908,9 @@
         let svg = `<svg class="icon-folder" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 12C0 5.37258 5.37258 0 12 0H36.5C39.5 0 42.2 1.5 43.8 4L51 15H88C94.6274 15 100 20.3726 100 27V68C100 74.6274 94.6274 80 88 80H12C5.37258 80 0 74.6274 0 68V12Z" fill="${c[0]}"/>
             <path d="M0 24C0 20.6863 2.68629 18 6 18H94C97.3137 18 100 20.6863 100 24V68C100 74.6274 94.6274 80 88 80H12C5.37258 80 0 74.6274 0 68V24Z" fill="${c[1]}"/>`;
-        if (emoji) svg += `<text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-size="28">${emoji}</text>`;
+        if (emoji) {
+            svg += `<text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-size="28">${emoji}</text>`;
+        }
         svg += `</svg>`;
         return svg;
     }
@@ -913,9 +924,9 @@
             breadcrumb: "นโยบายการคุ้มครองข้อมูลส่วนบุคคล", page_title: "นโยบายการคุ้มครองข้อมูลส่วนบุคคล", page_subtitle: "เอกสารที่เกี่ยวข้องกับระบบแชทงานเอกสาร", doc_desc: "มีดังนี้",
             doc_1: "ข้อบังคับว่าด้วย การคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2563", doc_2: "ประกาศเรื่อง การจัดการความปลอดภัยของข้อมูลในระบบแชท พ.ศ. 2565", doc_3: "พระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA)", doc_4: "คู่มือการอัปโหลดและแชร์เอกสารภายในองค์กร",
             footer_col1: "เกี่ยวกับระบบ", f_link1: "แนะนำระบบ", f_link2: "ความปลอดภัย", f_link3: "โครงสร้างระบบ",
-            footer_col3: "ติดต่อเรา", f_address: "123 ถนนตัวอย่าง แขวงทดสอบ<br>เขตระบบงาน กรุงเทพมหานคร 10000<br>โทรศัพท์: 02-xxx-xxxx<br>อีเมล: support@docsystem.com",
+            footer_col3: "ติดต่อเรา", f_address: "ที่ทำการส่วนตัว ต.คอหงส์ อ.หาดใหญ่ จ.สงขลา 90110<br>โทรศัพท์: 065-034-1801<br>อีเมล: natchanonhh02@gmail.com",
             legal_1: "การเปิดเผยข้อมูล", legal_2: "นโยบายการคุ้มครองข้อมูลส่วนบุคคล", btn_reset: "รีเซ็ตค่าคุกกี้ (สำหรับทดสอบ)",
-            lang_title: "ภาษา", access_title: "ตัวช่วยการเข้าถึง", access_font: "ขนาดตัวอักษร", access_contrast: "โหมดสีตัดกันสูง",
+            lang_title: "ภาษา (Language)", access_title: "ตัวช่วยการเข้าถึง", access_font: "ขนาดตัวอักษร", access_contrast: "โหมดสีตัดกันสูง",
             cookie_notice_title: "คุกกี้บนเว็บไซต์นี้", cookie_notice_desc: "เราใช้คุกกี้ที่จำเป็นเพื่อให้เว็บไซต์และระบบแชทงานเอกสารทำงานได้อย่างราบรื่น",
             cookie_btn_settings: "ตั้งค่าคุกกี้", cookie_btn_accept: "ยอมรับทั้งหมด", cookie_title: "การตั้งค่าคุกกี้", cookie_desc: "คุณสามารถเลือกเปิดหรือปิดการใช้งานคุกกี้แต่ละประเภทได้",
             cookie_req_title: "คุกกี้ที่จำเป็นอย่างยิ่ง", cookie_req_desc: "จำเป็นสำหรับการทำงานพื้นฐานของระบบ ปิดไม่ได้", cookie_stat_title: "คุกกี้เพื่อการวิเคราะห์", cookie_stat_desc: "ช่วยให้เราเข้าใจการใช้งานของคุณเพื่อพัฒนาให้ดีขึ้น",
@@ -923,23 +934,32 @@
             pwd_title: "กรุณาใส่รหัสผ่าน",
             sys_login_title: "Document System", sys_login_desc: "กรุณาระบุตัวตนเพื่อตรวจสอบสิทธิ์การเข้าถึง (Smart Login)", sys_btn_login: "เข้าสู่ระบบ", sys_menu_subtitle: "กรุณาเลือกรายการที่คุณต้องการเข้าชม", sys_path_home: "หน้าหลัก",
             pause_title: "อยู่ระหว่างการพักการแสดงข้อมูล", pause_desc: "รายการนี้กำลังถูกปิดปรับปรุงหรือพักการใช้งานชั่วคราว", bot_error: "ระบบรักษาความปลอดภัย<br>กรุณายืนยันตัวตนว่าท่านไม่ใช่โปรแกรมอัตโนมัติ",
-            manual_h1: "สอนการใช้งานระบบ", manual_h3: "วิธีการใช้งานระบบเบื้องต้น", manual_p: "คุณสามารถแก้ไขเนื้อหาส่วนนี้ได้ในโค้ด (ใส่ตัวอย่างไว้ให้ก่อน)", manual_li1: "ขั้นตอนที่ 1: เข้าสู่ระบบด้วยรหัสประจำตัว", manual_li2: "ขั้นตอนที่ 2: ค้นหาและดูไฟล์จากหน้าหลัก",
-            // Strings from the images requested:
-            login_placeholder: "ระบุชื่อ หรือรหัสประจำตัว...",
-            search_placeholder: "ค้นหาเอกสาร",
-            pwd_placeholder: "รหัสผ่าน",
-            user_id: "รหัสผู้ใช้งาน:",
+            manual_h1: "สอนการใช้งานระบบ", manual_h3: "วิธีการใช้งานระบบเบื้องต้น", manual_p: "คุณสามารถแก้ไขเนื้อหาส่วนนี้ได้ในโค้ด (ใส่ตัวอย่างไว้ให้ก่อน)", 
+            manual_li1: "ขั้นตอนที่ 1: เข้าสู่ระบบด้วยรหัสประจำตัว (Smart Login)", manual_li2: "ขั้นตอนที่ 2: ค้นหาและดูไฟล์จากหน้าหลักผ่านช่องค้นหา",
+            manual_li3: "ขั้นตอนที่ 3: ปรับเปลี่ยนมุมมองไฟล์ได้ที่ไอคอนมุมขวา (แบบไอคอน, แบบรายการ, แบบต้นไม้)", manual_li4: "ขั้นตอนที่ 4: หากไฟล์ถูกล็อกรหัสผ่าน ให้กรอกรหัสผ่านที่ได้รับจากผู้ดูแลระบบ",
+            manual_li5: "ขั้นตอนที่ 5: การขอดาวน์โหลดเอกสาร ให้กดปุ่ม \"ยื่นขอสิทธิ์\" และรอแอดมินอนุมัติ", manual_li6: "ขั้นตอนที่ 6: เช็คตารางเรียนและกิจกรรมแจ้งเตือนได้ที่ไอคอนมุมขวาบนของหน้าหลัก", manual_li7: "ขั้นตอนที่ 7: สามารถเปลี่ยนภาษาและปรับขนาดตัวอักษร (ปุ่ม Aa) ได้ที่แถบเมนูด้านบน",
+            login_placeholder: "ระบุชื่อ หรือรหัสประจำตัว...", search_placeholder: "ค้นหาเอกสาร", pwd_placeholder: "รหัสผ่าน", user_id: "รหัสผู้ใช้งาน:",
             sort_icon: "ไอคอน", sort_list: "รายการ", sort_tree: "จัดเรียง", sort_name: "ชื่อ", sort_type: "ประเภท", sort_date: "วันที่", sort_size: "ขนาด",
             sort_name_asc: "ก ถึง ฮ", sort_name_desc: "ฮ ถึง ก", sort_date_asc: "เก่าที่สุดถึงใหม่ที่สุด", sort_date_desc: "ใหม่ที่สุดถึงเก่าที่สุด", sort_size_asc: "เล็กที่สุดถึงใหญ่ที่สุด", sort_size_desc: "ใหญ่ที่สุดถึงเล็กที่สุด",
             locked: "ติดรหัสผ่าน", prompt_folder_lock: "โฟลเดอร์นี้ถูกล็อก กรุณาใส่รหัสผ่าน:", prompt_file_lock: "เอกสารนี้ถูกล็อก กรุณาใส่รหัสผ่าน:", wrong_pwd: "รหัสผ่านไม่ถูกต้อง",
-            empty_search: "ไม่พบเอกสารที่ค้นหา", empty_folder: "ไม่มีเอกสารในโฟลเดอร์นี้", empty_data: "ไม่พบข้อมูล"
+            empty_search: "ไม่พบเอกสารที่ค้นหา", empty_folder: "ไม่มีเอกสารในโฟลเดอร์นี้", empty_data: "ไม่พบข้อมูล",
+            modal_intro: `<p><strong>Document System: แพลตฟอร์มจัดการเอกสารอัจฉริยะ</strong></p><p>Document System คือระบบบริหารจัดการเอกสารออนไลน์ที่ถูกออกแบบมาเพื่อยกระดับการเข้าถึงข้อมูลในองค์กรและสถานศึกษา ด้วยดีไซน์ที่ทันสมัย (Modern UI) ใช้งานง่ายเสมือนใช้งานแอปพลิเคชันบนสมาร์ทโฟน พร้อมผสานเทคโนโลยีความปลอดภัยขั้นสูงสุด เพื่อให้คุณจัดการไฟล์และติดตามกำหนดการต่างๆ ได้อย่างมีประสิทธิภาพในที่เดียว</p><p><strong>จุดเด่นของระบบ (Core Features):</strong></p><ul style="padding-left: 20px; margin-bottom: 10px;"><li><b>ความปลอดภัยเหนือระดับ (Advanced Security):</b> ปกป้องข้อมูลสำคัญด้วยระบบล็อกรหัสผ่านแบบเจาะจงไฟล์, การขออนุมัติสิทธิ์เข้าถึง/ดาวน์โหลด, ลายน้ำแสดงตัวตนผู้ใช้ และระบบป้องกันบอทอัจฉริยะ</li><li><b>การจัดการข้อมูลที่ตอบโจทย์ (Smart Workspace):</b> ค้นหาเอกสารได้รวดเร็วแบบ Real-time รองรับการแสดงผลหลากหลายมุมมอง (Grid, List, Tree) และเปิดดูไฟล์ได้ทันทีโดยไม่ต้องออกจากระบบ (PDF, รูปภาพ, YouTube)</li><li><b>ผู้ช่วยส่วนตัวอัจฉริยะ (Personal Assistant):</b> ไม่พลาดทุกกำหนดการด้วยระบบปฏิทินที่ซิงค์งานและวันหยุด พร้อมตารางเรียน/ตารางงานส่วนตัวที่แจ้งเตือนคุณแบบเรียลไทม์</li><li><b>ออกแบบมาเพื่อทุกคน (Inclusive Design):</b> ทลายกำแพงด้านภาษาด้วยการรองรับ 3 ภาษา (ไทย, อังกฤษ, จีน) และมีเครื่องมือช่วยเหลือผู้บกพร่องทางสายตา (ปรับขนาดฟอนต์ และโหมด High Contrast)</li></ul>`,
+            modal_security: `<p><strong>มาตรฐานความปลอดภัยของ Document System</strong></p><p>Document System ให้ความสำคัญสูงสุดกับความปลอดภัยของข้อมูลส่วนบุคคลและข้อมูลความลับภายในองค์กร โดยเราได้พัฒนาระบบรักษาความปลอดภัยแบบหลายชั้น (Multi-layered Security) เพื่อให้คุณมั่นใจในทุกการเข้าใช้งาน:</p><ul style="padding-left: 20px; margin-bottom: 10px;"><li><b>Smart Login & Bot Protection:</b> ระบบยืนยันตัวตนที่ปลอดภัย ผสานเทคโนโลยี Cloudflare Turnstile เพื่อกรองและป้องกันการโจมตีจากโปรแกรมอัตโนมัติ (Bots)</li><li><b>Data Leak Prevention (DLP):</b> ปกป้องทรัพย์สินทางปัญญาและป้องกันข้อมูลรั่วไหล ด้วยการประทับ "ลายน้ำ (Watermark)" ระบุตัวตนผู้ใช้งานบนเอกสาร และระบบ Drive Blocker ที่ป้องกันการคัดลอกหรือเปิดไฟล์จากภายนอก</li><li><b>Granular Access Control:</b> จำกัดสิทธิ์การมองเห็นเอกสารเฉพาะบุคคล (Personalized View) พร้อมระบบเข้ารหัสผ่าน (Password Protection) ที่สามารถล็อคแยกย่อยได้ถึงระดับโฟลเดอร์และไฟล์</li><li><b>Approval Workflow:</b> ควบคุมการนำข้อมูลออกนอกระบบด้วยฟีเจอร์ "ขอสิทธิ์การดาวน์โหลด" ซึ่งผู้ดูแลสามารถอนุมัติ ปฏิเสธ หรือกำหนดวันหมดอายุของสิทธิ์การเข้าถึงไฟล์นั้นๆ ได้</li><li><b>ประวัติการใช้งาน (Audit Logs):</b> ระบบจะทำการบันทึกประวัติการเข้า-ออกระบบ (Access Logs) และประวัติการดาวน์โหลดเอกสารทุกครั้ง เพื่อความโปร่งใสและสามารถตรวจสอบย้อนหลังได้ตามมาตรฐานสากล</li></ul>`,
+            modal_structure: `<p><strong>โครงสร้างระบบ</strong></p><p>Document System ถูกพัฒนาขึ้นภายใต้สถาปัตยกรรมเว็บสมัยใหม่ (Modern Web Architecture) โดยทำงานบนระบบคลาวด์ (Cloud-based) แบบ 100% เพื่อความเสถียร รวดเร็ว และรองรับการทำงานแบบ Real-time โครงสร้างหลักของระบบประกอบด้วย:</p><ul style="padding-left: 20px; margin-bottom: 10px;"><li><b>Frontend (ส่วนติดต่อผู้ใช้):</b> พัฒนาด้วยเทคโนโลยี Web Native (HTML5, CSS3, JavaScript ES6) โดยออกแบบโครงสร้าง UI/UX ให้ทำงานได้รวดเร็วที่สุด (Fast Rendering) และรองรับการแสดงผลแบบ Responsive Design สมบูรณ์แบบในทุกหน้าจออุปกรณ์ (PC, Tablet, Mobile)</li><li><b>Backend & Database (ระบบฐานข้อมูล):</b> ขับเคลื่อนด้วยระบบปฏิบัติการคลาวด์ Firebase by Google โดยใช้ Cloud Firestore (NoSQL) เป็นฐานข้อมูลหลัก ช่วยให้การดึงข้อมูล การค้นหาไฟล์ และการอัปเดตสิทธิ์การเข้าถึง ทำงานได้แบบ Real-time โดยไม่ต้องรีเฟรชหน้าเว็บ</li><li><b>Storage & Integration (การจัดเก็บไฟล์):</b> รองรับการประมวลผลไฟล์ผ่าน Cloud Storage และเชื่อมต่อกับ Google Drive API เพื่อนำไฟล์ (PDF, รูปภาพ, วิดีโอ) มาแสดงผลในรูปแบบ Secure Preview ทับซ้อน (Iframe) ภายในระบบได้ทันที</li><li><b>Security Layer (ชั้นความปลอดภัยเครือข่าย):</b> ทำงานร่วมกับ Cloudflare Turnstile บริเวณด่านหน้า (Gateway) เพื่อตรวจสอบและสกัดกั้นทราฟฟิกที่ผิดปกติ พร้อมระบบ Firebase Authentication (Custom Logic) สำหรับตรวจสอบสิทธิ์ Session ของผู้ใช้ในทุกๆ การร้องขอข้อมูล</li></ul>`,
+            manual_features: `<h3 style="color: var(--pink-primary); margin-bottom: 15px;">ฟีเจอร์ทั้งหมดของระบบ (System Features)</h3><ol style="padding-left: 20px; line-height: 1.8;"><li><b>ระบบจัดการและมุมมองเอกสาร (Document Explorer):</b><ul><li>การเปลี่ยนมุมมอง: ดูไฟล์แบบไอคอน (Grid), รายการ (List), และโครงสร้างต้นไม้ (Tree)</li><li>การจัดเรียง: เรียงตามชื่อ, ประเภท, วันที่, และขนาดไฟล์</li><li>ระบบค้นหา: ค้นหาไฟล์/โฟลเดอร์แบบ Real-time</li></ul></li><li><b>ระบบรักษาความปลอดภัยและสิทธิ์การเข้าถึง (Security & Permissions):</b><ul><li>ล็อกรหัสผ่าน (Password Protection) ระดับโฟลเดอร์และไฟล์</li><li>ระบบขอสิทธิ์เข้าถึง/ดาวน์โหลด (Download Request Workflow)</li><li>ลายน้ำ (Watermark) ระบุตัวตนผู้เปิดเอกสาร</li><li>บล็อกการดาวน์โหลด (Drive Blocker)</li></ul></li><li><b>ระบบแจ้งเตือนและส่วนตัว (Personal & Notifications):</b><ul><li>ปฏิทินและแจ้งเตือนกิจกรรม (Calendar & Reminders)</li><li>ตารางเรียน/ตารางงานส่วนตัว (Schedule)</li></ul></li><li><b>ตัวช่วยการเข้าถึงและการแสดงผล (Accessibility & UX):</b><ul><li>รองรับ 3 ภาษา (Multi-language)</li><li>ปรับขนาดตัวอักษรและโหมด High Contrast</li><li>ป้ายประกาศแจ้งข่าวสาร (Banner Carousel)</li></ul></li><li><b>รองรับไฟล์หลากหลายประเภท (Supported Media):</b> เปิด PDF, รูปภาพ, วิดีโอ YouTube และลิงก์ภายนอกได้โดยตรงในระบบ</li></ol>`,
+            watermark_text: "ข้อมูลภายใต้การควบคุมสิทธิ์", status_checking: "กำลังตรวจสอบสิทธิ์...", status_permanent: "สิทธิ์เข้าถึงถาวร (ไม่มีวันหมดอายุ)", status_expire: "สิทธิ์ใช้งานถึง: ",
+            btn_download: "เข้าถึง / ดาวน์โหลดเนื้อหา", btn_link_access: "กดเพื่อเข้าสู่ลิงก์ (ได้รับสิทธิ์แล้ว)", btn_request: "ยื่นขอสิทธิ์การดาวน์โหลด / เข้าถึง",
+            status_pending: "สถานะ: อยู่ระหว่างการตรวจสอบ (โดยปกติจะใช้เวลา 3 วันทำการ)", status_rejected: "สถานะ: คำขอถูกปฏิเสธ (ไม่อนุญาตให้เข้าถึง)",
+            btn_re_request: "ยื่นคำขอสิทธิ์ใหม่อีกครั้ง", status_expired: "สถานะ: สิทธิ์การเข้าถึงของคุณหมดอายุแล้ว", btn_renew: "ยื่นคำขอต่ออายุสิทธิ์",
+            link_no_access: "คุณยังไม่ได้รับอนุญาตให้เข้าถึงลิงก์นี้ กรุณาตรวจสอบสถานะด้านบน", error_fetch: "เกิดข้อผิดพลาดในการดึงข้อมูล",
+            status_sending: "ระบบกำลังส่งคำขอ...", link_checking: "กำลังตรวจสอบการอนุญาตเข้าถึงลิงก์..."
         },
         EN: {
             logo: "Doc System", nav_1: "System", nav_2: "Privacy Policy", nav_3: "Manual", nav_4: "Contact",
             breadcrumb: "Privacy Policy", page_title: "Privacy Policy", page_subtitle: "Documents related to Document Chat System", doc_desc: "As follows:",
             doc_1: "Personal Data Protection Regulation B.E. 2563", doc_2: "Announcement on Chat System Data Security B.E. 2565", doc_3: "Personal Data Protection Act B.E. 2562 (PDPA)", doc_4: "Internal Document Upload and Sharing Manual",
             footer_col1: "About", f_link1: "Intro", f_link2: "Security", f_link3: "Architecture",
-            footer_col3: "Contact", f_address: "123 Sample Rd, Bangkok 10000<br>Phone: 02-xxx-xxxx<br>Email: support@docsystem.com",
+            footer_col3: "Contact", f_address: "Private Office, Kho Hong, Hat Yai, Songkhla 90110<br>Phone: 065-034-1801<br>Email: natchanonhh02@gmail.com",
             legal_1: "Data Disclosure", legal_2: "Privacy Policy", btn_reset: "Reset Cookies",
             lang_title: "Language", access_title: "Accessibility", access_font: "Font Size", access_contrast: "High Contrast",
             cookie_notice_title: "Cookies", cookie_notice_desc: "We use cookies to ensure our website runs smoothly.",
@@ -949,25 +969,34 @@
             pwd_title: "Enter Password",
             sys_login_title: "Document System", sys_login_desc: "Please identify yourself to verify access (Smart Login)", sys_btn_login: "Login", sys_menu_subtitle: "Please select the item you want to view", sys_path_home: "Home",
             pause_title: "Information Paused", pause_desc: "This item is currently under maintenance or temporarily paused.", bot_error: "Security System<br>Please verify you are human.",
-            manual_h1: "System Manual", manual_h3: "Basic Usage", manual_p: "You can edit this content in the code.", manual_li1: "Step 1: Login with your ID", manual_li2: "Step 2: Search and view files from home page",
-            // Strings from the images requested:
-            login_placeholder: "Enter name or ID...",
-            search_placeholder: "Search documents",
-            pwd_placeholder: "Password",
-            user_id: "User ID:",
+            manual_h1: "System Manual", manual_h3: "Basic Usage", manual_p: "You can edit this content in the code.", 
+            manual_li1: "Step 1: Login with your ID (Smart Login)", manual_li2: "Step 2: Search and view files from home page",
+            manual_li3: "Step 3: Change views using the top right icon (Grid, List, Tree)", manual_li4: "Step 4: If a file is locked, enter the password provided by admin",
+            manual_li5: "Step 5: To download, click 'Request Access' and wait for approval", manual_li6: "Step 6: Check schedule and reminders via top right icons", manual_li7: "Step 7: Change language and text size (Aa button) from the top menu",
+            login_placeholder: "Enter name or ID...", search_placeholder: "Search documents", pwd_placeholder: "Password", user_id: "User ID:",
             sort_icon: "Icons", sort_list: "List", sort_tree: "Tree", sort_name: "Name", sort_type: "Type", sort_date: "Date", sort_size: "Size",
             sort_name_asc: "A to Z", sort_name_desc: "Z to A", sort_date_asc: "Oldest to Newest", sort_date_desc: "Newest to Oldest", sort_size_asc: "Smallest to Largest", sort_size_desc: "Largest to Smallest",
             locked: "Locked", prompt_folder_lock: "This folder is locked. Please enter password:", prompt_file_lock: "This document is locked. Please enter password:", wrong_pwd: "Incorrect password",
-            empty_search: "No documents found", empty_folder: "No documents in this folder", empty_data: "No data"
+            empty_search: "No documents found", empty_folder: "No documents in this folder", empty_data: "No data",
+            modal_intro: `<p><strong>Document System: Smart Document Platform</strong></p><p>Document System is an online document management system designed to elevate data access in organizations. With a Modern UI, it's as intuitive as a mobile app, integrated with top-tier security to help you manage files and schedules efficiently.</p><p><strong>Core Features:</strong></p><ul style="padding-left: 20px; margin-bottom: 10px;"><li><b>Advanced Security:</b> File-specific passwords, download approvals, watermarks, and bot protection.</li><li><b>Smart Workspace:</b> Real-time search, multiple view modes (Grid, List, Tree), and in-app file previews.</li><li><b>Personal Assistant:</b> Calendar synced with tasks, holidays, and real-time class/work schedules.</li><li><b>Inclusive Design:</b> Tri-lingual support (TH, EN, CN) and accessibility tools (font resizing, High Contrast mode).</li></ul>`,
+            modal_security: `<p><strong>Document System Security Standards</strong></p><p>We prioritize data security with a Multi-layered approach:</p><ul style="padding-left: 20px; margin-bottom: 10px;"><li><b>Smart Login & Bot Protection:</b> Cloudflare Turnstile integration to prevent bot attacks.</li><li><b>Data Leak Prevention (DLP):</b> Watermarks and Drive Blocker to protect intellectual property.</li><li><b>Granular Access Control:</b> Personalized views and password-protected folders.</li><li><b>Approval Workflow:</b> Admins can approve, reject, or set expiry dates for download requests.</li><li><b>Audit Logs:</b> Transparent logging of all access and downloads.</li></ul>`,
+            modal_structure: `<p><strong>System Architecture</strong></p><p>Built on a modern Cloud-based architecture for real-time performance:</p><ul style="padding-left: 20px; margin-bottom: 10px;"><li><b>Frontend:</b> Web Native tech (HTML5, CSS3, JS) with Fast Rendering and Responsive Design.</li><li><b>Backend & Database:</b> Firebase Cloud Firestore (NoSQL) for real-time data sync.</li><li><b>Storage:</b> Cloud Storage & Google Drive API integration for secure in-app previews.</li><li><b>Security Layer:</b> Cloudflare Turnstile Gateway and Firebase Authentication.</li></ul>`,
+            manual_features: `<h3 style="color: var(--pink-primary); margin-bottom: 15px;">System Features</h3><ol style="padding-left: 20px; line-height: 1.8;"><li><b>Document Explorer:</b><ul><li>View Modes: Grid, List, and Tree</li><li>Sorting: By Name, Type, Date, and Size</li><li>Search: Real-time document search</li></ul></li><li><b>Security & Permissions:</b><ul><li>Password protection for files/folders</li><li>Download Request Workflow</li><li>User identity watermark</li><li>Drive Blocker (Prevents external downloads)</li></ul></li><li><b>Personal & Notifications:</b><ul><li>Calendar & Reminders</li><li>Personal Schedules</li></ul></li><li><b>Accessibility & UX:</b><ul><li>3 Languages Support</li><li>Text resizing & High Contrast Mode</li><li>Announcement Banners</li></ul></li><li><b>Supported Media:</b> PDF, Images, YouTube videos, and External Links</li></ol>`,
+            watermark_text: "Data under access control", status_checking: "Checking permissions...", status_permanent: "Permanent access right (No expiration)", status_expire: "Access valid until: ",
+            btn_download: "Access / Download Content", btn_link_access: "Click to access link (Access granted)", btn_request: "Request Download / Access",
+            status_pending: "Status: Pending review (Usually takes 3 business days)", status_rejected: "Status: Request rejected (Access denied)",
+            btn_re_request: "Submit request again", status_expired: "Status: Your access right has expired", btn_renew: "Request renewal",
+            link_no_access: "You do not have permission to access this link. Please check status above.", error_fetch: "Error fetching data",
+            status_sending: "Sending request...", link_checking: "Checking link access permissions..."
         },
         CN: {
             logo: "文件系统", nav_1: "系统", nav_2: "隐私政策", nav_3: "手册", nav_4: "联系我们",
             breadcrumb: "隐私政策", page_title: "隐私政策", page_subtitle: "与文件聊天系统相关的文件", doc_desc: "如下：",
             doc_1: "个人数据保护条例 2020", doc_2: "聊天系统数据安全管理公告 2022", doc_3: "个人数据保护法 2019 (PDPA)", doc_4: "内部文件上传与共享手册",
             footer_col1: "关于", f_link1: "介绍", f_link2: "安全", f_link3: "结构",
-            footer_col3: "联系方式", f_address: "曼谷 样本路 123号 10000<br>电话: 02-xxx-xxxx<br>电邮: support@docsystem.com",
+            footer_col3: "联系方式", f_address: "位于 宋卡府 合艾市 Kho Hong 区 私人办公室 90110<br>电话: 065-034-1801<br>电邮: natchanonhh02@gmail.com",
             legal_1: "数据披露", legal_2: "隐私政策", btn_reset: "重置 Cookie",
-            lang_title: "语言", access_title: "无障碍", access_font: "字体大小", access_contrast: "高对比度",
+            lang_title: "语言 (Language)", access_title: "无障碍", access_font: "字体大小", access_contrast: "高对比度",
             cookie_notice_title: "Cookie", cookie_notice_desc: "我们使用 Cookie 以确保网站顺利运行。",
             cookie_btn_settings: "Cookie 设置", cookie_btn_accept: "全部接受", cookie_title: "Cookie 设置", cookie_desc: "启用或禁用特定的 Cookie。",
             cookie_req_title: "绝对必要", cookie_req_desc: "系统运行所必需。", cookie_stat_title: "分析", cookie_stat_desc: "帮助我们改进系统。",
@@ -975,16 +1004,25 @@
             pwd_title: "输入密码",
             sys_login_title: "Document System", sys_login_desc: "请确认您的身份以验证访问权限 (Smart Login)", sys_btn_login: "登录", sys_menu_subtitle: "请选择您要查看的项目", sys_path_home: "首页",
             pause_title: "信息已暂停", pause_desc: "该项目当前正在维护或暂停使用。", bot_error: "安全系统<br>请验证您不是机器人。",
-            manual_h1: "系统手册", manual_h3: "基本使用方法", manual_p: "您可以在代码中编辑此内容。", manual_li1: "第一步：使用您的ID登录", manual_li2: "第二步：在首页搜索并查看文件",
-            // Strings from the images requested:
-            login_placeholder: "输入姓名或身份证号...",
-            search_placeholder: "搜索文件",
-            pwd_placeholder: "密码",
-            user_id: "用户ID:",
+            manual_h1: "系统手册", manual_h3: "基本使用方法", manual_p: "您可以在代码中编辑此内容。", 
+            manual_li1: "第一步：使用您的ID登录 (Smart Login)", manual_li2: "第二步：在首页搜索并查看文件",
+            manual_li3: "第三步：使用右上角图标更改视图（图标、列表、树状图）", manual_li4: "第四步：如果文件被锁定，请输入管理员提供的密码",
+            manual_li5: "第五步：如需下载，点击“请求访问”并等待批准", manual_li6: "第六步：通过右上角的图标查看日程和提醒", manual_li7: "第七步：从顶部菜单更改语言和文字大小（Aa 按钮）",
+            login_placeholder: "输入姓名或身份证号...", search_placeholder: "搜索文件", pwd_placeholder: "密码", user_id: "用户ID:",
             sort_icon: "图标", sort_list: "列表", sort_tree: "树状", sort_name: "名称", sort_type: "类型", sort_date: "日期", sort_size: "大小",
             sort_name_asc: "A 到 Z", sort_name_desc: "Z 到 A", sort_date_asc: "从旧到新", sort_date_desc: "从新到旧", sort_size_asc: "从小到大", sort_size_desc: "从大到小",
             locked: "受密码保护", prompt_folder_lock: "此文件夹已被锁定。请输入密码：", prompt_file_lock: "此文件已被锁定。请输入密码：", wrong_pwd: "密码错误",
-            empty_search: "未找到搜索的文件", empty_folder: "此文件夹中没有文件", empty_data: "没有数据"
+            empty_search: "未找到搜索的文件", empty_folder: "此文件夹中没有文件", empty_data: "没有数据",
+            modal_intro: `<p><strong>Document System：智能文档平台</strong></p><p>Document System 是一款在线文档管理系统，旨在提升组织内的数据访问效率。通过现代 UI 设计，它像移动应用程序一样直观，并集成了顶级安全性，可帮助您高效地管理文件和日程安排。</p><p><strong>核心功能：</strong></p><ul style="padding-left: 20px; margin-bottom: 10px;"><li><b>高级安全：</b> 特定文件的密码、下载审批、水印和防止机器人保护。</li><li><b>智能工作区：</b> 实时搜索、多种视图模式（图标、列表、树状图）以及应用内文件预览。</li><li><b>个人助手：</b> 日历同步任务、假期和实时课程/工作安排。</li><li><b>包容性设计：</b> 支持三种语言（TH, EN, CN）和无障碍工具（字体缩放，高对比度模式）。</li></ul>`,
+            modal_security: `<p><strong>Document System 安全标准</strong></p><p>我们通过多层安全机制优先保护数据：</p><ul style="padding-left: 20px; margin-bottom: 10px;"><li><b>智能登录和防机器人：</b> 集成 Cloudflare Turnstile 防止机器人攻击。</li><li><b>数据防泄漏 (DLP)：</b> 水印和驱动器拦截器保护知识产权。</li><li><b>细粒度访问控制：</b> 个性化视图和受密码保护的文件夹。</li><li><b>审批工作流：</b> 管理员可以批准、拒绝或设置下载请求的过期时间。</li><li><b>审计日志：</b> 透明记录所有访问和下载历史。</li></ul>`,
+            modal_structure: `<p><strong>系统架构</strong></p><p>基于现代云架构构建，提供实时性能：</p><ul style="padding-left: 20px; margin-bottom: 10px;"><li><b>前端：</b> 采用原生Web技术（HTML5, CSS3, JS），支持快速渲染和响应式设计。</li><li><b>后端与数据库：</b> 使用 Firebase Cloud Firestore (NoSQL) 实现实时数据同步。</li><li><b>存储：</b> 云存储与 Google Drive API 集成，实现安全的应用内预览。</li><li><b>安全层：</b> Cloudflare Turnstile 网关和 Firebase 身份验证。</li></ul>`,
+            manual_features: `<h3 style="color: var(--pink-primary); margin-bottom: 15px;">系统功能</h3><ol style="padding-left: 20px; line-height: 1.8;"><li><b>文档管理器：</b><ul><li>视图模式：图标、列表和树状图</li><li>排序：按名称、类型、日期和大小</li><li>搜索：实时搜索文件</li></ul></li><li><b>安全与权限：</b><ul><li>文件夹和文件的密码保护</li><li>下载请求工作流</li><li>用户身份水印</li><li>防止外部下载保护</li></ul></li><li><b>个人与通知：</b><ul><li>日历和事件提醒</li><li>个人时间表</li></ul></li><li><b>无障碍与体验：</b><ul><li>支持3种语言</li><li>字体缩放与高对比度模式</li><li>公告横幅</li></ul></li><li><b>支持的媒体：</b> 直接在系统中打开PDF、图片、YouTube视频和外部链接</li></ol>`,
+            watermark_text: "数据受访问控制", status_checking: "正在检查权限...", status_permanent: "永久访问权限（无过期时间）", status_expire: "访问有效期至：",
+            btn_download: "访问 / 下载内容", btn_link_access: "点击访问链接（已授权）", btn_request: "申请下载 / 访问权限",
+            status_pending: "状态：正在审核中（通常需要3个工作日）", status_rejected: "状态：请求被拒绝（拒绝访问）",
+            btn_re_request: "重新提交申请", status_expired: "状态：您的访问权限已过期", btn_renew: "申请续期",
+            link_no_access: "您无权访问此链接。请检查上方状态。", error_fetch: "获取数据时出错",
+            status_sending: "正在发送请求...", link_checking: "正在检查链接访问权限..."
         }
     };
 
@@ -1028,6 +1066,10 @@
         }
         if (document.getElementById("menuBox").style.display !== "none") {
             renderExplorer();
+        }
+        if (document.getElementById("contentBox").style.display !== "none") {
+            const activeJobId = document.getElementById("contentBox").getAttribute("data-active-job");
+            if (activeJobId) checkDownloadStatus(activeJobId);
         }
         
         document.getElementById('langModal').style.display = 'none';
@@ -1839,13 +1881,13 @@
       
       const watermarkEl = document.getElementById("watermarkText");
       if (file.showWatermark === false) watermarkEl.style.display = "none";
-      else { watermarkEl.style.display = "block"; watermarkEl.innerText = `${currentId}\nข้อมูลภายใต้การควบคุมสิทธิ์`; }
+      else { watermarkEl.style.display = "block"; watermarkEl.innerText = `${currentId}\n${t('watermark_text')}`; }
       
       document.getElementById("contentBox").setAttribute("data-active-job", file.id);
       const viewer = document.getElementById("fileViewer"); const blocker = document.getElementById("driveBlocker");
       
       if (file.type === "link") {
-        blocker.style.display = "none"; viewer.innerHTML = `<div id="linkContainer" style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; flex-direction: column;"><p id="linkStatusText" style="font-size: 18px; color: var(--apple-text-muted);">กำลังตรวจสอบการอนุญาตเข้าถึงลิงก์...</p></div>`;
+        blocker.style.display = "none"; viewer.innerHTML = `<div id="linkContainer" style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; flex-direction: column;"><p id="linkStatusText" style="font-size: 18px; color: var(--apple-text-muted);">${t('link_checking')}</p></div>`;
       } else if (file.type === "youtube") {
         blocker.style.display = "none"; viewer.innerHTML = `<iframe class="block-interaction" src="${file.url}?modestbranding=1&controls=0&rel=0&disablekb=1&fs=0" allow="autoplay" allowfullscreen></iframe>`;
       } else if (file.type === "image") {
@@ -1870,7 +1912,7 @@
 
     async function checkDownloadStatus(jobId) {
       const downloadSection = document.getElementById("downloadSection"); const linkStatusText = document.getElementById("linkStatusText");
-      downloadSection.innerHTML = "<p style='color:var(--apple-text-muted); margin:0; font-weight:500;'>กำลังตรวจสอบสิทธิ์...</p>";
+      downloadSection.innerHTML = `<p style='color:var(--apple-text-muted); margin:0; font-weight:500;'>${t('status_checking')}</p>`;
       try {
         const reqRef = doc(db, "download_requests", `${jobId}_${currentId}`); const reqSnap = await getDoc(reqRef);
         const activeJobId = document.getElementById("contentBox").getAttribute("data-active-job"); if (activeJobId !== jobId) return; 
@@ -1878,32 +1920,32 @@
         const isApproved = reqSnap.exists() && reqSnap.data().status === "approved" && (!reqSnap.data().expiresAt || new Date() < reqSnap.data().expiresAt.toDate());
                            
         if (isApproved) {
-            let expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">สิทธิ์เข้าถึงถาวร (ไม่มีวันหมดอายุ)</p>`;
-            if (reqSnap.data().expiresAt) expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">สิทธิ์ใช้งานถึง: ${reqSnap.data().expiresAt.toDate().toLocaleString('th-TH')}</p>`;
-            downloadSection.innerHTML = `<button class="sys-btn" style="background: var(--apple-green); margin-bottom: 0;" onclick="downloadWork('${jobId}')">เข้าถึง / ดาวน์โหลดเนื้อหา</button>${expireMsg}`;
-            if (linkStatusText) linkStatusText.innerHTML = `<button onclick="downloadWork('${jobId}')" class="link-btn" style="border:none; cursor:pointer;">กดเพื่อเข้าสู่ลิงก์ (ได้รับสิทธิ์แล้ว)</button>`;
+            let expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">${t('status_permanent')}</p>`;
+            if (reqSnap.data().expiresAt) expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">${t('status_expire')}${formatTime(reqSnap.data().expiresAt)}</p>`;
+            downloadSection.innerHTML = `<button class="sys-btn" style="background: var(--pink-primary); margin-bottom: 0;" onclick="downloadWork('${jobId}')">${t('btn_download')}</button>${expireMsg}`;
+            if (linkStatusText) linkStatusText.innerHTML = `<button onclick="downloadWork('${jobId}')" class="link-btn" style="border:none; cursor:pointer;">${t('btn_link_access')}</button>`;
         } else {
             if (!reqSnap.exists()) {
-                downloadSection.innerHTML = `<button class="sys-btn" style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">ยื่นขอสิทธิ์การดาวน์โหลด / เข้าถึง</button>`;
+                downloadSection.innerHTML = `<button class="sys-btn" style="background: var(--pink-primary); margin-bottom: 0;" onclick="requestDownload('${jobId}')">${t('btn_request')}</button>`;
             } else {
                 const data = reqSnap.data();
-                if (data.status === "pending") downloadSection.innerHTML = `<div style="color: #8c6b0a; background-color: #fcf1d4; padding: 16px; border-radius: 12px; font-weight: 500; font-size: 15px;">สถานะ: อยู่ระหว่างการตรวจสอบ (โดยปกติจะใช้เวลา 3 วันทำการ)</div>`;
-                else if (data.status === "rejected") downloadSection.innerHTML = `<div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">สถานะ: คำขอถูกปฏิเสธ (ไม่อนุญาตให้เข้าถึง)</div><button class="sys-btn" style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">ยื่นคำขอสิทธิ์ใหม่อีกครั้ง</button>`;
-                else if (data.status === "approved" && data.expiresAt && new Date() >= data.expiresAt.toDate()) downloadSection.innerHTML = `<div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">สถานะ: สิทธิ์การเข้าถึงของคุณหมดอายุแล้ว</div><button class="sys-btn" style="background: var(--apple-blue); margin-bottom: 0;" onclick="requestDownload('${jobId}')">ยื่นคำขอต่ออายุสิทธิ์</button>`;
+                if (data.status === "pending") downloadSection.innerHTML = `<div style="color: #8c6b0a; background-color: #fcf1d4; padding: 16px; border-radius: 12px; font-weight: 500; font-size: 15px;">${t('status_pending')}</div>`;
+                else if (data.status === "rejected") downloadSection.innerHTML = `<div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">${t('status_rejected')}</div><button class="sys-btn" style="background: var(--pink-primary); margin-bottom: 0;" onclick="requestDownload('${jobId}')">${t('btn_re_request')}</button>`;
+                else if (data.status === "approved" && data.expiresAt && new Date() >= data.expiresAt.toDate()) downloadSection.innerHTML = `<div style="color: #c92a2a; background-color: #fcedec; padding: 16px; border-radius: 12px; font-weight: 500; margin-bottom: 16px; font-size: 15px;">${t('status_expired')}</div><button class="sys-btn" style="background: var(--pink-primary); margin-bottom: 0;" onclick="requestDownload('${jobId}')">${t('btn_renew')}</button>`;
             }
-            if (linkStatusText) linkStatusText.innerText = "คุณยังไม่ได้รับอนุญาตให้เข้าถึงลิงก์นี้ กรุณาตรวจสอบสถานะด้านบน";
+            if (linkStatusText) linkStatusText.innerText = t('link_no_access');
         }
-      } catch(e) { downloadSection.innerHTML = "<p style='color:var(--apple-red); margin:0; font-weight: 500;'>เกิดข้อผิดพลาดในการดึงข้อมูล</p>"; }
+      } catch(e) { downloadSection.innerHTML = `<p style='color:var(--apple-red); margin:0; font-weight: 500;'>${t('error_fetch')}</p>`; }
     }
 
     window.requestDownload = async function(jobId) {
       const file = userFiles.find(f => f.id === jobId); if (!file) return;
-      const downloadSection = document.getElementById("downloadSection"); downloadSection.innerHTML = "<p style='color:var(--apple-blue); margin:0; font-weight: 500;'>ระบบกำลังส่งคำขอ...</p>";
+      const downloadSection = document.getElementById("downloadSection"); downloadSection.innerHTML = `<p style='color:var(--pink-primary); margin:0; font-weight: 500;'>${t('status_sending')}</p>`;
       try {
         const reqRef = doc(db, "download_requests", `${jobId}_${currentId}`);
         await setDoc(reqRef, { jobId: jobId, jobTitle: file.title, studentId: currentId, status: "pending", updatedAt: serverTimestamp() });
         checkDownloadStatus(jobId);
-      } catch(e) { showToastAlert("เกิดข้อผิดพลาดในการส่งคำขอ"); checkDownloadStatus(jobId); }
+      } catch(e) { showToastAlert(t('error_fetch')); checkDownloadStatus(jobId); }
     }
 
     window.downloadWork = function(jobId) {
