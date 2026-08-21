@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- ปรับ Title และเพิ่ม Meta Tags สำหรับ SEO (เพื่อให้ค้นหาคำว่า DMS เจอใน Google) -->
+  <!-- ปรับ Title และเพิ่ม Meta Tags สำหรับ SEO -->
   <title>DMS - Document System</title>
   <meta name="description" content="DMS (Document System) ระบบบริหารจัดการเอกสารออนไลน์ แพลตฟอร์มจัดการเอกสารอัจฉริยะ ใช้งานง่ายและปลอดภัย">
   <meta name="keywords" content="DMS, Document System, ระบบเอกสาร, จัดการเอกสาร, ระบบจัดการเอกสารออนไลน์">
   <meta name="author" content="Document System">
   
-  <!-- เพิ่ม Favicon สำหรับแสดงรูปบนแท็บเบราว์เซอร์ (ดึงจาก URL และรองรับไฟล์ favicon.png) -->
+  <!-- เพิ่ม Favicon -->
   <link rel="icon" type="image/png" href="https://i.postimg.cc/dQ8Rm8JQ/D.png">
   <link rel="alternate icon" href="favicon.png">
   <link rel="apple-touch-icon" href="https://i.postimg.cc/dQ8Rm8JQ/D.png">
@@ -30,7 +30,6 @@
     :root {
         --base-font-size: 16px;
         --pink-primary: #9d5b78;
-        /* ตัวแปรของ DocumentSystem.txt ต้นฉบับ */
         --apple-blue: #0071e3;
         --apple-blue-hover: #0077ed;
         --apple-green: #34c759;
@@ -42,7 +41,6 @@
         --apple-border: #d2d2d7;
     }
 
-    /* พื้นหลังระบบใหม่แบบไล่สีตามที่ต้องการ */
     body {
         background: linear-gradient(180deg, #fcedf0 0%, #ffffff 500px);
         background-attachment: fixed;
@@ -55,7 +53,6 @@
         flex-direction: column;
     }
     
-    /* การจัดการ Dark Mode ให้ข้อความในกล่องยังเห็นชัด */
     body.high-contrast { background: #000 !important; color: #fff !important; }
     body.high-contrast .system-container h2, 
     body.high-contrast .system-container h3, 
@@ -76,7 +73,6 @@
         padding: 15px 5%; background-color: transparent; border-bottom: 1px solid rgba(0,0,0,0.05); width: 100%;
     }
     .logo-container { display: flex; align-items: center; gap: 15px; }
-    /* ลบกรอบสีชมพู ปรับให้เป็นรูปภาพโปร่งใสตามปกติ */
     .logo-img { height: 65px; width: auto; max-width: 250px; border: none; object-fit: contain; background: transparent; }
 
     .nav-links { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
@@ -91,7 +87,7 @@
     .view-section { flex: 1; width: 100%; padding: 20px 5%; display: none; }
     .view-section.active { display: block; }
 
-    /* --- Policy Page (สไตล์ลิงก์แบบจุฬาฯ) --- */
+    /* --- Policy Page --- */
     .policy-container { max-width: 1000px; margin: 0 auto; padding: 20px 0 60px; }
     .breadcrumb { font-size: 13px; color: #666; margin-bottom: 30px; background-color: #f5e4e8; display: inline-block; padding: 6px 15px; border-radius: 20px; }
     .policy-container h1 { font-size: 42px; margin-bottom: 30px; color: #111; }
@@ -165,14 +161,13 @@
     #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 10000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 14px; opacity: 0; transition: opacity 0.3s, bottom 0.3s; }
     #toast.show { visibility: visible; opacity: 1; bottom: 50px; }
 
-
     /* =======================================================
-       2. CSS สำหรับ DocumentSystem.txt (ต้นฉบับ 100%)
+       2. CSS สำหรับ DocumentSystem.txt (ต้นฉบับ)
        ======================================================= */
     .system-container { 
       width: 100%; 
       max-width: 1200px; 
-      background: var(--apple-card-bg); /* คืนค่ากรอบสีขาวแบบเดิม */
+      background: var(--apple-card-bg);
       padding: 45px 40px; 
       border-radius: 20px; 
       box-shadow: 0 10px 40px rgba(0,0,0,0.06); 
@@ -182,7 +177,6 @@
       position: relative;
     }
 
-    /* Override #loginBox ให้ไม่มีกรอบและเต็มจอ ตามที่คุณขอ */
     #loginBox.system-container { 
       background: transparent !important; 
       box-shadow: none !important; 
@@ -208,7 +202,6 @@
     .sys-btn:active { transform: scale(0.97); }
     .sys-btn:hover { background: var(--apple-blue-hover); }
 
-    /* ปุ่มเข้าสู่ระบบให้สีเข้ากับธีมใหม่ */
     .btn-login { background-color: var(--pink-primary) !important; }
     .btn-login:hover { background-color: #7a465c !important; }
     
@@ -227,62 +220,17 @@
     .grid-icon svg.icon-file { width: 48px; height: auto; }
     .grid-icon svg.icon-wide { width: 62px; height: auto; }
 
-    /* ป้องกันข้อความล้น และไม่ให้ย่อเป็น ... */
     .grid-name { font-size: 13px; font-weight: 500; color: var(--apple-text-main); text-align: center; line-height: 1.4; width: 100%; word-break: break-word; white-space: normal; }
     .grid-lock { font-size: 12px; margin-top: 6px; color: var(--apple-text-main); text-align: center; display: flex; align-items: center; justify-content: center; gap: 4px; }
     .grid-time { font-size: 11px; color: var(--apple-text-muted); margin-top: 6px; text-align: center; line-height: 1.3; }
 
-    /* =======================================================
-       🔥 CSS ของปุ่มตัวเลือกจัดเรียง (ดึงมาจากต้นฉบับ 100%)
-       ======================================================= */
-    .options-btn-wrap-relative {
-      position: relative;
-      flex-shrink: 0;
-    }
-    .options-btn {
-      background: transparent;
-      border: none;
-      color: var(--apple-blue);
-      cursor: pointer;
-      padding: 8px;
-      width: auto;
-      margin-bottom: 0;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s;
-    }
+    .options-btn-wrap-relative { position: relative; flex-shrink: 0; }
+    .options-btn { background: transparent; border: none; color: var(--apple-blue); cursor: pointer; padding: 8px; width: auto; margin-bottom: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
     .options-btn:hover { background: rgba(0, 113, 227, 0.1); transform: none; }
     .options-btn:active { transform: scale(0.92); }
     
-    .apple-dropdown {
-      position: absolute;
-      top: 100%;
-      right: 0;
-      margin-top: 8px;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border: 1px solid rgba(0,0,0,0.1);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-      border-radius: 14px;
-      width: 230px;
-      z-index: 100;
-      text-align: left;
-      padding: 8px;
-      font-size: 15px;
-      color: var(--apple-text-main);
-    }
-    .dropdown-item {
-      display: flex;
-      align-items: center;
-      padding: 10px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.1s;
-      position: relative;
-    }
+    .apple-dropdown { position: absolute; top: 100%; right: 0; margin-top: 8px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 10px 40px rgba(0,0,0,0.15); border-radius: 14px; width: 230px; z-index: 100; text-align: left; padding: 8px; font-size: 15px; color: var(--apple-text-main); }
+    .dropdown-item { display: flex; align-items: center; padding: 10px 12px; border-radius: 8px; cursor: pointer; transition: background 0.1s; position: relative; }
     .dropdown-item:hover { background: var(--apple-blue); color: white; }
     .dropdown-item:hover .check-icon, .dropdown-item:hover small, .dropdown-item:hover .dropdown-icon { color: white !important; }
     .dropdown-divider { height: 1px; background: rgba(0,0,0,0.1); margin: 6px 0; }
@@ -290,7 +238,6 @@
     .dropdown-icon { margin-right: 12px; display:flex; align-items:center; }
     .dropdown-text { flex-grow: 1; display: flex; flex-direction: column; font-weight: 500; }
 
-    /* List View & Tree View */
     .item-grid.list-view { display: flex; flex-direction: column; gap: 0; background: #fbfbfd; border-radius: 16px; padding: 5px 0; border: 1px solid var(--apple-border); width: 100%; box-sizing: border-box; }
     .item-grid.list-view .grid-item { flex-direction: row; align-items: center; justify-content: flex-start; height: auto; min-height: 60px; padding: 12px 15px; border-radius: 0; border-bottom: 1px solid rgba(0,0,0,0.05); width: 100%; box-sizing: border-box; }
     .item-grid.list-view .grid-item:last-child { border-bottom: none; }
@@ -424,7 +371,6 @@
   <!-- ================== HEADER ================== -->
   <header>
       <div class="logo-container">
-          <!-- ใช้แค่รูปภาพโลโก้อย่างเดียว -->
           <img src="https://i.postimg.cc/fR5B7YfQ/Docum.png" alt="Logo" class="logo-img">
       </div>
 
@@ -440,7 +386,7 @@
               <!-- 1. ปุ่ม Aa -->
               <button class="tool-btn" onclick="document.getElementById('accessModal').style.display='flex'">Aa</button>
               
-              <!-- 2. ปุ่มเปลี่ยนภาษา แก้ไขโค้ดวงกลมโลกให้วาดแบบธรรมดา ป้องกันการเพี้ยนบน Safari -->
+              <!-- 2. ปุ่มเปลี่ยนภาษา -->
               <button class="tool-btn" onclick="document.getElementById('langModal').style.display='flex'">
                   <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                       <circle cx="12" cy="12" r="10"></circle>
@@ -450,7 +396,7 @@
                   <span id="currentLangDisplay" style="font-size: 15px; margin-left: 5px; font-weight: bold; color: var(--pink-primary);">TH</span>
               </button>
 
-              <!-- 3. ปุ่มออกจากระบบ (ถูกซ่อนไว้ในตอนแรก จะโชว์เมื่อล็อกอินสำเร็จ) -->
+              <!-- 3. ปุ่มออกจากระบบ -->
               <button class="tool-btn" id="logoutHeaderBtn" onclick="logoutSystem()" title="ออกจากระบบ" style="display: none; color: var(--apple-red); margin-left: 5px;">
                   <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -476,7 +422,7 @@
           </div>
       </div>
 
-      <!-- Login Box (หน้าล็อกอินไร้กรอบเต็มจอ) -->
+      <!-- Login Box -->
       <div class="system-container" id="loginBox">
         <h2 data-i18n="sys_login_title">Document System</h2>
         <p data-i18n="sys_login_desc">กรุณาระบุตัวตนเพื่อตรวจสอบสิทธิ์การเข้าถึง (Smart Login)</p>
@@ -493,21 +439,19 @@
 
         <button class="sys-btn btn-login" onclick="checkData()" data-i18n="sys_btn_login">เข้าสู่ระบบ</button>
         
-        <!-- ข้อความแจ้งเตือนบอทแบบกึ่งกลาง ไม่มีกรอบและอีโมจิ -->
+        <!-- ข้อความแจ้งเตือนบอท -->
         <p id="errorMsg" style="color: var(--apple-red); display: none; margin-top: 15px; font-weight: 500; text-align: center; font-size: 15px;" data-i18n="bot_error">
             ระบบรักษาความปลอดภัย<br>กรุณายืนยันตัวตนว่าท่านไม่ใช่โปรแกรมอัตโนมัติ
         </p>
       </div>
 
-      <!-- Menu Box (โฟลเดอร์/ไฟล์) แบบมีกล่องขาวปกติ -->
+      <!-- Menu Box (โฟลเดอร์/ไฟล์) -->
       <div class="system-container" id="menuBox" style="display: none;">
         <div class="header-toolbar" style="margin-bottom: 15px;">
-            <!-- แก้ไขให้ flex อนุญาตให้ข้อความหดตัวและปัดบรรทัดได้ -->
             <div style="display: flex; align-items: center; flex: 1; min-width: 0;">
                 <h3 id="menuTitle" style="margin: 0; text-align: left; word-break: break-word; white-space: normal; line-height: 1.3;"></h3>
             </div>
             
-            <!-- เมนูด้านบนขวา (แจ้งเตือน, ตารางเรียน) -->
             <div class="top-right-icons" id="mainTopIcons" style="display: none;">
               <div class="tr-icon" onclick="openCalendarModal()" title="แจ้งเตือนความจำ">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -529,7 +473,6 @@
         <div id="menuClock" style="display:none; font-size: 13px; color: var(--apple-text-muted); margin-bottom: 20px; text-align: center;"></div>
 
         <div class="header-toolbar">
-            <!-- แก้ไข Flex Box ตรงนี้เพื่อให้ข้อความยาวๆ สามารถขึ้นบรรทัดใหม่ได้ และไม่ดันหน้าจอล้น -->
             <div style="display: flex; align-items: flex-start; flex: 1; min-width: 0;">
                 <button id="navBackBtn" onclick="navigateUp()" style="display:none; background: transparent; border: none; color: var(--apple-blue); cursor: pointer; padding: 0 8px 0 0; flex-shrink: 0; margin-top: 2px;" title="ย้อนกลับ">
                     <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -545,7 +488,6 @@
                 <svg viewBox="0 0 24 24" width="20" height="20" stroke="#86868b" stroke-width="2" fill="none" style="position: absolute; right: 12px; pointer-events: none;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </div>
             
-            <!-- เมนูจัดเรียง (มีภาษา) -->
             <div class="options-btn-wrap-relative">
               <button class="options-btn" onclick="toggleOptionsMenu(event)">
                 <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -623,14 +565,10 @@
   <!-- 2. View: นโยบายการคุ้มครองข้อมูลส่วนบุคคล -->
   <main id="policyView" class="view-section">
       <div class="policy-container">
-          <!-- แสดงเฉพาะคำว่า นโยบายการคุ้มครองข้อมูลส่วนบุคคล ตามคำขอ -->
           <div class="breadcrumb" data-i18n="breadcrumb">นโยบายการคุ้มครองข้อมูลส่วนบุคคล</div>
-          
           <h1 data-i18n="page_title">นโยบายการคุ้มครองข้อมูลส่วนบุคคล</h1>
           <h2 data-i18n="page_subtitle">เอกสารที่เกี่ยวข้องกับระบบแชทงานเอกสาร</h2>
           <p style="margin-bottom: 20px; font-size:16px;" data-i18n="doc_desc">มีดังนี้</p>
-          
-          <!-- ลิงก์มีเส้นใต้สีชมพู (จุฬา Style) -->
           <ul class="document-list">
               <li><a href="https://www.ratchakitcha.soc.go.th/DATA/PDF/2563/A/037/T_0001.PDF" target="_blank" data-i18n="doc_1">ข้อบังคับว่าด้วย การคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2563</a></li>
               <li><a href="https://www.ratchakitcha.soc.go.th/DATA/PDF/2565/E/140/T_0028.PDF" target="_blank" data-i18n="doc_2">ประกาศเรื่อง การจัดการความปลอดภัยของข้อมูลในระบบแชท พ.ศ. 2565</a></li>
@@ -646,7 +584,6 @@
           <div class="breadcrumb" data-i18n="nav_3">คู่มือการใช้งาน</div>
           <h1 data-i18n="manual_h1">สอนการใช้งานระบบ</h1>
           
-          <!-- กล่องข้อความอธิบายด้านบน -->
           <div style="background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.05); padding: 25px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
               <h3 style="margin-top:0; margin-bottom: 10px; color: var(--pink-primary);" data-i18n="manual_h3">วิธีการใช้งานระบบเบื้องต้น</h3>
               <ul style="padding-left: 20px; font-size: 15px; color: #555; line-height: 1.8;">
@@ -660,33 +597,25 @@
               </ul>
           </div>
 
-          <!-- วิดีโอ YouTube ด้านล่าง (ใส่ลิงก์ของคุณที่ src="..." ได้เลย) -->
           <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
               <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0" title="สอนการใช้งานระบบ" allowfullscreen></iframe>
           </div>
 
-          <!-- กล่องรายละเอียดฟีเจอร์เพิ่มเติม -->
-          <div data-i18n="manual_features" style="margin-top: 40px; text-align: left;">
-              <!-- ข้อความตรงนี้จะถูกแทรกโดยระบบแปลภาษา (JavaScript) -->
-          </div>
+          <div data-i18n="manual_features" style="margin-top: 40px; text-align: left;"></div>
       </div>
   </main>
 
   <!-- ================== FOOTER ================== -->
   <footer id="footerArea">
       <div class="footer-grid">
-          <!-- คอลัมน์ที่ 1: เกี่ยวกับระบบ -->
           <div class="footer-col">
               <h3 data-i18n="footer_col1">เกี่ยวกับระบบ</h3>
               <ul>
-                  <!-- คลิกลิงก์เพื่อเปิด Pop-up ข้อความ -->
                   <li><a href="#" onclick="openInfoModal(t('f_link1'), t('modal_intro'))" data-i18n="f_link1">แนะนำระบบ</a></li>
                   <li><a href="#" onclick="openInfoModal(t('f_link2'), t('modal_security'))" data-i18n="f_link2">ความปลอดภัย</a></li>
                   <li><a href="#" onclick="openInfoModal(t('f_link3'), t('modal_structure'))" data-i18n="f_link3">โครงสร้างระบบ</a></li>
               </ul>
           </div>
-          
-          <!-- คอลัมน์ที่ 2: ติดต่อเรา -->
           <div class="footer-col">
               <h3 data-i18n="footer_col3">ติดต่อเรา</h3>
               <ul style="color: #bbb; font-size: 14px; line-height: 2;">
@@ -707,14 +636,12 @@
 
   <!-- ================== MODALS (UI ทั่วไป) ================== -->
   
-  <!-- Info Modal (แสดงข้อมูลจาก Footer) -->
+  <!-- Info Modal -->
   <div class="ui-modal" id="infoModal">
       <div class="ui-modal-content" style="max-width: 600px;">
           <button class="ui-close-btn" onclick="document.getElementById('infoModal').style.display='none'">&times;</button>
           <h3 id="infoModalTitle" style="color: var(--pink-primary); border-bottom: 2px solid #eee; padding-bottom: 10px;">หัวข้อ</h3>
-          <div id="infoModalContent" style="font-size: 15px; color: #444; line-height: 1.6; word-break: break-word; margin-top: 15px;">
-              <!-- ข้อความจะถูกแทรกที่นี่ -->
-          </div>
+          <div id="infoModalContent" style="font-size: 15px; color: #444; line-height: 1.6; word-break: break-word; margin-top: 15px;"></div>
       </div>
   </div>
 
@@ -728,7 +655,7 @@
       </div>
   </div>
 
-  <!-- Modal ตั้งค่าคุกกี้ -->
+  <!-- Modal ตั้งค่าคุกกี้ (เพิ่มหมวดหมู่ครบถ้วน) -->
   <div class="ui-modal" id="cookieSettingsModal">
       <div class="ui-modal-content">
           <button class="ui-close-btn" onclick="document.getElementById('cookieSettingsModal').style.display='none'">&times;</button>
@@ -742,12 +669,29 @@
               </div>
               <label class="toggle-switch"><input type="checkbox" checked disabled><span class="toggle-slider"></span></label>
           </div>
+          
+          <div class="cookie-option">
+              <div class="cookie-text">
+                  <strong data-i18n="cookie_func_title">คุกกี้เพื่อความสะดวกในการใช้งาน</strong>
+                  <span data-i18n="cookie_func_desc">ช่วยจดจำสถานะการเข้าสู่ระบบและภาษาที่คุณเลือก</span>
+              </div>
+              <label class="toggle-switch"><input type="checkbox" id="functionalCookie" checked><span class="toggle-slider"></span></label>
+          </div>
+          
           <div class="cookie-option">
               <div class="cookie-text">
                   <strong data-i18n="cookie_stat_title">คุกกี้เพื่อการวิเคราะห์</strong>
                   <span data-i18n="cookie_stat_desc">ช่วยให้เราเข้าใจการใช้งานของคุณเพื่อนำไปพัฒนาเอกสารให้ดีขึ้น</span>
               </div>
               <label class="toggle-switch"><input type="checkbox" id="analyticsCookie" checked><span class="toggle-slider"></span></label>
+          </div>
+          
+          <div class="cookie-option" style="border-bottom: none;">
+              <div class="cookie-text">
+                  <strong data-i18n="cookie_mark_title">คุกกี้เพื่อการโฆษณา</strong>
+                  <span data-i18n="cookie_mark_desc">ติดตามพฤติกรรมเพื่อนำไปวิเคราะห์และยิงโฆษณาที่ตรงใจ</span>
+              </div>
+              <label class="toggle-switch"><input type="checkbox" id="marketingCookie" checked><span class="toggle-slider"></span></label>
           </div>
 
           <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
@@ -790,7 +734,7 @@
       </div>
   </div>
 
-  <!-- Modal รหัสผ่านแบบ Custom (แทนที่ prompt เบราว์เซอร์) -->
+  <!-- Modal รหัสผ่านแบบ Custom -->
   <div class="ui-modal" id="passwordModal" style="z-index: 10002;">
       <div class="ui-modal-content" style="max-width: 350px; text-align: center; padding: 25px;">
           <h3 style="color: #1d1d1f; margin-bottom: 10px; font-size: 20px;" data-i18n="pwd_title">กรุณาใส่รหัสผ่าน</h3>
@@ -803,11 +747,10 @@
       </div>
   </div>
 
-  <!-- Toast Notification สำหรับแจ้งเตือน (แทน alert) -->
+  <!-- Toast Notification -->
   <div id="toast"></div>
 
-
-  <!-- ================== MODALS (ของ Firebase DocumentSystem) ================== -->
+  <!-- ================== MODALS (ระบบปฏิทิน/ตาราง) ================== -->
   <!-- Calendar Modal -->
   <div class="sys-modal-overlay" id="calendarModalOverlay">
     <div class="calendar-modal">
@@ -854,7 +797,6 @@
         <div id="scheduleContent" style="text-align: center; margin-top: 10px;"></div>
     </div>
   </div>
-
 
   <!-- ================== JAVASCRIPT ================== -->
   <script type="module">
@@ -939,12 +881,15 @@
             lang_title: "ภาษา (Language)", access_title: "ตัวช่วยการเข้าถึง", access_font: "ขนาดตัวอักษร", access_contrast: "โหมดสีตัดกันสูง",
             cookie_notice_title: "คุกกี้บนเว็บไซต์นี้", cookie_notice_desc: "เราใช้คุกกี้ที่จำเป็นเพื่อให้เว็บไซต์และระบบแชทงานเอกสารทำงานได้อย่างราบรื่น",
             cookie_btn_settings: "ตั้งค่าคุกกี้", cookie_btn_accept: "ยอมรับทั้งหมด", cookie_title: "การตั้งค่าคุกกี้", cookie_desc: "คุณสามารถเลือกเปิดหรือปิดการใช้งานคุกกี้แต่ละประเภทได้",
-            cookie_req_title: "คุกกี้ที่จำเป็นอย่างยิ่ง", cookie_req_desc: "จำเป็นสำหรับการทำงานพื้นฐานของระบบ ปิดไม่ได้", cookie_stat_title: "คุกกี้เพื่อการวิเคราะห์", cookie_stat_desc: "ช่วยให้เราเข้าใจการใช้งานของคุณเพื่อพัฒนาให้ดีขึ้น",
+            cookie_req_title: "คุกกี้ที่จำเป็นอย่างยิ่ง", cookie_req_desc: "จำเป็นสำหรับการทำงานพื้นฐานของระบบ ปิดไม่ได้", 
+            cookie_func_title: "คุกกี้เพื่อความสะดวกในการใช้งาน", cookie_func_desc: "ช่วยจดจำสถานะการเข้าสู่ระบบและภาษาที่คุณเลือก",
+            cookie_stat_title: "คุกกี้เพื่อการวิเคราะห์", cookie_stat_desc: "ช่วยให้เราเข้าใจการใช้งานของคุณเพื่อนำไปพัฒนาเอกสารให้ดีขึ้น",
+            cookie_mark_title: "คุกกี้เพื่อการโฆษณา", cookie_mark_desc: "ติดตามพฤติกรรมเพื่อนำไปวิเคราะห์และยิงโฆษณาที่ตรงใจ",
             btn_cancel: "ยกเลิก", btn_save: "บันทึกการตั้งค่า", btn_confirm: "ตกลง", btn_ack: "รับทราบ",
             pwd_title: "กรุณาใส่รหัสผ่าน",
             sys_login_title: "Document System", sys_login_desc: "กรุณาระบุตัวตนเพื่อตรวจสอบสิทธิ์การเข้าถึง (Smart Login)", sys_btn_login: "เข้าสู่ระบบ", sys_menu_subtitle: "กรุณาเลือกรายการที่คุณต้องการเข้าชม", sys_path_home: "หน้าหลัก",
             pause_title: "อยู่ระหว่างการพักการแสดงข้อมูล", pause_desc: "รายการนี้กำลังถูกปิดปรับปรุงหรือพักการใช้งานชั่วคราว", bot_error: "ระบบรักษาความปลอดภัย<br>กรุณายืนยันตัวตนว่าท่านไม่ใช่โปรแกรมอัตโนมัติ",
-            manual_h1: "สอนการใช้งานระบบ", manual_h3: "วิธีการใช้งานระบบเบื้องต้น", manual_p: "คุณสามารถแก้ไขเนื้อหาส่วนนี้ได้ในโค้ด (ใส่ตัวอย่างไว้ให้ก่อน)", 
+            manual_h1: "สอนการใช้งานระบบ", manual_h3: "วิธีการใช้งานระบบเบื้องต้น", 
             manual_li1: "ขั้นตอนที่ 1: เข้าสู่ระบบด้วยรหัสประจำตัว (Smart Login)", manual_li2: "ขั้นตอนที่ 2: ค้นหาและดูไฟล์จากหน้าหลักผ่านช่องค้นหา",
             manual_li3: "ขั้นตอนที่ 3: ปรับเปลี่ยนมุมมองไฟล์ได้ที่ไอคอนมุมขวา (แบบไอคอน, แบบรายการ, แบบต้นไม้)", manual_li4: "ขั้นตอนที่ 4: หากไฟล์ถูกล็อกรหัสผ่าน ให้กรอกรหัสผ่านที่ได้รับจากผู้ดูแลระบบ",
             manual_li5: "ขั้นตอนที่ 5: การขอดาวน์โหลดเอกสาร ให้กดปุ่ม \"ยื่นขอสิทธิ์\" และรอแอดมินอนุมัติ", manual_li6: "ขั้นตอนที่ 6: เช็คตารางเรียนและกิจกรรมแจ้งเตือนได้ที่ไอคอนมุมขวาบนของหน้าหลัก", manual_li7: "ขั้นตอนที่ 7: สามารถเปลี่ยนภาษาและปรับขนาดตัวอักษร (ปุ่ม Aa) ได้ที่แถบเมนูด้านบน",
@@ -974,12 +919,15 @@
             lang_title: "Language", access_title: "Accessibility", access_font: "Font Size", access_contrast: "High Contrast",
             cookie_notice_title: "Cookies", cookie_notice_desc: "We use cookies to ensure our website runs smoothly.",
             cookie_btn_settings: "Cookie Settings", cookie_btn_accept: "Accept All", cookie_title: "Cookie Settings", cookie_desc: "Enable or disable specific cookies.",
-            cookie_req_title: "Strictly Necessary", cookie_req_desc: "Required for the system to function.", cookie_stat_title: "Analytics", cookie_stat_desc: "Helps us improve the system.",
+            cookie_req_title: "Strictly Necessary", cookie_req_desc: "Required for the system to function.", 
+            cookie_func_title: "Functional Cookies", cookie_func_desc: "Remember login state and selected language",
+            cookie_stat_title: "Analytics Cookies", cookie_stat_desc: "Helps us understand usage and improve the system.",
+            cookie_mark_title: "Marketing Cookies", cookie_mark_desc: "Track behavior to serve relevant advertisements",
             btn_cancel: "Cancel", btn_save: "Save", btn_confirm: "Confirm", btn_ack: "Acknowledge",
             pwd_title: "Enter Password",
             sys_login_title: "Document System", sys_login_desc: "Please identify yourself to verify access (Smart Login)", sys_btn_login: "Login", sys_menu_subtitle: "Please select the item you want to view", sys_path_home: "Home",
             pause_title: "Information Paused", pause_desc: "This item is currently under maintenance or temporarily paused.", bot_error: "Security System<br>Please verify you are human.",
-            manual_h1: "System Manual", manual_h3: "Basic Usage", manual_p: "You can edit this content in the code.", 
+            manual_h1: "System Manual", manual_h3: "Basic Usage",
             manual_li1: "Step 1: Login with your ID (Smart Login)", manual_li2: "Step 2: Search and view files from home page",
             manual_li3: "Step 3: Change views using the top right icon (Grid, List, Tree)", manual_li4: "Step 4: If a file is locked, enter the password provided by admin",
             manual_li5: "Step 5: To download, click 'Request Access' and wait for approval", manual_li6: "Step 6: Check schedule and reminders via top right icons", manual_li7: "Step 7: Change language and text size (Aa button) from the top menu",
@@ -1009,12 +957,15 @@
             lang_title: "语言 (Language)", access_title: "无障碍", access_font: "字体大小", access_contrast: "高对比度",
             cookie_notice_title: "Cookie", cookie_notice_desc: "我们使用 Cookie 以确保网站顺利运行。",
             cookie_btn_settings: "Cookie 设置", cookie_btn_accept: "全部接受", cookie_title: "Cookie 设置", cookie_desc: "启用或禁用特定的 Cookie。",
-            cookie_req_title: "绝对必要", cookie_req_desc: "系统运行所必需。", cookie_stat_title: "分析", cookie_stat_desc: "帮助我们改进系统。",
+            cookie_req_title: "绝对必要", cookie_req_desc: "系统运行所必需。", 
+            cookie_func_title: "功能性 Cookie", cookie_func_desc: "记住登录状态和所选语言",
+            cookie_stat_title: "分析 Cookie", cookie_stat_desc: "帮助我们改进系统",
+            cookie_mark_title: "营销 Cookie", cookie_mark_desc: "跟踪行为以提供相关的广告",
             btn_cancel: "取消", btn_save: "保存", btn_confirm: "确认", btn_ack: "知道",
             pwd_title: "输入密码",
             sys_login_title: "Document System", sys_login_desc: "请确认您的身份以验证访问权限 (Smart Login)", sys_btn_login: "登录", sys_menu_subtitle: "请选择您要查看的项目", sys_path_home: "首页",
             pause_title: "信息已暂停", pause_desc: "该项目当前正在维护或暂停使用。", bot_error: "安全系统<br>请验证您不是机器人。",
-            manual_h1: "系统手册", manual_h3: "基本使用方法", manual_p: "您可以在代码中编辑此内容。", 
+            manual_h1: "系统手册", manual_h3: "基本使用方法", 
             manual_li1: "第一步：使用您的ID登录 (Smart Login)", manual_li2: "第二步：在首页搜索并查看文件",
             manual_li3: "第三步：使用右上角图标更改视图（图标、列表、树状图）", manual_li4: "第四步：如果文件被锁定，请输入管理员提供的密码",
             manual_li5: "第五步：如需下载，点击“请求访问”并等待批准", manual_li6: "第六步：通过右上角的图标查看日程和提醒", manual_li7: "第七步：从顶部菜单更改语言和文字大小（Aa 按钮）",
@@ -1043,13 +994,12 @@
 
     window.changeLang = function(langCode) {
         localStorage.setItem('docSystem_lang', langCode);
-        document.documentElement.lang = langCode.toLowerCase(); // ปรับภาษา HTML
+        document.documentElement.lang = langCode.toLowerCase(); 
         
         document.querySelectorAll('#langModal .option-btn').forEach(b => b.classList.remove('active'));
         const activeBtn = document.getElementById('btnLang' + langCode);
         if (activeBtn) activeBtn.classList.add('active');
         
-        // Update InnerHTML 
         document.querySelectorAll('[data-i18n]').forEach(elem => {
             const key = elem.getAttribute('data-i18n');
             if(translations[langCode] && translations[langCode][key]) {
@@ -1057,7 +1007,6 @@
             }
         });
         
-        // Update Placeholders
         document.querySelectorAll('[data-i18n-placeholder]').forEach(elem => {
             const key = elem.getAttribute('data-i18n-placeholder');
             if(translations[langCode] && translations[langCode][key]) {
@@ -1065,10 +1014,8 @@
             }
         });
 
-        // Update Text indicator in header
         document.getElementById('currentLangDisplay').innerText = langCode;
 
-        // อัปเดตข้อมูลภาษาแบบ Dynamic (เวลา, จัดเรียง, ไอคอน ฯลฯ)
         updateRealtimeClock();
         setSortMode(appSortMode);
         if (currentId) {
@@ -1274,6 +1221,67 @@
         });
     }
 
+    // ----------------------------------------------------
+    // ระบบการติดตามข้อมูลคุกกี้ไปยัง Firestore
+    // ----------------------------------------------------
+    function getDeviceId() {
+        let did = localStorage.getItem('docSystem_deviceId');
+        if(!did) {
+            did = 'device_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+            localStorage.setItem('docSystem_deviceId', did);
+        }
+        return did;
+    }
+
+    async function saveCookieToFirestore(functional, analyticsInfo, marketing) {
+        const deviceId = getDeviceId();
+        const currentUserId = localStorage.getItem('docSystem_user') || '-';
+        
+        try {
+            const docRef = doc(db, "cookie_stats", deviceId);
+            await setDoc(docRef, {
+                deviceId: deviceId,
+                userId: currentUserId,
+                functionalData: functional ? 'ยอมรับ' : 'ปฏิเสธ',
+                analyticsData: analyticsInfo ? 'ยอมรับ' : 'ปฏิเสธ',
+                marketingData: marketing ? 'ยอมรับ' : 'ปฏิเสธ',
+                updatedAt: serverTimestamp()
+            }, { merge: true });
+        } catch(e) {
+            console.error("Error saving cookie stats", e);
+        }
+    }
+
+    window.acceptAllCookies = function() { 
+        localStorage.setItem('cookieConsent_DocSystem', 'accepted'); 
+        localStorage.setItem('cookieFunctional', 'true');
+        localStorage.setItem('cookieAnalytics', 'true');
+        localStorage.setItem('cookieMarketing', 'true');
+        document.getElementById('cookieNotice').style.display = 'none'; 
+        saveCookieToFirestore(true, true, true);
+    }
+
+    window.saveCookieSettings = function() { 
+        let func = document.getElementById('functionalCookie').checked;
+        let anal = document.getElementById('analyticsCookie').checked;
+        let mark = document.getElementById('marketingCookie').checked;
+        
+        localStorage.setItem('cookieConsent_DocSystem', 'custom'); 
+        localStorage.setItem('cookieFunctional', func);
+        localStorage.setItem('cookieAnalytics', anal);
+        localStorage.setItem('cookieMarketing', mark);
+        
+        document.getElementById('cookieSettingsModal').style.display = 'none'; 
+        document.getElementById('cookieNotice').style.display = 'none'; 
+        saveCookieToFirestore(func, anal, mark);
+    }
+
+    window.resetCookies = function() { 
+        localStorage.removeItem('cookieConsent_DocSystem'); 
+        document.getElementById('cookieNotice').style.display = 'block'; 
+        document.getElementById('cookieNotice').style.opacity = '1'; 
+    }
+
     window.onload = function() {
         if(!localStorage.getItem('cookieConsent_DocSystem')) {
             setTimeout(() => { document.getElementById('cookieNotice').style.display = 'block'; }, 1000);
@@ -1298,15 +1306,6 @@
         toast.className = "show";
         clearTimeout(toastTimeoutAlert);
         toastTimeoutAlert = setTimeout(() => toast.className = toast.className.replace("show", ""), 3000);
-    }
-
-    window.acceptAllCookies = function() { localStorage.setItem('cookieConsent_DocSystem', 'accepted'); document.getElementById('cookieNotice').style.display = 'none'; }
-    window.saveCookieSettings = function() { localStorage.setItem('cookieConsent_DocSystem', 'custom'); document.getElementById('cookieSettingsModal').style.display = 'none'; document.getElementById('cookieNotice').style.display = 'none'; }
-    
-    window.resetCookies = function() { 
-        localStorage.removeItem('cookieConsent_DocSystem'); 
-        document.getElementById('cookieNotice').style.display = 'block'; 
-        document.getElementById('cookieNotice').style.opacity = '1'; 
     }
 
     window.changeFontSize = function(size, btn) {
@@ -1400,6 +1399,14 @@
           localStorage.setItem('docSystem_user', currentId);
           localStorage.setItem('docSystem_expiry', Date.now() + (3 * 60 * 60 * 1000));
 
+          // เมื่อล็อกอินสำเร็จ อัปเดตข้อมูลคุกกี้ให้ผูกกับรหัสผู้ใช้
+          if (localStorage.getItem('cookieConsent_DocSystem')) {
+              let func = localStorage.getItem('cookieFunctional') === 'true';
+              let anal = localStorage.getItem('cookieAnalytics') === 'true';
+              let mark = localStorage.getItem('cookieMarketing') === 'true';
+              saveCookieToFirestore(func, anal, mark);
+          }
+
           document.getElementById("loginBox").style.display = "none";
           document.getElementById("menuBox").style.display = "block";
           document.getElementById("menuTitle").innerText = `${t('user_id')} ${currentId}`;
@@ -1425,7 +1432,7 @@
     }
 
     // ----------------------------------------------------
-    // ฟังก์ชันย่อยของระบบเอกสาร (ดึงมาจากต้นฉบับ 100%)
+    // ฟังก์ชันย่อยของระบบเอกสาร 
     // ----------------------------------------------------
     window.updateReminderBadge = function() {
         const badge = document.getElementById("reminderBadgeCount");
