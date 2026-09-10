@@ -1010,7 +1010,7 @@
             cookie_mark_title: "คุกกี้เพื่อการโฆษณา", cookie_mark_desc: "ติดตามพฤติกรรมเพื่อนำไปวิเคราะห์และยิงโฆษณาที่ตรงใจ",
             btn_cancel: "ยกเลิก", btn_save: "บันทึกการตั้งค่า", btn_confirm: "ตกลง", btn_ack: "รับทราบ",
             pwd_title: "กรุณาใส่รหัสผ่าน",
-            sys_login_title: "Document System", sys_login_desc: "กรุณาระบุตัวตนเพื่อตรวจสอบสิทธิ์การเข้าถึง (Smart Login)", sys_btn_login: "เข้าสู่ระบบ", sys_menu_subtitle: "กรุณาเลือกรายการที่คุณต้องการเข้าชม", sys_path_home: "หน้าหลัก",
+            sys_login_title: "Document System", sys_login_desc: "กรุณาระบุตัวตนเพื่อตรวจสอบสิทธิ์การเข้าถึง (Smart Login)", sys_login_btn: "เข้าสู่ระบบ", sys_menu_subtitle: "กรุณาเลือกรายการที่คุณต้องการเข้าชม", sys_path_home: "หน้าหลัก",
             pause_title: "อยู่ระหว่างการพักการแสดงข้อมูล", pause_desc: "รายการนี้กำลังถูกปิดปรับปรุงหรือพักการใช้งานชั่วคราว", bot_error: "ระบบรักษาความปลอดภัย<br>กรุณายืนยันตัวตนว่าท่านไม่ใช่โปรแกรมอัตโนมัติ",
             manual_h1: "สอนการใช้งานระบบ", manual_h3: "วิธีการใช้งานระบบเบื้องต้น", 
             manual_li1: "ขั้นตอนที่ 1: เข้าสู่ระบบด้วยรหัสประจำตัว (Smart Login)", manual_li2: "ขั้นตอนที่ 2: ค้นหาและดูไฟล์จากหน้าหลักผ่านช่องค้นหา",
@@ -1050,7 +1050,7 @@
             cookie_mark_title: "Marketing Cookies", cookie_mark_desc: "Track behavior to serve relevant advertisements",
             btn_cancel: "Cancel", btn_save: "Save", btn_confirm: "Confirm", btn_ack: "Acknowledge",
             pwd_title: "Enter Password",
-            sys_login_title: "Document System", sys_login_desc: "Please identify yourself to verify access (Smart Login)", sys_btn_login: "Login", sys_menu_subtitle: "Please select the item you want to view", sys_path_home: "Home",
+            sys_login_title: "Document System", sys_login_desc: "Please identify yourself to verify access (Smart Login)", sys_login_btn: "Login", sys_menu_subtitle: "Please select the item you want to view", sys_path_home: "Home",
             pause_title: "Information Paused", pause_desc: "This item is currently under maintenance or temporarily paused.", bot_error: "Security System<br>Please verify you are human.",
             manual_h1: "System Manual", manual_h3: "Basic Usage",
             manual_li1: "Step 1: Login with your ID (Smart Login)", manual_li2: "Step 2: Search and view files from home page",
@@ -2308,20 +2308,24 @@
             // ลบข้อมูลใน Firebase
             await deleteDoc(doc(db, "jobs", jobId));
             
-            // หากเป็นไฟล์ของ Supabase พยายามลบไฟล์จริงออกจาก Storage ด้วย
+            // ลบไฟล์จริงใน Supabase Storage (อัปเดต API Payload ใหม่)
             if(fileUrl && fileUrl.includes(SUPABASE_URL)) {
                 try {
-                    // ดึง Path ของไฟล์ออกมาจาก URL
                     const pathMatch = fileUrl.split(`/public/${SUPABASE_BUCKET}/`);
                     if(pathMatch && pathMatch[1]) {
                         const filePath = decodeURIComponent(pathMatch[1]);
-                        const deleteUrl = `${SUPABASE_URL}/storage/v1/object/${SUPABASE_BUCKET}/${encodeURIComponent(filePath)}`;
+                        const deleteUrl = `${SUPABASE_URL}/storage/v1/object/${SUPABASE_BUCKET}`;
+                        
                         await fetch(deleteUrl, {
                             method: 'DELETE',
                             headers: {
                                 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                                'apikey': SUPABASE_ANON_KEY
-                            }
+                                'apikey': SUPABASE_ANON_KEY,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                prefixes: [filePath]
+                            })
                         });
                     }
                 } catch(err) {
