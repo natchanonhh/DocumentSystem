@@ -20,6 +20,10 @@
   
   <!-- โหลดสคริปต์ Cloudflare Turnstile -->
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+  <!-- โหลดไลบรารี Cropper.js สำหรับครอปรูปภาพ -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
   
   <style>
     /* =======================================================
@@ -190,10 +194,10 @@
     .system-container h3 { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; margin-top: 0; color: var(--apple-text-main); word-break: break-word; white-space: normal;}
     .system-container p { color: var(--apple-text-muted); font-size: 15px; margin-bottom: 24px; word-break: break-word; white-space: normal;}
     
-    .system-container input[type="text"], #passwordModalInput { 
+    .system-container input[type="text"], .system-container input[type="password"], #passwordModalInput { 
       width: 100%; padding: 16px; margin-bottom: 20px; background-color: #f5f5f7; border: 1px solid transparent; border-radius: 14px; font-size: 17px; font-family: inherit; text-align: center; color: var(--apple-text-main); box-sizing: border-box; transition: all 0.2s ease;
     }
-    .system-container input[type="text"]:focus, #passwordModalInput:focus { background-color: #fff; border-color: var(--apple-blue); box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15); outline: none; }
+    .system-container input[type="text"]:focus, .system-container input[type="password"]:focus, #passwordModalInput:focus { background-color: #fff; border-color: var(--apple-blue); box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15); outline: none; }
     .system-container input::placeholder, #passwordModalInput::placeholder { color: #a1a1a6; }
     
     .sys-btn { 
@@ -329,6 +333,10 @@
     .z-4 { animation: swayUpToRight 2s ease-out 1.5s infinite; }
     @keyframes swayUpToRight { 0% { transform: translate(0, 0) rotate(0deg); opacity: 1; } 100% { transform: translate(30px, -40px) rotate(30deg); opacity: 0; } }
 
+    /* Crop Image Container */
+    .crop-container { width: 100%; max-height: 400px; margin-bottom: 20px; overflow: hidden; }
+    .crop-container img { max-width: 100%; display: block; }
+
     /* Responsive */
     @media (max-width: 1024px) {
       .item-grid { grid-template-columns: repeat(4, 1fr); gap: 20px 15px; }
@@ -395,8 +403,17 @@
                   </svg>
                   <span id="currentLangDisplay" style="font-size: 15px; margin-left: 5px; font-weight: bold; color: var(--pink-primary);">TH</span>
               </button>
+              
+              <!-- 3. ปุ่มโปรไฟล์ผู้ใช้งาน -->
+              <button class="tool-btn" id="profileHeaderBtn" onclick="openProfileModal()" title="ข้อมูลส่วนบุคคล" style="display: none; margin-left: 5px;">
+                  <svg id="defaultProfileIcon" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                  <img id="headerProfilePic" src="" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; display: none;">
+              </button>
 
-              <!-- 3. ปุ่มออกจากระบบ -->
+              <!-- 4. ปุ่มออกจากระบบ -->
               <button class="tool-btn" id="logoutHeaderBtn" onclick="logoutSystem()" title="ออกจากระบบ" style="display: none; color: var(--apple-red); margin-left: 5px;">
                   <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -431,6 +448,7 @@
         <div id="loginClock" style="display:none; font-size: 13px; color: var(--apple-text-muted); margin-top: -10px; margin-bottom: 20px; text-align: center;"></div>
         
         <input type="text" id="studentId" data-i18n-placeholder="login_placeholder" placeholder="ระบุชื่อ หรือรหัสประจำตัว..." required autocomplete="off">
+        <input type="password" id="loginPassword" data-i18n-placeholder="login_pass_placeholder" placeholder="รหัสผ่าน (หากตั้งไว้)..." style="display:none;" autocomplete="off">
         
         <!-- ส่วน Cloudflare Turnstile ตรวจจับบอท (คีย์ของจริง) -->
         <div style="display: flex; justify-content: center; margin-bottom: 20px;">
@@ -439,7 +457,7 @@
 
         <button class="sys-btn btn-login" onclick="checkData()" data-i18n="sys_btn_login">เข้าสู่ระบบ</button>
         
-        <!-- ข้อความแจ้งเตือนบอท -->
+        <!-- ข้อความแจ้งเตือนบอท หรือ รหัสผ่าน -->
         <p id="errorMsg" style="color: var(--apple-red); display: none; margin-top: 15px; font-weight: 500; text-align: center; font-size: 15px;" data-i18n="bot_error">
             ระบบรักษาความปลอดภัย<br>กรุณายืนยันตัวตนว่าท่านไม่ใช่โปรแกรมอัตโนมัติ
         </p>
@@ -488,6 +506,17 @@
                 <svg viewBox="0 0 24 24" width="20" height="20" stroke="#86868b" stroke-width="2" fill="none" style="position: absolute; right: 12px; pointer-events: none;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </div>
             
+            <!-- ปุ่มอัปโหลดด่วน (Quick Upload) -->
+            <div style="flex-shrink: 0; margin-left: 10px;">
+              <button class="options-btn" onclick="openQuickUploadModal()" title="อัปโหลดด่วน" style="margin-bottom: 0;">
+                <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+              </button>
+            </div>
+
             <div class="options-btn-wrap-relative">
               <button class="options-btn" onclick="toggleOptionsMenu(event)">
                 <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -554,6 +583,9 @@
             <h3 id="displayName" style="margin: 0; word-break: break-word; text-align: left; font-size: 22px; flex: 1; white-space: normal;"></h3>
         </div>
         <div id="downloadSection"></div>
+        <!-- ส่วนเครื่องมือจัดการสำหรับเจ้าของไฟล์ (คนอัปโหลด) -->
+        <div id="ownerActions" style="display: none; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;"></div>
+        
         <div class="protected-view">
           <div class="watermark" id="watermarkText"></div>
           <div id="driveBlocker" class="drive-blocker" style="display: none;" title="ไม่อนุญาตให้เปิดภายนอก"></div>
@@ -636,6 +668,82 @@
 
   <!-- ================== MODALS (UI ทั่วไป) ================== -->
   
+  <!-- Profile Modal -->
+  <div class="ui-modal" id="profileModal">
+      <div class="ui-modal-content" style="max-width: 400px; text-align: center;">
+          <button class="ui-close-btn" onclick="document.getElementById('profileModal').style.display='none'">&times;</button>
+          <h3 data-i18n="profile_title">ข้อมูลส่วนบุคคล</h3>
+          
+          <div style="margin-bottom: 20px; position: relative; display: inline-block;">
+              <img id="profilePreview" src="" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; display: none; margin: 0 auto; border: 2px solid var(--apple-border);">
+              <svg id="profileDefault" viewBox="0 0 24 24" width="100" height="100" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto; color: var(--apple-text-muted);">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <input type="file" id="profilePicInput" accept="image/*" style="display: none;" onchange="previewProfilePic(event)">
+              <button onclick="document.getElementById('profilePicInput').click()" style="margin-top: 10px; background: #e5e5ea; color: #1d1d1f; border: none; padding: 8px 16px; border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 500;" data-i18n="profile_btn_change">เปลี่ยนรูปโปรไฟล์</button>
+          </div>
+
+          <!-- ช่องแสดงรหัสประจำตัว (ID) แบบปิดการแก้ไข -->
+          <div style="text-align: left; margin-bottom: 15px;">
+              <label style="font-size: 14px; font-weight: bold; color: var(--apple-text-main);" data-i18n="profile_id">รหัสประจำตัว (ID - ติดต่อแอดมินเพื่อแก้ไข)</label>
+              <input type="text" id="profileIdInput" disabled style="width: 100%; padding: 14px; margin-top: 8px; border-radius: 12px; border: 1px solid var(--apple-border); background: #e5e5ea; color: #86868b; font-size: 15px; font-family: inherit; cursor: not-allowed;">
+          </div>
+
+          <div style="text-align: left; margin-bottom: 15px;">
+              <label style="font-size: 14px; font-weight: bold; color: var(--apple-text-main);" data-i18n="profile_name">ชื่อแสดงผล</label>
+              <input type="text" id="profileNameInput" style="width: 100%; padding: 14px; margin-top: 8px; border-radius: 12px; border: 1px solid var(--apple-border); background: #f5f5f7; font-size: 15px; font-family: inherit;" placeholder="ตั้งชื่อแสดงผล...">
+              <p id="nameCooldownMsg" style="font-size: 13px; color: var(--apple-red); display: none; margin-top: 8px; margin-bottom: 0;"></p>
+          </div>
+          
+          <div style="text-align: left; margin-bottom: 25px;">
+              <label style="font-size: 14px; font-weight: bold; color: var(--apple-text-main);" data-i18n="profile_pass">รหัสผ่านเข้าสู่ระบบ (เว้นว่างได้)</label>
+              <input type="text" id="profilePasswordInput" style="width: 100%; padding: 14px; margin-top: 8px; border-radius: 12px; border: 1px solid var(--apple-border); background: #f5f5f7; font-size: 15px; font-family: inherit;" placeholder="ตั้งรหัสผ่านใหม่...">
+          </div>
+
+          <button class="sys-btn" style="background: var(--pink-primary); margin-bottom: 0;" onclick="saveProfile()" data-i18n="profile_save">บันทึกข้อมูล</button>
+      </div>
+  </div>
+
+  <!-- Quick Upload Modal (อัปโหลดเอกสารด่วน) -->
+  <div class="ui-modal" id="quickUploadModal">
+      <div class="ui-modal-content" style="max-width: 450px; text-align: left;">
+          <button class="ui-close-btn" onclick="document.getElementById('quickUploadModal').style.display='none'">&times;</button>
+          <h3 style="color: var(--pink-primary); margin-bottom: 15px;">อัปโหลดเอกสารด่วน (Supabase)</h3>
+          
+          <label style="font-size: 14px; font-weight: bold; color: var(--apple-text-main);">1. เลือกไฟล์ (รองรับทุกนามสกุล)</label>
+          <input type="file" id="quFile" style="width: 100%; padding: 10px; margin-top: 8px; margin-bottom: 15px; border-radius: 12px; border: 1px solid var(--apple-border); background: #f5f5f7;">
+          
+          <label style="font-size: 14px; font-weight: bold; color: var(--apple-text-main);">2. เลือกโฟลเดอร์เป้าหมาย</label>
+          <select id="quFolderSelect" onchange="toggleNewFolderInput()" style="width: 100%; padding: 14px; margin-top: 8px; margin-bottom: 10px; border-radius: 12px; border: 1px solid var(--apple-border); background: #f5f5f7; font-size: 15px; font-family: inherit;">
+              <option value="">-- วางที่หน้าหลัก (ไม่ใส่โฟลเดอร์) --</option>
+          </select>
+          
+          <div id="quNewFolderDiv" style="display: none; margin-bottom: 15px;">
+              <label style="font-size: 14px; font-weight: bold; color: var(--apple-text-main);">ตั้งชื่อโฟลเดอร์ใหม่</label>
+              <input type="text" id="quNewFolder" placeholder="ระบุชื่อโฟลเดอร์ที่ต้องการสร้าง..." style="width: 100%; padding: 14px; margin-top: 8px; border-radius: 12px; border: 1px solid var(--apple-border); background: #fff; font-size: 15px; font-family: inherit;">
+          </div>
+
+          <p id="quStatusMsg" style="font-size: 14px; color: var(--apple-blue); display: none; margin-bottom: 15px; font-weight: bold; text-align: center;"></p>
+
+          <button class="sys-btn" id="quSubmitBtn" style="background: var(--pink-primary); margin-bottom: 0;" onclick="submitQuickUpload()">เริ่มอัปโหลดไฟล์</button>
+      </div>
+  </div>
+
+  <!-- Crop Modal (สำหรับครอบตัดรูปภาพโปรไฟล์) -->
+  <div class="ui-modal" id="cropModal" style="z-index: 10005;">
+      <div class="ui-modal-content" style="max-width: 500px; text-align: center; padding: 25px;">
+          <h3 style="color: #1d1d1f; margin-bottom: 15px;" data-i18n="crop_title">ครอบตัดรูปภาพ</h3>
+          <div class="crop-container">
+              <img id="imageToCrop" src="">
+          </div>
+          <div style="display: flex; gap: 10px; justify-content: center; margin-top: 15px;">
+              <button class="sys-btn" style="background: #e5e5ea; color: #1d1d1f; flex: 1; margin-bottom: 0;" onclick="cancelCrop()" data-i18n="btn_cancel">ยกเลิก</button>
+              <button class="sys-btn" style="background: var(--pink-primary); flex: 1; margin-bottom: 0;" onclick="confirmCrop()" data-i18n="btn_confirm">ยืนยัน</button>
+          </div>
+      </div>
+  </div>
+
   <!-- Info Modal -->
   <div class="ui-modal" id="infoModal">
       <div class="ui-modal-content" style="max-width: 600px;">
@@ -802,7 +910,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-    import { getFirestore, collection, query, where, getDocs, addDoc, updateDoc, doc, serverTimestamp, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, collection, query, where, getDocs, addDoc, updateDoc, doc, deleteDoc, serverTimestamp, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
     
     const firebaseConfig = {
       apiKey: "AIzaSyBLyMpowfyQK_1UnredPFmXdBdtQZKpY-c",
@@ -835,10 +943,25 @@
 
     let currentDisplayYear = new Date().getFullYear();
     let currentDisplayMonth = new Date().getMonth();
+    
+    let tempProfileBase64 = ""; // สำหรับเก็บรูปในส่วน Profile Modal
+    let cropperInstance = null; // ตัวแปรสำหรับ Cropper.js
 
     const studentInput = document.getElementById("studentId");
     if(studentInput) {
       studentInput.addEventListener("keypress", function(e) {
+        if (e.key === "Enter") checkData();
+      });
+      // ซ่อนรหัสผ่านและเคลียร์ข้อความ หากมีการเปลี่ยนไอดีใหม่
+      studentInput.addEventListener("input", function() {
+          const p = document.getElementById("loginPassword");
+          if(p) { p.style.display = "none"; p.value = ""; }
+      });
+    }
+    
+    const loginPassInput = document.getElementById("loginPassword");
+    if(loginPassInput) {
+      loginPassInput.addEventListener("keypress", function(e) {
         if (e.key === "Enter") checkData();
       });
     }
@@ -893,7 +1016,7 @@
             manual_li1: "ขั้นตอนที่ 1: เข้าสู่ระบบด้วยรหัสประจำตัว (Smart Login)", manual_li2: "ขั้นตอนที่ 2: ค้นหาและดูไฟล์จากหน้าหลักผ่านช่องค้นหา",
             manual_li3: "ขั้นตอนที่ 3: ปรับเปลี่ยนมุมมองไฟล์ได้ที่ไอคอนมุมขวา (แบบไอคอน, แบบรายการ, แบบต้นไม้)", manual_li4: "ขั้นตอนที่ 4: หากไฟล์ถูกล็อกรหัสผ่าน ให้กรอกรหัสผ่านที่ได้รับจากผู้ดูแลระบบ",
             manual_li5: "ขั้นตอนที่ 5: การขอดาวน์โหลดเอกสาร ให้กดปุ่ม \"ยื่นขอสิทธิ์\" และรอแอดมินอนุมัติ", manual_li6: "ขั้นตอนที่ 6: เช็คตารางเรียนและกิจกรรมแจ้งเตือนได้ที่ไอคอนมุมขวาบนของหน้าหลัก", manual_li7: "ขั้นตอนที่ 7: สามารถเปลี่ยนภาษาและปรับขนาดตัวอักษร (ปุ่ม Aa) ได้ที่แถบเมนูด้านบน",
-            login_placeholder: "ระบุชื่อ หรือรหัสประจำตัว...", search_placeholder: "ค้นหาเอกสาร", pwd_placeholder: "รหัสผ่าน", user_id: "รหัสผู้ใช้งาน:",
+            login_placeholder: "ระบุชื่อ หรือรหัสประจำตัว...", login_pass_placeholder: "รหัสผ่าน (หากตั้งไว้)...", search_placeholder: "ค้นหาเอกสาร", pwd_placeholder: "รหัสผ่าน", user_id: "รหัสผู้ใช้งาน:",
             sort_icon: "ไอคอน", sort_list: "รายการ", sort_tree: "จัดเรียง", sort_name: "ชื่อ", sort_type: "ประเภท", sort_date: "วันที่", sort_size: "ขนาด",
             sort_name_asc: "ก ถึง ฮ", sort_name_desc: "ฮ ถึง ก", sort_date_asc: "เก่าที่สุดถึงใหม่ที่สุด", sort_date_desc: "ใหม่ที่สุดถึงเก่าที่สุด", sort_size_asc: "เล็กที่สุดถึงใหญ่ที่สุด", sort_size_desc: "ใหญ่ที่สุดถึงเล็กที่สุด",
             locked: "ติดรหัสผ่าน", prompt_folder_lock: "โฟลเดอร์นี้ถูกล็อก กรุณาใส่รหัสผ่าน:", prompt_file_lock: "เอกสารนี้ถูกล็อก กรุณาใส่รหัสผ่าน:", wrong_pwd: "รหัสผ่านไม่ถูกต้อง",
@@ -907,7 +1030,9 @@
             status_pending: "สถานะ: อยู่ระหว่างการตรวจสอบ (โดยปกติจะใช้เวลา 3 วันทำการ)", status_rejected: "สถานะ: คำขอถูกปฏิเสธ (ไม่อนุญาตให้เข้าถึง)",
             btn_re_request: "ยื่นคำขอสิทธิ์ใหม่อีกครั้ง", status_expired: "สถานะ: สิทธิ์การเข้าถึงของคุณหมดอายุแล้ว", btn_renew: "ยื่นคำขอต่ออายุสิทธิ์",
             link_no_access: "คุณยังไม่ได้รับอนุญาตให้เข้าถึงลิงก์นี้ กรุณาตรวจสอบสถานะด้านบน", error_fetch: "เกิดข้อผิดพลาดในการดึงข้อมูล",
-            status_sending: "ระบบกำลังส่งคำขอ...", link_checking: "กำลังตรวจสอบการอนุญาตเข้าถึงลิงก์..."
+            status_sending: "ระบบกำลังส่งคำขอ...", link_checking: "กำลังตรวจสอบการอนุญาตเข้าถึงลิงก์...",
+            profile_title: "ข้อมูลส่วนบุคคล", profile_btn_change: "เปลี่ยนรูปโปรไฟล์", profile_name: "ชื่อแสดงผล", profile_id: "รหัสประจำตัว (ID - ติดต่อแอดมินเพื่อแก้ไข)", profile_pass: "รหัสผ่านเข้าสู่ระบบ (เว้นว่างได้)", profile_save: "บันทึกข้อมูล", crop_title: "ครอบตัดรูปภาพ",
+            confirm_name_change: "ยืนยันการเปลี่ยนชื่อแสดงผล?\n(หากยืนยันแล้ว คุณจะไม่สามารถเปลี่ยนชื่อได้อีกเป็นเวลา 3 วัน)", name_cooldown: "เปลี่ยนชื่อได้อีกครั้งใน", days: "วัน"
         },
         EN: {
             logo: "Doc System", nav_1: "System", nav_2: "Privacy Policy", nav_3: "Manual", nav_4: "Contact",
@@ -931,7 +1056,7 @@
             manual_li1: "Step 1: Login with your ID (Smart Login)", manual_li2: "Step 2: Search and view files from home page",
             manual_li3: "Step 3: Change views using the top right icon (Grid, List, Tree)", manual_li4: "Step 4: If a file is locked, enter the password provided by admin",
             manual_li5: "Step 5: To download, click 'Request Access' and wait for approval", manual_li6: "Step 6: Check schedule and reminders via top right icons", manual_li7: "Step 7: Change language and text size (Aa button) from the top menu",
-            login_placeholder: "Enter name or ID...", search_placeholder: "Search documents", pwd_placeholder: "Password", user_id: "User ID:",
+            login_placeholder: "Enter name or ID...", login_pass_placeholder: "Password (if set)...", search_placeholder: "Search documents", pwd_placeholder: "Password", user_id: "User ID:",
             sort_icon: "Icons", sort_list: "List", sort_tree: "Tree", sort_name: "Name", sort_type: "Type", sort_date: "Date", sort_size: "Size",
             sort_name_asc: "A to Z", sort_name_desc: "Z to A", sort_date_asc: "Oldest to Newest", sort_date_desc: "Newest to Oldest", sort_size_asc: "Smallest to Largest", sort_size_desc: "Largest to Smallest",
             locked: "Locked", prompt_folder_lock: "This folder is locked. Please enter password:", prompt_file_lock: "This document is locked. Please enter password:", wrong_pwd: "Incorrect password",
@@ -945,7 +1070,9 @@
             status_pending: "Status: Pending review (Usually takes 3 business days)", status_rejected: "Status: Request rejected (Access denied)",
             btn_re_request: "Submit request again", status_expired: "Status: Your access right has expired", btn_renew: "Request renewal",
             link_no_access: "You do not have permission to access this link. Please check status above.", error_fetch: "Error fetching data",
-            status_sending: "Sending request...", link_checking: "Checking link access permissions..."
+            status_sending: "Sending request...", link_checking: "Checking link access permissions...",
+            profile_title: "Profile", profile_btn_change: "Change Picture", profile_name: "Display Name", profile_id: "User ID (Contact admin to change)", profile_pass: "Login Password (Optional)", profile_save: "Save Data", crop_title: "Crop Image",
+            confirm_name_change: "Confirm name change?\n(If confirmed, you won't be able to change it again for 3 days.)", name_cooldown: "You can change your name again in", days: "days"
         },
         CN: {
             logo: "文件系统", nav_1: "系统", nav_2: "隐私政策", nav_3: "手册", nav_4: "联系我们",
@@ -963,13 +1090,13 @@
             cookie_mark_title: "营销 Cookie", cookie_mark_desc: "跟踪行为以提供相关的广告",
             btn_cancel: "取消", btn_save: "保存", btn_confirm: "确认", btn_ack: "知道",
             pwd_title: "输入密码",
-            sys_login_title: "Document System", sys_login_desc: "请确认您的身份以验证访问权限 (Smart Login)", sys_btn_login: "登录", sys_menu_subtitle: "请选择您要查看的项目", sys_path_home: "首页",
+            sys_login_title: "Document System", sys_login_desc: "请确认您的身份以验证访问权限 (Smart Login)", sys_login_btn: "登录", sys_menu_subtitle: "请选择您要查看的项目", sys_path_home: "首页",
             pause_title: "信息已暂停", pause_desc: "该项目当前正在维护或暂停使用。", bot_error: "安全系统<br>请验证您不是机器人。",
             manual_h1: "系统手册", manual_h3: "基本使用方法", 
             manual_li1: "第一步：使用您的ID登录 (Smart Login)", manual_li2: "第二步：在首页搜索并查看文件",
             manual_li3: "第三步：使用右上角图标更改视图（图标、列表、树状图）", manual_li4: "第四步：如果文件被锁定，请输入管理员提供的密码",
             manual_li5: "第五步：如需下载，点击“请求访问”并等待批准", manual_li6: "第六步：通过右上角的图标查看日程和提醒", manual_li7: "第七步：从顶部菜单更改语言和文字大小（Aa 按钮）",
-            login_placeholder: "输入姓名或身份证号...", search_placeholder: "搜索文件", pwd_placeholder: "密码", user_id: "用户ID:",
+            login_placeholder: "输入姓名或身份证号...", login_pass_placeholder: "密码 (如已设置)...", search_placeholder: "搜索文件", pwd_placeholder: "密码", user_id: "用户ID:",
             sort_icon: "图标", sort_list: "列表", sort_tree: "树状", sort_name: "名称", sort_type: "类型", sort_date: "日期", sort_size: "大小",
             sort_name_asc: "A 到 Z", sort_name_desc: "Z 到 A", sort_date_asc: "从旧到新", sort_date_desc: "从新到旧", sort_size_asc: "从小到大", sort_size_desc: "从大到小",
             locked: "受密码保护", prompt_folder_lock: "此文件夹已被锁定。请输入密码：", prompt_file_lock: "此文件已被锁定。请输入密码：", wrong_pwd: "密码错误",
@@ -983,7 +1110,9 @@
             status_pending: "状态：正在审核中（通常需要3个工作日）", status_rejected: "状态：请求被拒绝（拒绝访问）",
             btn_re_request: "重新提交申请", status_expired: "状态：您的访问权限已过期", btn_renew: "申请续期",
             link_no_access: "您无权访问此链接。请检查上方状态。", error_fetch: "获取数据时出错",
-            status_sending: "正在发送请求...", link_checking: "正在检查链接访问权限..."
+            status_sending: "正在发送请求...", link_checking: "正在检查链接访问权限...",
+            profile_title: "个人信息", profile_btn_change: "更换头像", profile_name: "显示名称", profile_id: "用户ID (联系管理员修改)", profile_pass: "登录密码 (可选)", profile_save: "保存数据", crop_title: "裁剪图片",
+            confirm_name_change: "确认更改显示名称？\n(确认后，您将在3天内无法再次更改)", name_cooldown: "您可以再次更改名称于", days: "天内"
         }
     };
 
@@ -1018,9 +1147,11 @@
 
         updateRealtimeClock();
         setSortMode(appSortMode);
+        
         if (currentId) {
-            document.getElementById("menuTitle").innerText = `${t('user_id')} ${currentId}`;
+            updateProfileUI(); 
         }
+        
         if (document.getElementById("menuBox").style.display !== "none") {
             renderExplorer();
         }
@@ -1220,6 +1351,196 @@
             };
         });
     }
+    
+    // ----------------------------------------------------
+    // ระบบจัดการโปรไฟล์ส่วนตัว และ Crop รูปภาพ
+    // ----------------------------------------------------
+    window.previewProfilePic = function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('cropModal').style.display = 'flex';
+                const image = document.getElementById('imageToCrop');
+                image.src = e.target.result;
+                
+                if(cropperInstance) { cropperInstance.destroy(); }
+                
+                cropperInstance = new Cropper(image, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    background: false,
+                    dragMode: 'move'
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+        event.target.value = ''; 
+    }
+    
+    window.cancelCrop = function() {
+        document.getElementById('cropModal').style.display = 'none';
+        if(cropperInstance) {
+            cropperInstance.destroy();
+            cropperInstance = null;
+        }
+    }
+    
+    window.confirmCrop = function() {
+        if(!cropperInstance) return;
+        
+        const canvas = cropperInstance.getCroppedCanvas({
+            width: 300,
+            height: 300
+        });
+        
+        tempProfileBase64 = canvas.toDataURL('image/jpeg', 0.8);
+        
+        const preview = document.getElementById('profilePreview');
+        const defaultIcon = document.getElementById('profileDefault');
+        
+        preview.src = tempProfileBase64;
+        preview.style.display = 'block';
+        defaultIcon.style.display = 'none';
+        
+        document.getElementById('cropModal').style.display = 'none';
+        cropperInstance.destroy();
+        cropperInstance = null;
+    }
+
+    window.currentProfileName = "";
+    window.isNameLocked = false;
+
+    window.openProfileModal = async function() {
+        if(!currentId) return;
+        try {
+            const userDocSnap = await getDoc(doc(db, "users", currentId));
+            let currentName = "";
+            let currentPass = "";
+            let currentPic = "";
+            let lastNameChangeAt = 0;
+            
+            if(userDocSnap.exists()) {
+                const data = userDocSnap.data();
+                if(data.displayName) currentName = data.displayName;
+                if(data.password) currentPass = data.password;
+                if(data.profilePic) currentPic = data.profilePic;
+                if(data.lastNameChangeAt) lastNameChangeAt = data.lastNameChangeAt.toMillis();
+            }
+            
+            window.currentProfileName = currentName; 
+
+            document.getElementById('profileIdInput').value = currentId; 
+            document.getElementById('profileNameInput').value = currentName;
+            document.getElementById('profilePasswordInput').value = currentPass;
+            
+            const now = Date.now();
+            const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
+            const timeDiff = now - lastNameChangeAt;
+            const nameInput = document.getElementById('profileNameInput');
+            const cooldownMsg = document.getElementById('nameCooldownMsg');
+            
+            if (lastNameChangeAt > 0 && timeDiff < THREE_DAYS_MS) {
+                let daysLeft = Math.ceil((THREE_DAYS_MS - timeDiff) / (1000 * 60 * 60 * 24));
+                nameInput.disabled = true;
+                nameInput.style.backgroundColor = "#e5e5ea";
+                nameInput.style.cursor = "not-allowed";
+                cooldownMsg.innerText = `* ${t('name_cooldown')} ${daysLeft} ${t('days')}`;
+                cooldownMsg.style.display = 'block';
+                window.isNameLocked = true;
+            } else {
+                nameInput.disabled = false;
+                nameInput.style.backgroundColor = "#f5f5f7";
+                nameInput.style.cursor = "text";
+                cooldownMsg.style.display = 'none';
+                window.isNameLocked = false;
+            }
+
+            const preview = document.getElementById('profilePreview');
+            const defaultIcon = document.getElementById('profileDefault');
+            if(currentPic) {
+                tempProfileBase64 = currentPic;
+                preview.src = currentPic;
+                preview.style.display = 'block';
+                defaultIcon.style.display = 'none';
+            } else {
+                tempProfileBase64 = "";
+                preview.style.display = 'none';
+                defaultIcon.style.display = 'block';
+            }
+            
+            document.getElementById('profileModal').style.display = 'flex';
+        } catch(e) {
+            showToastAlert("ไม่สามารถโหลดข้อมูลผู้ใช้ได้");
+        }
+    }
+
+    window.saveProfile = async function() {
+        if(!currentId) return;
+        const newName = document.getElementById('profileNameInput').value.trim();
+        const newPass = document.getElementById('profilePasswordInput').value.trim();
+        
+        let updateData = {
+            password: newPass,
+            profilePic: tempProfileBase64,
+            updatedAt: serverTimestamp()
+        };
+        
+        let isNameChanged = (!window.isNameLocked && newName !== window.currentProfileName && newName !== "");
+        
+        if (isNameChanged) {
+            if (!confirm(t('confirm_name_change'))) {
+                return; 
+            }
+            updateData.displayName = newName;
+            updateData.lastNameChangeAt = serverTimestamp(); 
+        } else if (!window.isNameLocked && newName !== "") {
+            updateData.displayName = newName;
+        }
+
+        try {
+            await setDoc(doc(db, "users", currentId), updateData, { merge: true });
+            
+            document.getElementById('profileModal').style.display = 'none';
+            showToastAlert("บันทึกข้อมูลส่วนบุคคลเรียบร้อยแล้ว");
+            
+            updateProfileUI();
+        } catch(e) {
+            showToastAlert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+        }
+    }
+    
+    window.updateProfileUI = async function() {
+        if(!currentId) return;
+        try {
+            const userDocSnap = await getDoc(doc(db, "users", currentId));
+            const headPic = document.getElementById('headerProfilePic');
+            const headIcon = document.getElementById('defaultProfileIcon');
+            const menuTitle = document.getElementById('menuTitle');
+            
+            if(userDocSnap.exists()) {
+                const data = userDocSnap.data();
+                if(data.displayName && data.displayName.trim() !== "") {
+                    menuTitle.innerText = `${t('user_id')} ${data.displayName}`;
+                } else {
+                    menuTitle.innerText = `${t('user_id')} ${currentId}`;
+                }
+                
+                if(data.profilePic) {
+                    headPic.src = data.profilePic;
+                    headPic.style.display = 'block';
+                    headIcon.style.display = 'none';
+                } else {
+                    headPic.style.display = 'none';
+                    headIcon.style.display = 'block';
+                }
+            } else {
+                menuTitle.innerText = `${t('user_id')} ${currentId}`;
+                headPic.style.display = 'none';
+                headIcon.style.display = 'block';
+            }
+        } catch(e) { console.error(e); }
+    }
 
     // ----------------------------------------------------
     // ระบบการติดตามข้อมูลคุกกี้ไปยัง Firestore
@@ -1345,6 +1666,29 @@
       try {
         const searchId = rawId.replace(/[\s"']/g, '').toLowerCase();
         
+        if (!autoLoginId) {
+            const userDocSnap = await getDoc(doc(db, "users", searchId));
+            if (userDocSnap.exists()) {
+                const userData = userDocSnap.data();
+                if (userData.password && userData.password.trim() !== "") {
+                    const passInput = document.getElementById("loginPassword");
+                    if (passInput.style.display === "none") {
+                        passInput.style.display = "block";
+                        passInput.focus();
+                        document.getElementById("errorMsg").innerHTML = "กรุณากรอกรหัสผ่านเพื่อเข้าสู่ระบบ";
+                        document.getElementById("errorMsg").style.display = "block";
+                        return; 
+                    } else {
+                        if (passInput.value !== userData.password) {
+                            document.getElementById("errorMsg").innerHTML = "รหัสผ่านไม่ถูกต้อง";
+                            document.getElementById("errorMsg").style.display = "block";
+                            return; 
+                        }
+                    }
+                }
+            }
+        }
+        
         const q1 = query(collection(db, "jobs"), where("allowedUsers", "array-contains", rawId));
         const q2 = query(collection(db, "jobs"), where("searchableUsers", "array-contains", searchId));
         const qRem = query(collection(db, "reminders"), where("allowedUsers", "array-contains", rawId));
@@ -1399,18 +1743,19 @@
           localStorage.setItem('docSystem_user', currentId);
           localStorage.setItem('docSystem_expiry', Date.now() + (3 * 60 * 60 * 1000));
 
-          // เมื่อล็อกอินสำเร็จ อัปเดตข้อมูลคุกกี้ให้ผูกกับรหัสผู้ใช้
           if (localStorage.getItem('cookieConsent_DocSystem')) {
               let func = localStorage.getItem('cookieFunctional') === 'true';
               let anal = localStorage.getItem('cookieAnalytics') === 'true';
               let mark = localStorage.getItem('cookieMarketing') === 'true';
               saveCookieToFirestore(func, anal, mark);
           }
+          
+          updateProfileUI();
 
           document.getElementById("loginBox").style.display = "none";
           document.getElementById("menuBox").style.display = "block";
-          document.getElementById("menuTitle").innerText = `${t('user_id')} ${currentId}`;
           document.getElementById("mainTopIcons").style.display = "flex";
+          document.getElementById("profileHeaderBtn").style.display = "flex"; 
           document.getElementById("logoutHeaderBtn").style.display = "flex";
           updateReminderBadge();
 
@@ -1421,6 +1766,7 @@
             
             document.getElementById("loginBox").style.display = "block";
             document.getElementById("menuBox").style.display = "none";
+            document.getElementById("profileHeaderBtn").style.display = "none";
 
             document.getElementById("errorMsg").innerHTML = "ไม่พบสิทธิ์การเข้าถึงข้อมูลใดๆ ในระบบ";
             document.getElementById("errorMsg").style.display = "block"; 
@@ -1596,6 +1942,8 @@
             allFiles.forEach(file => {
                 if (file.type !== "system_folder") { let path = (file.folder || "").trim().replace(/^\/+|\/+$/g, ''); file.normalizedPath = path; userFiles.push(file); }
             });
+            
+            updateProfileUI(); 
             renderExplorer();
         } catch (error) { showToastAlert("เกิดข้อผิดพลาดในการดึงข้อมูลอัปเดตใหม่");
         } finally { if(svg) setTimeout(() => svg.style.transform = 'rotate(0deg)', 500); }
@@ -1903,6 +2251,19 @@
       document.getElementById("contentBox").setAttribute("data-active-job", file.id);
       const viewer = document.getElementById("fileViewer"); const blocker = document.getElementById("driveBlocker");
       
+      // แสดงเครื่องมือจัดการ สำหรับเจ้าของไฟล์เท่านั้น
+      const ownerActions = document.getElementById("ownerActions");
+      if (file.uploader === currentId) {
+          ownerActions.style.display = "flex";
+          ownerActions.innerHTML = `
+              <button class="sys-btn" style="width: auto; background: #ffcc00; color: #1d1d1f; margin-bottom: 0; padding: 10px 20px; font-size: 15px;" onclick="editUserFile('${file.id}')">✏️ แก้ไขชื่อไฟล์</button>
+              <button class="sys-btn" style="width: auto; background: var(--apple-red); margin-bottom: 0; padding: 10px 20px; font-size: 15px;" onclick="deleteUserFile('${file.id}', '${file.url}')">🗑️ ลบไฟล์</button>
+          `;
+      } else {
+          ownerActions.style.display = "none";
+          ownerActions.innerHTML = "";
+      }
+      
       if (file.type === "link") {
         blocker.style.display = "none"; viewer.innerHTML = `<div id="linkContainer" style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; flex-direction: column;"><p id="linkStatusText" style="font-size: 18px; color: var(--apple-text-muted);">${t('link_checking')}</p></div>`;
       } else if (file.type === "youtube") {
@@ -1921,9 +2282,65 @@
       checkDownloadStatus(file.id);
     }
 
+    // ฟังก์ชันแก้ไขชื่อไฟล์ (สำหรับเจ้าของ)
+    window.editUserFile = async function(jobId) {
+        const file = userFiles.find(f => f.id === jobId);
+        if(!file) return;
+        const newName = prompt("ระบุชื่อไฟล์ใหม่ที่ต้องการ:", file.title);
+        if(newName !== null && newName.trim() !== "") {
+            try {
+                await updateDoc(doc(db, "jobs", jobId), { title: newName.trim(), updatedAt: serverTimestamp() });
+                file.title = newName.trim();
+                file.displayName = getLocalizedFileTitle(file); 
+                document.getElementById("displayName").innerText = file.displayName;
+                showToastAlert("อัปเดตชื่อไฟล์สำเร็จ");
+            } catch(e) {
+                showToastAlert("เกิดข้อผิดพลาดในการเปลี่ยนชื่อ");
+            }
+        }
+    }
+
+    // ฟังก์ชันลบไฟล์ (สำหรับเจ้าของ)
+    window.deleteUserFile = async function(jobId, fileUrl) {
+        if(!confirm("คุณแน่ใจหรือไม่ว่าต้องการลบไฟล์นี้?\n(การกระทำนี้ไม่สามารถกู้คืนได้)")) return;
+        
+        try {
+            // ลบข้อมูลใน Firebase
+            await deleteDoc(doc(db, "jobs", jobId));
+            
+            // หากเป็นไฟล์ของ Supabase พยายามลบไฟล์จริงออกจาก Storage ด้วย
+            if(fileUrl && fileUrl.includes(SUPABASE_URL)) {
+                try {
+                    // ดึง Path ของไฟล์ออกมาจาก URL
+                    const pathMatch = fileUrl.split(`/public/${SUPABASE_BUCKET}/`);
+                    if(pathMatch && pathMatch[1]) {
+                        const filePath = decodeURIComponent(pathMatch[1]);
+                        const deleteUrl = `${SUPABASE_URL}/storage/v1/object/${SUPABASE_BUCKET}/${encodeURIComponent(filePath)}`;
+                        await fetch(deleteUrl, {
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                                'apikey': SUPABASE_ANON_KEY
+                            }
+                        });
+                    }
+                } catch(err) {
+                    console.warn("ไม่สามารถลบไฟล์จริงใน Supabase ได้: ", err);
+                }
+            }
+            
+            showToastAlert("ลบไฟล์สำเร็จ");
+            closeFile();
+            refreshData(); 
+        } catch(e) {
+            showToastAlert("เกิดข้อผิดพลาดในการลบไฟล์");
+        }
+    }
+
     window.closeFile = function() {
       document.getElementById("contentBox").setAttribute("data-active-job", "");
       document.getElementById("fileViewer").innerHTML = ""; document.getElementById("downloadSection").innerHTML = "";
+      document.getElementById("ownerActions").innerHTML = ""; document.getElementById("ownerActions").style.display = "none";
       document.getElementById("contentBox").style.display = "none"; document.getElementById("menuBox").style.display = "block";
     }
 
@@ -1969,6 +2386,149 @@
       const file = userFiles.find(f => f.id === jobId); if (!file) return;
       window.open(file.url, "_blank");
       addDoc(collection(db, "download_history"), { jobId: file.id, jobTitle: file.title, studentId: currentId, downloadedAt: serverTimestamp() });
+    }
+
+    // =====================================
+    // ระบบอัปโหลดเอกสารแบบเร่งด่วน (Supabase + Firebase)
+    // =====================================
+    const SUPABASE_URL = "https://jpejixrqjszqizmwipju.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpwZWppeHJxanN6cWl6bXdpcGp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNDQwOTAsImV4cCI6MjEwNDYyMDA5MH0.4C4ZIq1J4TO-oaJt9qouFXmqAau1jSzzREFaQNr0q1E";
+    const SUPABASE_BUCKET = "quick_docs"; 
+
+    window.openQuickUploadModal = function() {
+        const select = document.getElementById("quFolderSelect");
+        select.innerHTML = '<option value="">-- วางที่หน้าหลัก (ไม่ใส่โฟลเดอร์) --</option><option value="NEW_FOLDER">+ สร้างโฟลเดอร์ใหม่...</option>';
+        
+        const folderPaths = Object.keys(folderMeta).sort();
+        folderPaths.forEach(path => {
+            if(path) {
+                const opt = document.createElement('option');
+                opt.value = path;
+                opt.innerText = `📁 ${path}`;
+                if(path === currentPath) opt.selected = true; 
+                select.appendChild(opt);
+            }
+        });
+
+        document.getElementById("quFile").value = "";
+        document.getElementById("quNewFolder").value = "";
+        document.getElementById("quStatusMsg").style.display = "none";
+        toggleNewFolderInput();
+        document.getElementById('quickUploadModal').style.display = 'flex';
+    }
+
+    window.toggleNewFolderInput = function() {
+        const val = document.getElementById("quFolderSelect").value;
+        document.getElementById("quNewFolderDiv").style.display = val === "NEW_FOLDER" ? "block" : "none";
+    }
+
+    window.submitQuickUpload = async function() {
+        const fileInput = document.getElementById("quFile");
+        const folderSelect = document.getElementById("quFolderSelect").value;
+        const newFolderInput = document.getElementById("quNewFolder").value.trim();
+        const statusMsg = document.getElementById("quStatusMsg");
+        const submitBtn = document.getElementById("quSubmitBtn");
+
+        if (!fileInput.files || fileInput.files.length === 0) {
+            showToastAlert("กรุณาเลือกไฟล์ที่ต้องการอัปโหลด");
+            return;
+        }
+        if (folderSelect === "NEW_FOLDER" && !newFolderInput) {
+            showToastAlert("กรุณาระบุชื่อโฟลเดอร์ใหม่");
+            return;
+        }
+
+        const file = fileInput.files[0];
+        let targetFolderPath = folderSelect === "NEW_FOLDER" ? (currentPath ? `${currentPath}/${newFolderInput}` : newFolderInput) : folderSelect;
+
+        submitBtn.disabled = true;
+        submitBtn.innerText = "กำลังอัปโหลดไฟล์...";
+        statusMsg.style.display = "block";
+        statusMsg.style.color = "var(--apple-blue)";
+        statusMsg.innerText = "1/2 กำลังอัปโหลดไฟล์ไปยัง Supabase...";
+
+        try {
+            if (folderSelect === "NEW_FOLDER") {
+                const existing = Object.keys(folderMeta).find(p => p === targetFolderPath);
+                if (!existing) {
+                    const newFolderRef = doc(collection(db, "jobs"));
+                    await setDoc(newFolderRef, {
+                        title: `[Folder] ${newFolderInput}`,
+                        titleEN: "", titleCN: "",
+                        folder: targetFolderPath,
+                        type: "system_folder",
+                        color: "blue",
+                        emoji: "", password: "", isPaused: false,
+                        allowedUsers: [], searchableUsers: [],
+                        createdAt: serverTimestamp(), updatedAt: serverTimestamp()
+                    });
+                    folderMeta[targetFolderPath] = { color: 'blue', emoji: '', password: '', isPaused: false, updatedAt: null };
+                }
+            }
+
+            const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+            const fileName = `${Date.now()}_${safeName}`;
+            const filePath = targetFolderPath ? `${targetFolderPath}/${fileName}` : fileName;
+
+            const uploadUrl = `${SUPABASE_URL}/storage/v1/object/${SUPABASE_BUCKET}/${encodeURIComponent(filePath)}`;
+            
+            const response = await fetch(uploadUrl, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Content-Type': file.type || 'application/octet-stream'
+                },
+                body: file
+            });
+
+            if (!response.ok) {
+                const errData = await response.json();
+                throw new Error(errData.message || "อัปโหลดล้มเหลว");
+            }
+
+            statusMsg.innerText = "2/2 กำลังเชื่อมข้อมูลไปยังระบบส่วนกลาง (Firebase)...";
+            const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${SUPABASE_BUCKET}/${encodeURIComponent(filePath)}`;
+            
+            let fileType = "link"; 
+            if (file.type.startsWith("image/")) fileType = "image";
+            else if (file.type === "application/pdf") fileType = "pdf";
+
+            const jobData = {
+                title: file.name,
+                titleEN: "", titleCN: "",
+                folder: targetFolderPath,
+                type: fileType,
+                url: publicUrl,
+                allowedUsers: [currentId], 
+                searchableUsers: [currentId.toLowerCase()],
+                uploader: currentId, // <--- บันทึกผู้ใช้ที่เป็นเจ้าของไฟล์
+                showWatermark: true,
+                password: "",
+                isPaused: false,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
+            };
+
+            await addDoc(collection(db, "jobs"), jobData);
+
+            statusMsg.style.color = "var(--apple-green)";
+            statusMsg.innerText = "อัปโหลดและบันทึกเสร็จสมบูรณ์!";
+            
+            setTimeout(() => {
+                document.getElementById('quickUploadModal').style.display = 'none';
+                submitBtn.disabled = false;
+                submitBtn.innerText = "เริ่มอัปโหลดไฟล์";
+                refreshData(); 
+            }, 1500);
+
+        } catch (error) {
+            console.error(error);
+            statusMsg.style.color = "var(--apple-red)";
+            statusMsg.innerText = `เกิดข้อผิดพลาด: ${error.message}`;
+            submitBtn.disabled = false;
+            submitBtn.innerText = "ลองใหม่อีกครั้ง";
+        }
     }
 
     document.addEventListener('keydown', function(e) {
