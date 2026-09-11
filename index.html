@@ -2454,9 +2454,19 @@
         const folderPaths = Object.keys(folderMeta).sort();
         folderPaths.forEach(path => {
             if(path) {
+                // เปลี่ยนการดึงชื่อโฟลเดอร์ให้แปลภาษาตามที่ตั้งไว้ในระบบแอดมิน
+                let parts = path.split('/');
+                let localizedParts = [];
+                let checkP = "";
+                parts.forEach(p => {
+                    checkP = checkP === "" ? p : checkP + "/" + p;
+                    localizedParts.push(getLocalizedName(p, folderMeta[checkP]));
+                });
+                let displayPath = localizedParts.join('/');
+
                 const opt = document.createElement('option');
                 opt.value = path;
-                opt.innerText = `📁 ${path}`;
+                opt.innerText = `📁 ${displayPath}`;
                 if(path === currentPath) opt.selected = true; 
                 select.appendChild(opt);
             }
