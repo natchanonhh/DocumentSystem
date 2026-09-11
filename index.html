@@ -2528,9 +2528,12 @@
                 }
             }
 
+            // แทนที่อักขระพิเศษและภาษาไทยในชื่อไฟล์ เพื่อป้องกัน Invalid Key
             const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
             const fileName = `${Date.now()}_${safeName}`;
-            const filePath = targetFolderPath ? `${targetFolderPath}/${fileName}` : fileName;
+            
+            // ใช้แบบ Flat Structure ใน Supabase เพื่อหลีกเลี่ยงปัญหาโฟลเดอร์ภาษาไทย (Virtual Folder จัดการใน Firestore)
+            const filePath = fileName;
 
             const uploadUrl = `${SUPABASE_URL}/storage/v1/object/${SUPABASE_BUCKET}/${encodeURIComponent(filePath)}`;
             
