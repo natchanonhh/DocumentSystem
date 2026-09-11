@@ -455,7 +455,7 @@
             <div class="cf-turnstile" data-sitekey="0x4AAAAAAEUke67A2otQ6JbL"></div>
         </div>
 
-        <button class="sys-btn btn-login" onclick="checkData()" data-i18n="sys_btn_login">เข้าสู่ระบบ</button>
+        <button class="sys-btn btn-login" onclick="checkData()" data-i18n="sys_login_btn">เข้าสู่ระบบ</button>
         
         <!-- ข้อความแจ้งเตือนบอท หรือ รหัสผ่าน -->
         <p id="errorMsg" style="color: var(--apple-red); display: none; margin-top: 15px; font-weight: 500; text-align: center; font-size: 15px;" data-i18n="bot_error">
@@ -709,24 +709,23 @@
   <div class="ui-modal" id="quickUploadModal">
       <div class="ui-modal-content" style="max-width: 450px; text-align: left;">
           <button class="ui-close-btn" onclick="document.getElementById('quickUploadModal').style.display='none'">&times;</button>
-          <h3 style="color: var(--pink-primary); margin-bottom: 15px;">อัปโหลดเอกสารด่วน (Supabase)</h3>
+          <h3 style="color: var(--pink-primary); margin-bottom: 15px;" data-i18n="qu_title">อัปโหลดเอกสารด่วน (Supabase)</h3>
           
-          <label style="font-size: 14px; font-weight: bold; color: var(--apple-text-main);">1. เลือกไฟล์ (รองรับทุกนามสกุล)</label>
+          <label style="font-size: 14px; font-weight: bold; color: var(--apple-text-main);" data-i18n="qu_step1">1. เลือกไฟล์ (รองรับทุกนามสกุล)</label>
           <input type="file" id="quFile" style="width: 100%; padding: 10px; margin-top: 8px; margin-bottom: 15px; border-radius: 12px; border: 1px solid var(--apple-border); background: #f5f5f7;">
           
-          <label style="font-size: 14px; font-weight: bold; color: var(--apple-text-main);">2. เลือกโฟลเดอร์เป้าหมาย</label>
+          <label style="font-size: 14px; font-weight: bold; color: var(--apple-text-main);" data-i18n="qu_step2">2. เลือกโฟลเดอร์เป้าหมาย</label>
           <select id="quFolderSelect" onchange="toggleNewFolderInput()" style="width: 100%; padding: 14px; margin-top: 8px; margin-bottom: 10px; border-radius: 12px; border: 1px solid var(--apple-border); background: #f5f5f7; font-size: 15px; font-family: inherit;">
-              <option value="">-- วางที่หน้าหลัก (ไม่ใส่โฟลเดอร์) --</option>
           </select>
           
           <div id="quNewFolderDiv" style="display: none; margin-bottom: 15px;">
-              <label style="font-size: 14px; font-weight: bold; color: var(--apple-text-main);">ตั้งชื่อโฟลเดอร์ใหม่</label>
-              <input type="text" id="quNewFolder" placeholder="ระบุชื่อโฟลเดอร์ที่ต้องการสร้าง..." style="width: 100%; padding: 14px; margin-top: 8px; border-radius: 12px; border: 1px solid var(--apple-border); background: #fff; font-size: 15px; font-family: inherit;">
+              <label style="font-size: 14px; font-weight: bold; color: var(--apple-text-main);" data-i18n="qu_new_folder_label">ตั้งชื่อโฟลเดอร์ใหม่</label>
+              <input type="text" id="quNewFolder" data-i18n-placeholder="qu_new_folder_ph" placeholder="ระบุชื่อโฟลเดอร์ที่ต้องการสร้าง..." style="width: 100%; padding: 14px; margin-top: 8px; border-radius: 12px; border: 1px solid var(--apple-border); background: #fff; font-size: 15px; font-family: inherit;">
           </div>
 
           <p id="quStatusMsg" style="font-size: 14px; color: var(--apple-blue); display: none; margin-bottom: 15px; font-weight: bold; text-align: center;"></p>
 
-          <button class="sys-btn" id="quSubmitBtn" style="background: var(--pink-primary); margin-bottom: 0;" onclick="submitQuickUpload()">เริ่มอัปโหลดไฟล์</button>
+          <button class="sys-btn" id="quSubmitBtn" style="background: var(--pink-primary); margin-bottom: 0;" onclick="submitQuickUpload()" data-i18n="btn_start_upload">เริ่มอัปโหลดไฟล์</button>
       </div>
   </div>
 
@@ -970,12 +969,14 @@
         blue: ['#89C4FA', '#74B5F6'], red: ['#ff8a8a', '#ff5c5c'], orange: ['#ffb380', '#ff944d'],
         yellow: ['#ffe082', '#ffcc33'], green: ['#85e098', '#5cd675'], purple: ['#d1a3ff', '#b870ff'], gray: ['#c2c2c2', '#a8a8a8']
     };
+    
     const icons = {
       pdf: `<svg class="icon-file" viewBox="0 0 64 80" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="56" height="72" rx="6" fill="#F9F9FB" stroke="#D2D2D7" stroke-width="2"/><path d="M40 4L60 24V10C60 6.68629 57.3137 4 54 4H40Z" fill="#E5E5EA"/><path d="M40 4V18C40 21.3137 42.6863 24 46 24H60" stroke="#D2D2D7" stroke-width="2" stroke-linejoin="round"/><rect x="16" y="32" width="32" height="4" rx="2" fill="#FF3B30"/><rect x="16" y="44" width="24" height="4" rx="2" fill="#D2D2D7"/><rect x="16" y="56" width="28" height="4" rx="2" fill="#D2D2D7"/></svg>`,
       image: `<svg class="icon-wide" viewBox="0 0 80 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="72" height="56" rx="8" fill="#F9F9FB" stroke="#D2D2D7" stroke-width="2"/><circle cx="24" cy="24" r="6" fill="#FFCC00"/><path d="M4 48L28 28L52 48L64 38L76 48V52C76 56.4183 72.4183 60 68 60H12C7.58172 60 4 56.4183 4 52V48Z" fill="#34C759"/></svg>`,
       youtube: `<svg class="icon-wide" viewBox="0 0 80 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="72" height="48" rx="12" fill="#FF3B30"/><path d="M34 18L52 28L34 38V18Z" fill="white"/></svg>`,
       link: `<svg class="icon-file" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="40" r="36" fill="#F9F9FB" stroke="#D2D2D7" stroke-width="2"/><path d="M40 10C28 10 20 25 20 40C20 55 28 70 40 70C52 70 60 55 60 40C60 25 52 10 40 10Z" stroke="#0071E3" stroke-width="2"/><path d="M10 40H70" stroke="#0071E3" stroke-width="2"/><path d="M20 25H60" stroke="#0071E3" stroke-width="2"/><path d="M20 55H60" stroke="#0071E3" stroke-width="2"/></svg>`,
-      lock: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>`
+      lock: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>`,
+      text: `<svg class="icon-file" viewBox="0 0 64 80" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="56" height="72" rx="6" fill="#F9F9FB" stroke="#D2D2D7" stroke-width="2"/><rect x="16" y="24" width="32" height="4" rx="2" fill="#0071E3"/><rect x="16" y="36" width="32" height="4" rx="2" fill="#D2D2D7"/><rect x="16" y="48" width="24" height="4" rx="2" fill="#D2D2D7"/></svg>`
     };
     
     function getFolderIcon(color, emoji) {
@@ -1032,7 +1033,8 @@
             link_no_access: "คุณยังไม่ได้รับอนุญาตให้เข้าถึงลิงก์นี้ กรุณาตรวจสอบสถานะด้านบน", error_fetch: "เกิดข้อผิดพลาดในการดึงข้อมูล",
             status_sending: "ระบบกำลังส่งคำขอ...", link_checking: "กำลังตรวจสอบการอนุญาตเข้าถึงลิงก์...",
             profile_title: "ข้อมูลส่วนบุคคล", profile_btn_change: "เปลี่ยนรูปโปรไฟล์", profile_name: "ชื่อแสดงผล", profile_id: "รหัสประจำตัว (ID - ติดต่อแอดมินเพื่อแก้ไข)", profile_pass: "รหัสผ่านเข้าสู่ระบบ (เว้นว่างได้)", profile_save: "บันทึกข้อมูล", crop_title: "ครอบตัดรูปภาพ",
-            confirm_name_change: "ยืนยันการเปลี่ยนชื่อแสดงผล?\n(หากยืนยันแล้ว คุณจะไม่สามารถเปลี่ยนชื่อได้อีกเป็นเวลา 3 วัน)", name_cooldown: "เปลี่ยนชื่อได้อีกครั้งใน", days: "วัน"
+            confirm_name_change: "ยืนยันการเปลี่ยนชื่อแสดงผล?\n(หากยืนยันแล้ว คุณจะไม่สามารถเปลี่ยนชื่อได้อีกเป็นเวลา 3 วัน)", name_cooldown: "เปลี่ยนชื่อได้อีกครั้งใน", days: "วัน",
+            content_allowed: "อนุญาตให้เข้าถึงเนื้อหาได้แล้ว", alert_db_error: "เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล", alert_no_access: "ไม่พบสิทธิ์การเข้าถึงข้อมูลใดๆ ในระบบ", alert_pwd_req: "กรุณากรอกรหัสผ่านเพื่อเข้าสู่ระบบ", alert_pwd_wrong: "รหัสผ่านไม่ถูกต้อง"
         },
         EN: {
             logo: "Doc System", nav_1: "System", nav_2: "Privacy Policy", nav_3: "Manual", nav_4: "Contact",
@@ -1072,7 +1074,8 @@
             link_no_access: "You do not have permission to access this link. Please check status above.", error_fetch: "Error fetching data",
             status_sending: "Sending request...", link_checking: "Checking link access permissions...",
             profile_title: "Profile", profile_btn_change: "Change Picture", profile_name: "Display Name", profile_id: "User ID (Contact admin to change)", profile_pass: "Login Password (Optional)", profile_save: "Save Data", crop_title: "Crop Image",
-            confirm_name_change: "Confirm name change?\n(If confirmed, you won't be able to change it again for 3 days.)", name_cooldown: "You can change your name again in", days: "days"
+            confirm_name_change: "Confirm name change?\n(If confirmed, you won't be able to change it again for 3 days.)", name_cooldown: "You can change your name again in", days: "days",
+            content_allowed: "Access to content granted", alert_db_error: "Database connection error", alert_no_access: "No access rights found in the system", alert_pwd_req: "Please enter a password to login", alert_pwd_wrong: "Incorrect password"
         },
         CN: {
             logo: "文件系统", nav_1: "系统", nav_2: "隐私政策", nav_3: "手册", nav_4: "联系我们",
@@ -1112,7 +1115,8 @@
             link_no_access: "您无权访问此链接。请检查上方状态。", error_fetch: "获取数据时出错",
             status_sending: "正在发送请求...", link_checking: "正在检查链接访问权限...",
             profile_title: "个人信息", profile_btn_change: "更换头像", profile_name: "显示名称", profile_id: "用户ID (联系管理员修改)", profile_pass: "登录密码 (可选)", profile_save: "保存数据", crop_title: "裁剪图片",
-            confirm_name_change: "确认更改显示名称？\n(确认后，您将在3天内无法再次更改)", name_cooldown: "您可以再次更改名称于", days: "天内"
+            confirm_name_change: "确认更改显示名称？\n(确认后，您将在3天内无法再次更改)", name_cooldown: "您可以再次更改名称于", days: "天内",
+            content_allowed: "已授权访问内容", alert_db_error: "数据库连接错误", alert_no_access: "在系统中未找到任何访问权限", alert_pwd_req: "请输入密码登录", alert_pwd_wrong: "密码错误"
         }
     };
 
@@ -1471,7 +1475,7 @@
             
             document.getElementById('profileModal').style.display = 'flex';
         } catch(e) {
-            showToastAlert("ไม่สามารถโหลดข้อมูลผู้ใช้ได้");
+            showToastAlert(t('alert_db_error'));
         }
     }
 
@@ -1502,11 +1506,11 @@
             await setDoc(doc(db, "users", currentId), updateData, { merge: true });
             
             document.getElementById('profileModal').style.display = 'none';
-            showToastAlert("บันทึกข้อมูลส่วนบุคคลเรียบร้อยแล้ว");
+            showToastAlert(t('profile_save'));
             
             updateProfileUI();
         } catch(e) {
-            showToastAlert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+            showToastAlert(t('alert_db_error'));
         }
     }
     
@@ -1663,6 +1667,14 @@
       if (!rawId) return;
       document.getElementById("errorMsg").style.display = "none"; unlockedItems.clear(); 
       
+      const loginBtn = document.querySelector(".btn-login");
+      const originalBtnText = loginBtn.innerText;
+      
+      if (!autoLoginId) {
+          loginBtn.innerText = t('status_checking');
+          loginBtn.disabled = true;
+      }
+
       try {
         const searchId = rawId.replace(/[\s"']/g, '').toLowerCase();
         
@@ -1675,13 +1687,17 @@
                     if (passInput.style.display === "none") {
                         passInput.style.display = "block";
                         passInput.focus();
-                        document.getElementById("errorMsg").innerHTML = "กรุณากรอกรหัสผ่านเพื่อเข้าสู่ระบบ";
+                        document.getElementById("errorMsg").innerHTML = t('alert_pwd_req');
                         document.getElementById("errorMsg").style.display = "block";
+                        loginBtn.innerText = originalBtnText;
+                        loginBtn.disabled = false;
                         return; 
                     } else {
                         if (passInput.value !== userData.password) {
-                            document.getElementById("errorMsg").innerHTML = "รหัสผ่านไม่ถูกต้อง";
+                            document.getElementById("errorMsg").innerHTML = t('alert_pwd_wrong');
                             document.getElementById("errorMsg").style.display = "block";
+                            loginBtn.innerText = originalBtnText;
+                            loginBtn.disabled = false;
                             return; 
                         }
                     }
@@ -1689,12 +1705,16 @@
             }
         }
         
+        // Promise.all เพื่อเสถียรภาพสูงสุด 100% บังคับดาวน์โหลดข้อมูลทั้งหมดพร้อมกัน
         const q1 = query(collection(db, "jobs"), where("allowedUsers", "array-contains", rawId));
         const q2 = query(collection(db, "jobs"), where("searchableUsers", "array-contains", searchId));
         const qRem = query(collection(db, "reminders"), where("allowedUsers", "array-contains", rawId));
         const qSch = query(collection(db, "schedules"), where("allowedUsers", "array-contains", rawId));
+        const q3 = query(collection(db, "jobs"), where("type", "==", "system_folder"));
 
-        const [snap1, snap2, snapRem, snapSch] = await Promise.all([getDocs(q1), getDocs(q2), getDocs(qRem), getDocs(qSch)]);
+        const [snap1, snap2, snapRem, snapSch, snap3] = await Promise.all([
+            getDocs(q1), getDocs(q2), getDocs(qRem), getDocs(qSch), getDocs(q3)
+        ]);
 
         const fileMap = new Map();
         snap1.forEach(docSnap => { fileMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() }); });
@@ -1717,8 +1737,6 @@
           }
           currentId = matchedId;
           
-          const q3 = query(collection(db, "jobs"), where("type", "==", "system_folder"));
-          const snap3 = await getDocs(q3);
           snap3.forEach(docSnap => {
               const data = docSnap.data();
               let path = (data.folder || "").trim().replace(/^\/+|\/+$/g, '');
@@ -1768,12 +1786,17 @@
             document.getElementById("menuBox").style.display = "none";
             document.getElementById("profileHeaderBtn").style.display = "none";
 
-            document.getElementById("errorMsg").innerHTML = "ไม่พบสิทธิ์การเข้าถึงข้อมูลใดๆ ในระบบ";
+            document.getElementById("errorMsg").innerHTML = t('alert_no_access');
             document.getElementById("errorMsg").style.display = "block"; 
         }
       } catch (error) { 
           console.error(error);
-          showToastAlert("เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล"); 
+          showToastAlert(t('alert_db_error')); 
+      } finally {
+          if (!autoLoginId) {
+              loginBtn.innerText = originalBtnText;
+              loginBtn.disabled = false;
+          }
       }
     }
 
@@ -1945,7 +1968,7 @@
             
             updateProfileUI(); 
             renderExplorer();
-        } catch (error) { showToastAlert("เกิดข้อผิดพลาดในการดึงข้อมูลอัปเดตใหม่");
+        } catch (error) { showToastAlert(t('alert_db_error'));
         } finally { if(svg) setTimeout(() => svg.style.transform = 'rotate(0deg)', 500); }
     }
 
@@ -2070,7 +2093,12 @@
 
               subFiles.forEach(f => {
                   let file = f.file; let index = f.index; let title = f.title;
-                  let iconSvg = icons.pdf; if (file.type === "youtube") iconSvg = icons.youtube; else if (file.type === "image") iconSvg = icons.image; else if (file.type === "link") iconSvg = icons.link;
+                  let iconSvg = icons.pdf; 
+                  if (file.type === "youtube") iconSvg = icons.youtube; 
+                  else if (file.type === "image") iconSvg = icons.image; 
+                  else if (file.type === "link") iconSvg = icons.link; 
+                  else if (file.type === "text") iconSvg = icons.text;
+
                   let lockIcon = file.password ? `<span style="margin-left: 5px; color: var(--apple-text-muted); display: flex;">${icons.lock}</span>` : "";
                   let isPaused = file.isPaused || isPathPaused(file.normalizedPath);
                   let iconDisplay = isPaused ? `<div class="loader-wrapper" style="height: 18px; width: 18px; margin-right: 8px; margin-bottom: 0;"><div class="z z-1" style="font-size: 12px;">Z</div><div class="z z-2" style="font-size: 12px;">Z</div><div class="z z-3" style="font-size: 12px;">Z</div><div class="z z-4" style="font-size: 12px;">Z</div></div>` : `<div style="display:flex; align-items:center; justify-content:center; width:18px; height:18px; margin-right:8px;">${iconSvg}</div>`;
@@ -2188,7 +2216,12 @@
       
       filesToRender.forEach((file) => {
           const index = userFiles.findIndex(f => f.id === file.id);
-          let iconSvg = icons.pdf; if (file.type === "youtube") iconSvg = icons.youtube; else if (file.type === "image") iconSvg = icons.image; else if (file.type === "link") iconSvg = icons.link;
+          let iconSvg = icons.pdf; 
+          if (file.type === "youtube") iconSvg = icons.youtube; 
+          else if (file.type === "image") iconSvg = icons.image; 
+          else if (file.type === "link") iconSvg = icons.link; 
+          else if (file.type === "text") iconSvg = icons.text;
+
           let lockHtml = file.password ? `<div class="grid-lock">${icons.lock} ${t('locked')}</div>` : "";
           let fileTimeStr = file.updatedAt ? formatTime(file.updatedAt) : (file.createdAt ? formatTime(file.createdAt) : "");
           let isPaused = file.isPaused || isPathPaused(file.normalizedPath);
@@ -2277,6 +2310,9 @@
         } else viewer.innerHTML = `<img class="block-interaction" src="${imgUrl}" style="object-fit: contain;">`;
       } else if (file.type === "pdf") {
         blocker.style.display = "block"; viewer.innerHTML = `<iframe class="pdf-viewer" src="${file.url}#toolbar=0&navpanes=0&scrollbar=0" allowfullscreen></iframe>`;
+      } else if (file.type === "text") {
+        blocker.style.display = "none"; 
+        viewer.innerHTML = `<div style="background: white; padding: 40px 50px; border-radius: 12px; height: 100%; overflow-y: auto; text-align: left; font-size: 16px; border: 1px solid #d2d2d7; box-shadow: 0 10px 30px rgba(0,0,0,0.05); color: #1d1d1f; line-height: 1.8;"><div style="max-width: 800px; margin: 0 auto;">${file.textContent || ""}</div></div>`;
       }
       
       checkDownloadStatus(file.id);
@@ -2360,7 +2396,13 @@
         if (isApproved) {
             let expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">${t('status_permanent')}</p>`;
             if (reqSnap.data().expiresAt) expireMsg = `<p style="margin-top: 14px; margin-bottom: 0; font-size: 14px; color: var(--apple-text-muted); font-weight: 500;">${t('status_expire')}${formatTime(reqSnap.data().expiresAt)}</p>`;
-            downloadSection.innerHTML = `<button class="sys-btn" style="background: var(--pink-primary); margin-bottom: 0;" onclick="downloadWork('${jobId}')">${t('btn_download')}</button>${expireMsg}`;
+            
+            const file = userFiles.find(f => f.id === jobId);
+            if (file && file.type === "text") {
+                downloadSection.innerHTML = `<p style="margin-top: 0; margin-bottom: 0; font-size: 15px; color: #34c759; font-weight: 600;">${t('content_allowed')}</p>${expireMsg}`;
+            } else {
+                downloadSection.innerHTML = `<button class="sys-btn" style="background: var(--pink-primary); margin-bottom: 0;" onclick="downloadWork('${jobId}')">${t('btn_download')}</button>${expireMsg}`;
+            }
             if (linkStatusText) linkStatusText.innerHTML = `<button onclick="downloadWork('${jobId}')" class="link-btn" style="border:none; cursor:pointer; background: var(--pink-primary);">${t('btn_link_access')}</button>`;
         } else {
             if (!reqSnap.exists()) {
